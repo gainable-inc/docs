@@ -196,10 +196,41 @@ Gainable remembers everything about your project. When you ask for changes:
 1. **Context is preserved** - The AI knows what's already built
 2. **Existing features are protected** - New additions don't break what works
 3. **Changes are targeted** - Only the relevant parts are modified
+4. **Every change is versioned** - Each successful build creates a snapshot you can revert to
 
 <Tip>
-This means you can build incrementally. Start with something simple, then add features one at a time. Each change builds on what came before.
+This means you can build incrementally and experiment freely. Start with something simple, add features one at a time, and undo anything that doesn't work out.
 </Tip>
+
+### Undo this build
+
+Not happy with the latest change? Click the **undo button** (↩) on any build completion message to revert it instantly.
+
+<Frame>
+  <img src="/images/undo-build.png" alt="Undo this build button on a build completion message" />
+</Frame>
+
+When you undo a build:
+- **Everything from that step is reverted** — code, views, data models, routes
+- **You can only undo one step at a time** — this prevents cascading issues and keeps your app stable
+- **Your previous state is fully restored** — as if the build never happened
+
+<Note>
+You can only undo the most recent build. To go further back, use Commit history.
+</Note>
+
+### Commit history
+
+Every build creates a versioned commit with a description of what changed. You can view and rollback to any point in your build history.
+
+1. Click the **three-dot menu** (⋮) at the top of the Pages panel
+2. Select **Commit history**
+
+The history shows all your builds with descriptions and timestamps. Click **Rollback** on any previous entry to restore your app to that point.
+
+<Accordion title="How rollback safety works">
+When you rollback, Gainable automatically creates a safety snapshot of your current state before reverting. This means you can **undo a rollback** if you change your mind — just open Commit history again and click **Undo** to restore the state before the rollback.
+</Accordion>
 
 ## Technical foundation
 
