@@ -38,7 +38,7 @@ When a copilot is added to a page, users see:
 - **Agent name and description** in the chat header
 - **Conversation starters** as clickable buttons to begin a conversation
 - **Message input** for typing questions
-- **Chat responses** with formatted text, lists, and data from functions and knowledge
+- **Chat responses** with formatted text, lists, and data from MCP data access and knowledge
 
 ## Capabilities
 
@@ -47,7 +47,7 @@ The copilot inherits all capabilities from its connected agent:
 | Capability | Description |
 |------------|-------------|
 | **Chat** | Natural language conversation |
-| **Function calling** | Query and modify app data through the agent's functions |
+| **Data access (MCP)** | Read, update, and insert app data through the MCP Server |
 | **Knowledge queries** | Reference uploaded documents from the agent's knowledge base |
 | **Web search** | Search the web if enabled on the agent |
 | **Conversation starters** | Pre-defined prompts shown as buttons |
@@ -92,7 +92,7 @@ The copilot and [team chat](/building/collaboration) serve different purposes:
 | **Powered by** | AI agent | Weavy collaboration |
 | **Responds** | AI with data access | Other team members |
 | **Best for** | Questions, lookups, guidance | Discussions, decisions, updates |
-| **Data access** | Queries app data via functions | No direct data access |
+| **Data access** | Queries app data via MCP Server | No direct data access |
 
 <Tip>
 You can have both on the same page. Use team chat for human collaboration and the copilot for AI-assisted data lookups and guidance.
@@ -147,8 +147,8 @@ This single prompt creates the entire app, the AI agent with data access, and em
   <Card title="Creating agents" icon="robot" href="/agents/creating-agents">
     Set up the agent behind the copilot
   </Card>
-  <Card title="Agent functions" icon="plug" href="/agents/functions">
-    Give the agent data access
+  <Card title="Data access" icon="database" href="/agents/functions">
+    Connect the agent to app data via MCP
   </Card>
   <Card title="Knowledge bases" icon="book" href="/agents/knowledge">
     Add document references

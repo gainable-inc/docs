@@ -1,67 +1,40 @@
 ---
-title: "Agent functions"
-description: "Connect agents to your app data through API endpoints"
+title: "Data access"
+description: "Connect agents to your app data through a powerful MCP Server"
 ---
 
-## What are functions?
+## How agents access your data
 
-Functions are connections between your AI agent and your app's API endpoints. They let the agent read and write data: looking up records, filtering lists, creating entries, and performing actions on behalf of users.
+Your AI agents connect to your app's data through an **MCP Server** (Model Context Protocol). This gives agents flexible, powerful access to read, update, and insert data — no endpoint configuration or function definitions needed.
 
 <Info>
-Functions are how agents interact with your app's live data. Without functions, an agent can only chat and reference knowledge base documents. With functions, it can answer questions like "Show me all deals closing this month" by querying your data.
+The MCP Server is how agents interact with your app's live data. Without it, an agent can only chat and reference knowledge base documents. With MCP data access, it can answer questions like "Show me all deals closing this month" by querying your data directly.
 </Info>
 
 ## How it works
 
 <Steps>
   <Step title="Build your app with data models">
-    Create your application with the data models and features you need. Each data model gets API endpoints automatically.
+    Create your application with the data models and features you need.
   </Step>
-  <Step title="Describe what the agent needs">
-    When creating or updating your agent, describe what data it should access: "Give it access to deals and contacts data."
+  <Step title="Create an agent">
+    Describe the assistant you want and what data it should access.
   </Step>
-  <Step title="Agent Builder discovers endpoints">
-    The Agent Builder examines your app's API endpoints and creates functions that map to them.
+  <Step title="Agent gets automatic data access">
+    The MCP Server automatically connects your agent to your app's data. No manual configuration needed.
   </Step>
-  <Step title="Functions are ready">
-    The agent can now query, filter, and modify data through these functions during conversations.
+  <Step title="Optionally restrict with scopes">
+    By default, agents can access all your app's collections. Add scopes to restrict access to specific collections when needed.
   </Step>
 </Steps>
 
 <Tip>
-Functions can query data synced from external sources via [data connectors](/building/data-connectors). Connect a source like HubSpot or Google Sheets, sync the data into a data model, and your agent's functions can access it just like any other app data.
+Agents can also access data synced from external sources via [data connectors](/building/data-connectors). Connect a source like HubSpot or Google Sheets, sync the data, and your agent can query it alongside your app data.
 </Tip>
-
-## Automatic endpoint discovery
-
-When you ask the Agent Builder to give an agent access to your data, it automatically discovers your app's available API endpoints. You don't need to manually configure routes or write API code. The builder reads your app's data models and creates the appropriate function mappings.
-
-This means the agent learns what data exists, what fields are available, and what operations are possible.
-
-## Prompt examples
-
-```text
-Give the Sales Coach agent access to deals and contacts
-so it can look up pipeline data and find contact information.
-```
-
-```text
-Add functions to the support agent so it can look up
-orders by order number and check order status.
-```
-
-```text
-Let the HR assistant query employee records and
-time-off requests.
-```
-
-<Warning>
-Your app must be built with data models before you can add functions. The agent needs existing API endpoints to connect to. Build your app first, then create the agent and add functions.
-</Warning>
 
 ## Query capabilities
 
-Agents with functions can perform sophisticated data queries:
+Agents with MCP data access can perform powerful queries across your data:
 
 | Capability | Example question | What happens |
 |------------|-----------------|--------------|
@@ -72,46 +45,97 @@ Agents with functions can perform sophisticated data queries:
 | **Numeric ranges** | "Deals over $10,000" | Filters by numeric thresholds |
 | **Limits** | "Show the top 5 deals" | Limits result count |
 | **Combined filters** | "Open deals over $10k closing this quarter" | Applies multiple filters at once |
+| **Aggregate** | "What's the average deal size by status?" | Groups and calculates sums, averages, counts |
+| **Join across collections** | "Show deals with their contact details" | Combines data from related collections |
+| **Insert** | "Add a new deal for Acme Corp" | Creates new records |
+| **Update** | "Mark that deal as won" | Modifies existing records |
 
-## Managing functions
+## Scopes
 
-You can add, update, or remove functions through prompts:
+By default, agents can access **all collections** in your app. Use **scopes** to restrict an agent to specific collections when you want to limit what data it can see.
 
-### Adding functions
+### When to use scopes
+
+- **Customer-facing agents** — restrict to only the data relevant to the user's context
+- **Role-specific agents** — a sales agent only needs deals and contacts, not HR data
+- **Privacy-sensitive apps** — limit access to prevent agents from exposing sensitive data
+
+### Prompt examples
 
 ```text
-Give the Sales Coach access to the products data model
+Give the Sales Coach access to only deals and contacts.
+It shouldn't see employee or payroll data.
+```
+
+```text
+Restrict the support agent's data access to orders
+and tickets only.
+```
+
+<Note>
+If you don't specify scopes, your agent can access all app collections. This is fine for most internal tools — only add scopes when you need to restrict access.
+</Note>
+
+## Prompt examples
+
+```text
+Give the Sales Coach agent access to deals and contacts
+so it can look up pipeline data and find contact information.
+```
+
+```text
+Add data access to the support agent so it can look up
+orders by order number and check order status.
+```
+
+```text
+Let the HR assistant query employee records and
+time-off requests.
+```
+
+<Warning>
+Your app must be built with data models before agents can access data. The MCP Server connects to your existing collections. Build your app first, then create the agent.
+</Warning>
+
+## Managing data access
+
+You can update what data an agent can access through follow-up prompts:
+
+### Expanding access
+
+```text
+Give the Sales Coach access to the products data
 so it can answer questions about pricing.
 ```
 
-### Updating function scope
+### Restricting access
 
 ```text
-Update the support agent's functions to also include
-access to the returns data.
+Restrict the Sales Coach to only deals and contacts.
+Remove access to everything else.
 ```
 
-### Removing functions
+### Adding write capabilities
 
 ```text
-Remove the Sales Coach's access to employee data.
-It should only see deals and contacts.
+Let the support agent update order status
+and add notes to customer records.
 ```
 
 ## Best practices
 
 <AccordionGroup>
   <Accordion title="Start with read access">
-    Begin by giving agents the ability to read and query data. Add write capabilities (creating or updating records) only when needed.
+    Begin by giving agents the ability to read and query data. Add write capabilities (inserting or updating records) only when needed.
   </Accordion>
-  <Accordion title="Be specific about which models">
-    Instead of "give it access to everything," specify the data models: "Give it access to deals, contacts, and companies." This keeps the agent focused and reduces confusion.
+  <Accordion title="Use scopes for customer-facing agents">
+    Internal agents usually don't need scopes — they can access everything. For customer-facing agents, use scopes to restrict access to only the relevant collections.
   </Accordion>
-  <Accordion title="Match functions to the agent's purpose">
-    A sales agent needs deals and contacts. A support agent needs orders and tickets. Don't give agents access to data they don't need.
+  <Accordion title="Match data access to the agent's purpose">
+    A sales agent needs deals and contacts. A support agent needs orders and tickets. Keep access relevant to what the agent does.
   </Accordion>
   <Accordion title="Combine with knowledge bases">
-    Functions handle live data queries. Knowledge bases handle static reference material. Together, an agent can look up a customer's order *and* reference your return policy to answer a question.
+    Data access handles live data queries. Knowledge bases handle static reference material. Together, an agent can look up a customer's order *and* reference your return policy to answer a question.
   </Accordion>
 </AccordionGroup>
 

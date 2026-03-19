@@ -12,7 +12,7 @@ When you describe the assistant you want, Gainable's **Agent Planner** analyzes 
     Tell Gainable what kind of assistant you want, what it should know, and how it should behave.
   </Step>
   <Step title="Agent Planner analyzes">
-    The Agent Planner determines the agent's name, instructions, functions, and configuration.
+    The Agent Planner determines the agent's name, instructions, data access, and configuration.
   </Step>
   <Step title="Agent Builder creates">
     The Agent Builder sets up the agent with all its properties and connects it to your app.
@@ -31,7 +31,7 @@ When you describe the assistant you want, Gainable's **Agent Planner** analyzes 
 | **Instructions** | System prompt that defines the agent's behavior, tone, and rules |
 | **Conversation starters** | Pre-defined prompts displayed as buttons to help users begin |
 | **Web search** | Whether the agent can search the web for additional information |
-| **Functions** | Connections to your app's API endpoints for reading and writing data |
+| **Data access** | MCP Server connection to your app data — read, update, and insert records. Optionally restricted with scopes |
 | **Knowledge** | Uploaded documents the agent can reference when answering |
 
 ## Writing good prompts for agent creation
@@ -165,8 +165,8 @@ Add a new conversation starter: "Check order status"
 ## Learn more
 
 <CardGroup cols={2}>
-  <Card title="Agent functions" icon="plug" href="/agents/functions">
-    Connect your agent to app data
+  <Card title="Data access" icon="database" href="/agents/functions">
+    Connect your agent to app data via MCP
   </Card>
   <Card title="Knowledge bases" icon="book" href="/agents/knowledge">
     Upload documents for your agent

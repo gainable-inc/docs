@@ -15,7 +15,7 @@ Think of a knowledge base as giving your agent a reference library. Instead of m
 
 <Steps>
   <Step title="Create your agent">
-    Set up an agent with a name, instructions, and any functions it needs.
+    Set up an agent with a name, instructions, and data access configuration.
   </Step>
   <Step title="Open agent details">
     In the Gainable interface, open the agent's detail panel.
@@ -74,19 +74,19 @@ To update a knowledge base:
 3. Add new documents or remove existing ones
 4. Changes take effect immediately
 
-## Combining knowledge with functions
+## Combining knowledge with data access
 
-Knowledge bases and [functions](/agents/functions) work together to give your agent maximum capability:
+Knowledge bases and [data access](/agents/functions) work together to give your agent maximum capability:
 
 | Source | Best for | Example |
 |--------|----------|---------|
-| **Functions** | Live app data that changes frequently | "How many open deals do I have?" |
+| **Data access (MCP)** | Live app data that changes frequently | "How many open deals do I have?" |
 | **Knowledge** | Static reference material and documentation | "What's our refund policy?" |
 | **Both** | Questions that need data context + reference material | "This customer wants a refund. What's the policy and what's their order history?" |
 
 ```text
 Create a support agent that can:
-- Look up customer orders (functions)
+- Look up customer orders (data access)
 - Reference our return policy and FAQ (knowledge base)
 - Search the web for product compatibility info (web search)
 ```
@@ -114,8 +114,8 @@ Create a support agent that can:
   <Card title="Creating agents" icon="robot" href="/agents/creating-agents">
     Set up your agent's configuration
   </Card>
-  <Card title="Agent functions" icon="plug" href="/agents/functions">
-    Connect to live app data
+  <Card title="Data access" icon="database" href="/agents/functions">
+    Connect to live app data via MCP
   </Card>
   <Card title="Copilot" icon="message-bot" href="/agents/copilot">
     Embed the agent in your app
