@@ -1,32 +1,28 @@
 ---
-title: "Data connectors"
-description: "Connect external data sources and sync them into your app"
+title: "Datasets"
+description: "Group external data sources into datasets and attach them to your apps"
 ---
 
-## What are data connectors?
+## What are datasets?
 
-Data connectors let you bring data from external systems into your Gainable app. Instead of manually entering data, you connect a source (like a CRM, spreadsheet, or payment platform) and use a conversational AI agent to define how that data maps into your app's data models.
+Datasets let you bring data from external systems into Gainable. A dataset groups data from one or more connected sources — like Google Sheets, HubSpot, and Stripe — into a single collection. The data comes in as-is from each source, with no transformation or merging required.
 
-The **Data Model agent** walks you through the process: discovering available columns, letting you pick which ones to include, renaming fields, setting types, choosing primary keys, and syncing the data into your app.
+You can have several sources in one dataset, and each source's data stays separate within it. When you're ready, attach the entire dataset to an app or use it to [build a new app from data](/build-from-data).
 
 <Info>
-  Data connectors are a build-time tool. You set them up while designing your app, and they sync external data into your data models. This is different from [copilot agents](/agents/copilot), which are runtime assistants that help your app's users.
+  If you need to merge or normalize data from multiple sources into a single unified output (e.g., matching contacts by email across HubSpot and Google Sheets), use a [data model](/building/data-models) and include it in your dataset.
 </Info>
 
-## Two ways to use connectors
-
-Data connectors serve two purposes in Gainable:
+## Two ways to use datasets
 
 <CardGroup cols={2}>
   <Card title="Build a new app from data" icon="rocket" href="/build-from-data">
-    Connect your sources, sync data, and let the DataAnalyzer agent design an entire app around your schema. Best when starting a new project from existing data.
+    Create a dataset, sync your sources, and let the DataAnalyzer agent design an entire app around your data. Best when starting a new project from existing data.
   </Card>
-  <Card title="Add external data to an existing app" icon="plug">
-    Connect sources to bring data into an app you've already built. The Data Model agent helps you map columns to your existing data models.
+  <Card title="Attach to an existing app" icon="plug">
+    Attach a dataset to an app you've already built. The synced data appears as read-only collections in your app.
   </Card>
 </CardGroup>
-
-The rest of this page covers how to set up and manage connectors in both scenarios.
 
 ## Supported data sources
 
@@ -68,101 +64,66 @@ The rest of this page covers how to set up and manage connectors in both scenari
 ## How it works
 
 <Steps>
-  <Step title="Connect to a data source">
-    Choose a connector and authenticate with OAuth or an API key. Gainable securely stores the connection. You can have several connectors to the same data source with different credentials, for example multiple HubSpot accounts.
+  <Step title="Connect a data source">
+    Choose a connector and authenticate with OAuth or an API key. Gainable securely stores the connection. You can have several connectors to the same source with different credentials, for example multiple HubSpot accounts.
   </Step>
-  <Step title="Create a data model and connect to source(s)">
-    Create a new model and select what sources you want to include in the data model.
+  <Step title="Create a dataset">
+    Create a new dataset and give it a name. A dataset is a container for one or more data sources.
   </Step>
-  <Step title="Select what data to include">
-    Based on your source selections pick what data to include in the data model (for Google Sheets it's Spreadsheet + Sheet, etc.)
-  </Step>
-  <Step title="Chat to define your schema">
-    Best way to get started is to ask the agent to "Analyze the data structure and suggest a schema". It will then automatically detect multiple sources and suggest merging, and more. 
+  <Step title="Add sources to the dataset">
+    Select which connected sources to include in the dataset. For each source, pick what data to include (for Google Sheets: spreadsheet + sheet, for HubSpot: contacts, deals, etc.).
 
-    Use natural language to select columns, rename fields, set types, and pick a primary key. The agent handles the mapping.
+    You can add multiple sources to the same dataset — for example, contacts from HubSpot, revenue data from Google Sheets, and payment data from Stripe.
   </Step>
-  <Step title="Save schema and sync data">
-    Confirm the schema and sync the data into your app. Records from the external source populate your data model.
+  <Step title="Optionally include data models">
+    If you need merged or normalized views of your data, [create a data model](/building/data-models) and include it in the dataset. Data models let you combine data from multiple sources using merge keys and field mappings.
+  </Step>
+  <Step title="Sync the data">
+    Sync to pull the latest data from all connected sources into Gainable. Each source's data is stored as-is in the dataset.
   </Step>
 </Steps>
 
-## Chatting with the Data Model agent
+## Multiple sources in one dataset
 
-The Data Model agent understands natural language commands for shaping your schema. Here are some examples:
+A key feature of datasets is combining data from different systems without merging. Each source stays separate — you're grouping related data together, not transforming it.
 
-```text
-Include first name, last name, email, and company name
-```
+<Accordion title="Example: Sales operations dataset">
+  You have customer data spread across three systems:
 
-```text
-Rename "company_name" to "company" and "amt" to "amount"
-```
+  - **HubSpot** — contacts and deals
+  - **Google Sheets** — quarterly targets and notes
+  - **Stripe** — payments and subscriptions
 
-```text
-Set the email field as the primary key
-```
-
-```text
-Change the "amount" field type to currency
-```
-
-```text
-Exclude the internal_id and legacy_status columns
-```
-
-```text
-Let me choose columns again for the schema
-```
-
-The agent will confirm each change and show you an updated preview so you can verify the schema before syncing.
-
-## Merging multiple sources
-
-You can connect multiple data sources to a single data model. This is useful when the same type of data lives in different systems, for example contacts in both HubSpot and Folk CRM.
-
-### How merging works
-
-1. **Connect each source** to the same data model
-2. **Define a merge key**, a shared field (like email) used to match records across sources
-3. **Set source priority** by choosing which source takes precedence when the same field has different values
-4. **Resolve conflicts**: the higher-priority source wins for overlapping fields; unique fields from each source are always included
-
-<Accordion title="Example: Merging contacts from HubSpot and Google Sheets">
-  You have contacts in HubSpot (with deal history) and a Google Sheet (with custom scoring). Both share an email column.
-
-  1. Connect HubSpot and Google Sheets to your **Contacts** data model
-  2. Set **email** as the merge key
-  3. Set HubSpot as the primary source (higher priority)
-  4. After sync, each contact has deal data from HubSpot and scoring from Google Sheets, matched by email
-
-  If both sources have a "company" field with different values, HubSpot's value is used because it has higher priority.
+  Create a single "Sales Operations" dataset and add all three sources. After syncing, your dataset contains all the data from each source, kept separate but accessible together. When you build an app from this dataset or attach it to an existing app, all three sources are available.
 </Accordion>
 
-## Manage data models
+## Including data models in a dataset
 
-The data model interface has 4 main areas:
+Datasets take data as-is from sources. But sometimes you need a unified view — for example, merging contacts from HubSpot and Google Sheets by email, or normalizing field names across systems.
 
-- **Connections tab**: View all connected sources
-- **Schema tab**: See the field mappings between external columns and your data model fields
-- **Preview tab**: View sample data with your current schema applied before committing a sync
-- **Cron tab**: Enable auto sync to keep the data updated from the connected sources
+For this, create a [data model](/building/data-models) with merge keys and field mappings, then include it in your dataset. The data model produces a single merged output that lives alongside your raw source data in the dataset.
 
-Use the **Sync** button in the **Preview tab **to pull the latest data from connected sources into your app.
+## Manage datasets
+
+The dataset interface has 3 main areas:
+
+- **Connections tab**: View all connected sources in the dataset
+- **Preview tab**: View sample data from connected sources before committing a sync
+- **Cron tab**: Enable auto sync to keep the data updated from connected sources
+
+Use the **Sync** button in the **Preview tab** to pull the latest data from connected sources.
 
 ## Best practices
 
 <AccordionGroup>
-  <Accordion title="Always set a primary key">
-    Choose a unique field (like email or ID) as the primary key. This ensures records are correctly identified during syncs and merges, preventing duplicates.
-
-    This also allows for data upserts, so data created within an app stays connected to the synced data.
+  <Accordion title="Group related sources together">
+    Put sources that serve the same business function into one dataset. A "Sales" dataset might include your CRM, payment processor, and a forecasting spreadsheet. This makes it easy to build apps that span multiple systems.
   </Accordion>
-  <Accordion title="Keep schemas focused">
-    Only include the columns your app needs. Importing every available field adds noise and makes your data models harder to work with.
+  <Accordion title="Use data models for merging">
+    Don't try to work around source boundaries. If you need to match records across sources (e.g., contacts by email), create a data model with merge keys and include it in the dataset.
   </Accordion>
   <Accordion title="Test with preview before syncing">
-    Always check the Preview tab before running a full sync. This lets you catch mapping issues, unexpected nulls, or type mismatches before they reach your app data.
+    Always check the Preview tab before running a full sync. This lets you catch unexpected data or connection issues before they reach your app.
   </Accordion>
 </AccordionGroup>
 
@@ -170,10 +131,10 @@ Use the **Sync** button in the **Preview tab **to pull the latest data from conn
 
 <CardGroup cols={2}>
   <Card title="Build from data" icon="rocket" href="/build-from-data">
-    Let AI analyze your connected data and build an app around it
+    Let AI analyze your dataset and build an app around it
   </Card>
   <Card title="Data models" icon="database" href="/building/data-models">
-    How Gainable organizes and stores your app data
+    Merge and normalize data from multiple sources
   </Card>
   <Card title="AI agents overview" icon="robot" href="/agents/overview">
     Add intelligent AI assistants to your apps

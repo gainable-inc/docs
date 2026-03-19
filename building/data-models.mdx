@@ -5,7 +5,9 @@ description: "How Gainable organizes and stores your application data"
 
 ## Understanding data in Gainable
 
-When you describe data in your prompts, Gainable creates **data models** - structured definitions of what information your app stores. Think of a data model as a template for each type of thing you're tracking.
+When you describe data in your prompts, Gainable creates **data models** — structured definitions of what information your app stores. Think of a data model as a template for each type of thing you're tracking.
+
+Data models are also used to **merge and normalize** external data from multiple sources into a single unified output. When you need to combine contacts from HubSpot and Google Sheets by email, or normalize field names across systems, you create a data model with merge keys and field mappings, then include it in a [dataset](/building/data-connectors).
 
 ## What is a data model?
 
@@ -32,8 +34,8 @@ The **Data** tab in your app groups collections into 3 categories:
 
 | Aspect | App Collections | Data Collections | Core Collections |
 |--------|----------------|------------------|------------------|
-| Source | Created in your app | Synced from external sources | Built-in system models |
-| Editable | Yes | Read-only (managed via data connectors) | Read-only |
+| Source | Created in your app | Synced via datasets | Built-in system models |
+| Editable | Yes | Read-only (managed via datasets) | Read-only |
 | Examples | companies, deals, tasks | HubSpot contacts, Google Sheets rows | users, agents, connections |
 | Chat enabled | Yes | No | No |
 
@@ -43,7 +45,7 @@ Custom collections created when you describe data models. Fully editable and spe
 
 ### Data Collections
 
-External data synced via [data connectors](/building/data-connectors) (HubSpot, Sheets, Stripe, etc.). They appear automatically when you attach a data model. Read-only from the app, managed through the data connectors interface.
+External data synced via [datasets](/building/data-connectors) (HubSpot, Sheets, Stripe, etc.). They appear automatically when you attach a dataset to your app. Read-only from the app, managed through the datasets interface.
 
 ### Core Collections
 
@@ -168,6 +170,31 @@ Every data model automatically includes:
 
 You don't need to ask for these - they're always there.
 
+## Merging data from multiple sources
+
+When the same type of data lives in different systems — for example, contacts in both HubSpot and a Google Sheet — you can create a data model that merges them into a single unified output.
+
+### How merging works
+
+1. **Connect each source** to the data model
+2. **Define a merge key** — a shared field (like email) used to match records across sources
+3. **Set source priority** — choose which source takes precedence when the same field has different values
+4. **Map fields** — select which columns to include, rename fields, and set types
+
+The merged output can then be included in a [dataset](/building/data-connectors) alongside your raw source data.
+
+<Accordion title="Example: Merging contacts from HubSpot and Google Sheets">
+  You have contacts in HubSpot (with deal history) and a Google Sheet (with custom scoring). Both share an email column.
+
+  1. Create a **Contacts** data model
+  2. Connect HubSpot and Google Sheets as sources
+  3. Set **email** as the merge key
+  4. Set HubSpot as the primary source (higher priority)
+  5. Include the data model in your dataset
+
+  After sync, each contact has deal data from HubSpot and scoring from Google Sheets, matched by email. If both sources have a "company" field with different values, HubSpot's value is used because it has higher priority.
+</Accordion>
+
 ## Best practices
 
 ### Be explicit about fields
@@ -252,8 +279,8 @@ You don't need to worry about "saving" - data is stored as soon as you submit a 
 ## Learn more
 
 <CardGroup cols={2}>
-  <Card title="Data connectors" icon="plug" href="/building/data-connectors">
-    Connect external data sources to your app
+  <Card title="Datasets" icon="plug" href="/building/data-connectors">
+    Group external data sources and attach them to your app
   </Card>
   <Card title="Views" icon="window" href="/building/views">
     How your data is displayed

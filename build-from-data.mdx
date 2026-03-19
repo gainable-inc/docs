@@ -7,7 +7,7 @@ description: "Connect your existing data sources and let AI build an app around 
 
 Already have data in Google Sheets, HubSpot, Stripe, or another tool? You don't need to describe an app from scratch. Connect your data and Gainable's DataAnalyzer agent will examine it, recommend features, and build a complete app around it.
 
-Your existing data becomes the specification. Instead of writing a prompt that describes data models, the AI reads your actual schema, detects what domain you're in, and proposes an app tailored to your data.
+Your existing data becomes the specification. Instead of writing a prompt that describes your app from scratch, the AI reads your actual schema from your datasets, detects what domain you're in, and proposes an app tailored to your data.
 
 <Tip>
 This path is ideal when you already have data in external systems and want to build views, dashboards, and workflows on top of it.
@@ -152,7 +152,7 @@ Not sure which path to choose? Here's how they compare:
 | | Describe your app | Build from data |
 |---|---|---|
 | **Best when** | Starting from scratch with an idea | You have existing data in external systems |
-| **Data models** | Created from your description | Derived from your existing schema |
+| **Data** | Data models created from your description | Derived from your datasets and connected sources |
 | **Configuration** | Write a prompt | Interactive Q&A with AI |
 | **Agent pipeline** | Planner → Build → Validation | DataAnalyzer → Build → Validation |
 | **Data** | Starts empty, you add data later | Pre-populated from connected sources |
@@ -164,8 +164,8 @@ You can combine both approaches. Connect data sources first, then describe addit
 ## Next steps
 
 <CardGroup cols={2}>
-  <Card title="Set up connectors" icon="plug" href="/building/data-connectors">
-    Detailed guide to connecting and configuring data sources
+  <Card title="Set up datasets" icon="plug" href="/building/data-connectors">
+    Detailed guide to creating datasets and connecting data sources
   </Card>
   <Card title="Quickstart" icon="play" href="/quickstart">
     Try the prompt-based path instead
