@@ -84,16 +84,6 @@
             ]
           },
           {
-            "group": "Compare",
-            "pages": [
-              "compare/retool",
-              "compare/appsmith",
-              "compare/lovable",
-              "compare/replit",
-              "compare/structify"
-            ]
-          },
-          {
             "group": "Reference",
             "pages": [
               "reference/api",
@@ -157,6 +147,13 @@
     { "source": "/agents/scopes", "destination": "/autopilot/scopes" },
     { "source": "/agents/agent-action-log", "destination": "/autopilot/agent-action-log" },
     { "source": "/agents/connect-outbound", "destination": "/autopilot/connect-outbound" },
-    { "source": "/agents/recipes", "destination": "/autopilot/recipes" }
+    { "source": "/agents/recipes", "destination": "/autopilot/recipes" },
+
+    { "source": "/compare", "destination": "https://www.gainable.dev/compare" },
+    { "source": "/compare/retool", "destination": "https://www.gainable.dev/compare/retool" },
+    { "source": "/compare/appsmith", "destination": "https://www.gainable.dev/compare/appsmith" },
+    { "source": "/compare/lovable", "destination": "https://www.gainable.dev/compare/lovable" },
+    { "source": "/compare/replit", "destination": "https://www.gainable.dev/compare/replit" },
+    { "source": "/compare/structify", "destination": "https://www.gainable.dev/compare/structify" }
   ]
 }
