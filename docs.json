@@ -149,11 +149,11 @@
     { "source": "/agents/connect-outbound", "destination": "/autopilot/connect-outbound" },
     { "source": "/agents/recipes", "destination": "/autopilot/recipes" },
 
-    { "source": "/compare", "destination": "https://www.gainable.dev/compare" },
-    { "source": "/compare/retool", "destination": "https://www.gainable.dev/compare/retool" },
-    { "source": "/compare/appsmith", "destination": "https://www.gainable.dev/compare/appsmith" },
-    { "source": "/compare/lovable", "destination": "https://www.gainable.dev/compare/lovable" },
-    { "source": "/compare/replit", "destination": "https://www.gainable.dev/compare/replit" },
-    { "source": "/compare/structify", "destination": "https://www.gainable.dev/compare/structify" }
+    { "source": "/compare", "destination": "https://www.gainable.dev/compare", "permanent": true },
+    { "source": "/compare/retool", "destination": "https://www.gainable.dev/compare/retool", "permanent": true },
+    { "source": "/compare/appsmith", "destination": "https://www.gainable.dev/compare/appsmith", "permanent": true },
+    { "source": "/compare/lovable", "destination": "https://www.gainable.dev/compare/lovable", "permanent": true },
+    { "source": "/compare/replit", "destination": "https://www.gainable.dev/compare/replit", "permanent": true },
+    { "source": "/compare/structify", "destination": "https://www.gainable.dev/compare/structify", "permanent": true }
   ]
 }
