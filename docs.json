@@ -99,11 +99,6 @@
           "anchor": "Get started",
           "href": "https://build.gainable.dev",
           "icon": "rocket"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://community.gainable.dev",
-          "icon": "users"
         }
       ]
     }
