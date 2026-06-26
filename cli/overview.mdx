@@ -1,0 +1,87 @@
+---
+title: "Overview"
+description: "Drive Gainable from your terminal and from AI coding agents like Claude Code and Codex"
+---
+
+Gainable isn't only a web app. The **Gainable CLI** (`gaia`) lets you build, refine, and publish apps from your terminal — and the same CLI powers official **plugins for Claude Code and OpenAI Codex**, so your coding agent can drive the Gainable harness for you.
+
+<CardGroup cols={2}>
+  <Card title="The CLI (gaia)" icon="terminal">
+    A small command-line client for the Gainable harness. Build new apps, refine existing ones, import spreadsheets, and publish — all over HTTP, same pipelines as the web UI.
+  </Card>
+  <Card title="The plugins" icon="plug">
+    Install the CLI once, then add the Gainable plugin to **Claude Code** or **Codex**. The agent learns when and how to call `gaia` for you.
+  </Card>
+</CardGroup>
+
+## Why use it?
+
+<CardGroup cols={2}>
+  <Card title="Stay in your editor" icon="code">
+    Refine an app without leaving your coding agent — "add a probability column to the deals table" becomes one command the agent runs for you.
+  </Card>
+  <Card title="Scriptable & headless" icon="gears">
+    Every command prints JSON to stdout. Wire Gainable into scripts, CI, or your own tooling.
+  </Card>
+  <Card title="Same harness, same quality" icon="shield-check">
+    The CLI talks to the exact same planner, Build Agent, and validators as the web app. Nothing is downgraded.
+  </Card>
+  <Card title="Works in both agents" icon="robot">
+    One package, two ecosystems. The plugin behaves the same in Claude Code and Codex.
+  </Card>
+</CardGroup>
+
+## Two modes
+
+The plugin gives your agent two ways to work on an app. Most of the time you want the first one.
+
+<CardGroup cols={2}>
+  <Card title="Chat mode (default)" icon="comments">
+    The agent relays your request to the Gainable harness (`gaia chat` / `gaia build`). The planner and Build Agent do the work server-side in one cheap turn — the same path as typing in the web app. Use this for almost everything: "add KPIs", "fix this bug", "change the layout", "build me a CRM".
+  </Card>
+  <Card title="Code mode (opt-in)" icon="pen-ruler">
+    The agent authors app code itself (`gaia code`): it pulls a local mirror of your app plus the build conventions, edits files, runs the **same validators** the Build Agent uses, and pushes. Use this only when you explicitly want the agent to write the code — "code it yourself", "without the harness".
+  </Card>
+</CardGroup>
+
+<Note>
+These modes map to the two skills the plugin installs — `gaia` (chat mode) and `gaia-code` (code mode). You don't invoke them by name; your agent picks the right one from what you ask. Lead with chat mode and only reach for code mode when you want hands-on control.
+</Note>
+
+## How it fits together
+
+```
+You ──▶ Claude Code / Codex ──▶ gaia CLI ──▶ Gainable harness ──▶ your app
+         (the plugin's skills)   (npm package)   (planner + Build Agent)
+```
+
+1. You describe a change in your agent's chat.
+2. The plugin's instructions tell the agent to run the right `gaia` command.
+3. `gaia` calls the Gainable server over HTTPS with your API key.
+4. The harness builds or edits your app and streams progress back.
+
+## When to use what
+
+| You want to… | Use |
+|---|---|
+| Click around and chat in a browser | The [web app](https://build.gainable.dev) |
+| Drive Gainable from a script or terminal | The CLI directly |
+| Refine an app from inside Claude Code or Codex | The plugin (chat mode) |
+| Have your agent hand-write app code with Gainable's guardrails | The plugin (code mode) |
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Install the CLI" icon="download" href="/cli/installation">
+    Install `@gainable.dev/cli` and authenticate.
+  </Card>
+  <Card title="Claude Code plugin" icon="robot" href="/cli/claude-code">
+    Add Gainable to Claude Code.
+  </Card>
+  <Card title="Codex plugin" icon="robot" href="/cli/codex">
+    Add Gainable to OpenAI Codex.
+  </Card>
+  <Card title="Command reference" icon="terminal" href="/cli/commands">
+    Every `gaia` command, flag, and exit code.
+  </Card>
+</CardGroup>

@@ -1,0 +1,106 @@
+---
+title: "Install the CLI"
+description: "Install the gaia CLI and authenticate against your Gainable account"
+---
+
+The CLI is a single npm package, `@gainable.dev/cli`. It provides the `gaia` command and is the engine behind both the Claude Code and Codex plugins — install it once and it works everywhere.
+
+## Requirements
+
+- **Node.js 18 or newer**
+- A Gainable account ([sign up free](https://build.gainable.dev))
+
+## Step 1 — Install
+
+<Steps>
+  <Step title="Install the package globally">
+    ```bash
+    npm i -g @gainable.dev/cli
+    ```
+  </Step>
+  <Step title="Verify it's on your PATH">
+    ```bash
+    gaia --version
+    ```
+    If `gaia` isn't found, make sure your global npm bin directory is on your `PATH`.
+  </Step>
+</Steps>
+
+<Tip>
+To upgrade later, run `npm update -g @gainable.dev/cli`.
+</Tip>
+
+## Step 2 — Get an API key
+
+The CLI authenticates with an API key tied to your account.
+
+<Steps>
+  <Step title="Open your account settings">
+    Go to [build.gainable.dev](https://build.gainable.dev) and open **Account → API keys**.
+  </Step>
+  <Step title="Create a key">
+    Mint a new key. It starts with `gak_`. Copy it — you'll only see it once.
+  </Step>
+</Steps>
+
+## Step 3 — Log in
+
+<CodeGroup>
+
+```bash Interactive
+gaia login
+# paste your gak_... key when prompted
+```
+
+```bash Non-interactive
+gaia login --key gak_xxx_yyy
+```
+
+```bash From stdin
+echo "$GAINABLE_API_KEY" | gaia login
+```
+
+</CodeGroup>
+
+Your credentials are stored at `~/.gainable/credentials` (mode `0600`). The default server is `https://build.gainable.dev`.
+
+<Note>
+**Environment variables** override the stored file, which is handy in CI:
+- `GAINABLE_API_KEY` — your `gak_` key
+- `GAINABLE_API_BASE` — the server URL (defaults to `https://build.gainable.dev`)
+</Note>
+
+## Step 4 — Confirm it works
+
+```bash
+gaia apps list
+```
+
+You should see your apps printed as JSON. That's it — the CLI is ready.
+
+## Next: add a plugin
+
+The CLI is useful on its own, but it really shines when your coding agent drives it. Pick your agent:
+
+<CardGroup cols={2}>
+  <Card title="Claude Code" icon="robot" href="/cli/claude-code">
+    Install the Gainable plugin in Claude Code.
+  </Card>
+  <Card title="OpenAI Codex" icon="robot" href="/cli/codex">
+    Install the Gainable plugin in Codex.
+  </Card>
+</CardGroup>
+
+## Per-project setup
+
+Inside a folder for a specific app, run:
+
+```bash
+gaia init
+```
+
+This writes a small `.gaia/project.json` that links the folder to one of your Gainable projects, so commands like `gaia chat` and `gaia code` know which app they're working on. You'll pick a project from a list (or pass `--project <id>`).
+
+<Tip>
+You don't have to run `gaia init` for a brand-new app — `gaia build "your idea"` in an empty folder auto-creates the project for you. See the [command reference](/cli/commands).
+</Tip>

@@ -1,0 +1,110 @@
+---
+title: "Claude Code plugin"
+description: "Build and refine Gainable apps from inside Claude Code"
+---
+
+The Gainable plugin for [Claude Code](https://claude.com/claude-code) lets you build and refine apps just by describing what you want — Claude runs the right `gaia` commands for you and forwards any questions back to you.
+
+## Prerequisites
+
+Install and authenticate the CLI first (the plugin drives it):
+
+```bash
+npm i -g @gainable.dev/cli
+gaia login --key gak_xxx_yyy
+```
+
+See [Install the CLI](/cli/installation) for details.
+
+## Install the plugin
+
+In a Claude Code session:
+
+```
+/plugin install https://github.com/gainable-inc/cli.git#gainable
+```
+
+Restart Claude Code so the plugin's skills and hooks load. To update later:
+
+```
+/plugin update gainable
+```
+
+<Note>
+The plugin no longer bundles a binary — it relies on the globally installed `gaia` from npm. If `gaia` isn't found, Claude is reminded to run `npm i -g @gainable.dev/cli`.
+</Note>
+
+## What you get
+
+<CardGroup cols={2}>
+  <Card title="Two modes" icon="layer-group">
+    **chat** (harness-driven, the default) and **code** (Claude authors files itself). Claude picks based on what you ask.
+  </Card>
+  <Card title="Slash commands" icon="slash">
+    `/gainable:chat`, `/gainable:build`, `/gainable:code`, and `/gainable:apps` for explicit control.
+  </Card>
+  <Card title="Project orientation" icon="location-dot">
+    A `SessionStart` hook reads `.gaia/project.json` and tells Claude which app it's working on from the first turn.
+  </Card>
+  <Card title="No permission prompts" icon="shield-check">
+    `gaia` commands are pre-allowed, so Claude can run them without interrupting you.
+  </Card>
+</CardGroup>
+
+## Use it
+
+<Steps>
+  <Step title="Open a project folder">
+    ```bash
+    mkdir my-app && cd my-app
+    gaia init     # pick a project, or skip this for a brand-new build
+    claude
+    ```
+  </Step>
+  <Step title="Describe what you want">
+    Just talk to Claude:
+    - "List my Gainable apps"
+    - "Add a probability column to the deals table"
+    - "Build me a CRM for tracking SaaS deals"
+    - "Add KPI cards to the top of the sponsors view"
+
+    Claude triggers chat mode and runs `gaia chat` / `gaia build`, then relays the result.
+  </Step>
+  <Step title="Answer any questions">
+    When the harness needs a decision (a layout choice, which view is the home page), Claude forwards it to you with **AskUserQuestion** — pick an option and it continues.
+  </Step>
+</Steps>
+
+## Slash commands
+
+For explicit control you can call the commands directly:
+
+| Command | What it does |
+|---|---|
+| `/gainable:build "<idea>"` | Drive the new-app build journey |
+| `/gainable:chat "<change>"` | Refine the current app (one cheap turn) |
+| `/gainable:code "<change>"` | Switch to code mode — Claude authors files locally |
+| `/gainable:apps` | List the apps in your account |
+
+## Asking Claude to write the code itself
+
+By default Claude uses **chat mode**, where the Gainable harness does the work. If you want Claude to hand-write the app code instead — with the same validators the Build Agent uses — opt in explicitly:
+
+> "Code the sponsors view yourself with a hero KPI section."
+
+Phrases like "code it yourself", "write it manually", or "without the harness" switch Claude to **code mode** (`gaia code`): it pulls a local mirror of your app, edits files, validates, and pushes. See [code mode in the command reference](/cli/commands#code-mode-gaia-code).
+
+## Building progress
+
+When Claude kicks off a build, it renders each pipeline stage as a live **task list** so you can watch models, seed data, views, and validation complete in real time, then shares the link to your finished app.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Command reference" icon="terminal" href="/cli/commands">
+    Every `gaia` command behind the plugin.
+  </Card>
+  <Card title="Codex plugin" icon="robot" href="/cli/codex">
+    The same experience in OpenAI Codex.
+  </Card>
+</CardGroup>

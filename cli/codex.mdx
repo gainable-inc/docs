@@ -1,0 +1,103 @@
+---
+title: "Codex plugin"
+description: "Build and refine Gainable apps from inside OpenAI Codex"
+---
+
+The Gainable plugin for [OpenAI Codex](https://developers.openai.com/codex) brings the same build-and-refine experience to Codex. Describe what you want and Codex runs the right `gaia` commands, forwarding any questions back to you in chat.
+
+## Prerequisites
+
+Install and authenticate the CLI first (the plugin drives it):
+
+```bash
+npm i -g @gainable.dev/cli
+gaia login --key gak_xxx_yyy
+```
+
+See [Install the CLI](/cli/installation) for details.
+
+<Note>
+Unlike Claude Code, Codex plugins don't ship a binary on your `PATH` — that's why the `gaia` CLI is installed separately from npm. Both plugins share the exact same package.
+</Note>
+
+## Install the plugin
+
+<Steps>
+  <Step title="Add the Gainable marketplace">
+    ```bash
+    codex plugin marketplace add gainable-inc/cli
+    codex plugin marketplace list
+    ```
+    Confirm a `gainable` marketplace appears in the list.
+  </Step>
+  <Step title="Install the plugin">
+    Start a Codex session and open the Plugins directory:
+    ```
+    codex
+    ```
+    Then inside the session:
+    ```
+    /plugins
+    ```
+    Find **gainable** under the marketplace you just added and install it.
+  </Step>
+</Steps>
+
+<Tip>
+To refresh after an update, run `codex plugin marketplace upgrade`. There is no `codex plugin install` command — installing and enabling a specific plugin happens inside the session via `/plugins`.
+</Tip>
+
+## Use it
+
+<Steps>
+  <Step title="Open a project folder">
+    ```bash
+    mkdir my-app && cd my-app
+    gaia init     # pick a project, or skip this for a brand-new build
+    codex
+    ```
+  </Step>
+  <Step title="Invoke the skill">
+    Type `@` or `$` to bring up the **gaia** and **gaia-code** skills, or just describe your task and Codex selects the right one:
+    - "List my Gainable apps"
+    - "Add a probability column to the deals table"
+    - "Build me a CRM for tracking SaaS deals"
+  </Step>
+  <Step title="Answer any questions">
+    When the harness needs a decision, Codex presents the options as a numbered list in chat — reply with the number or the option name and it continues.
+  </Step>
+</Steps>
+
+## How Codex differs from Claude Code
+
+Same harness, same CLI, same two modes — only the agent's interface differs:
+
+| | Claude Code | Codex |
+|---|---|---|
+| Invoke a skill | Slash commands (`/gainable:*`) | Type `@` or `$`, e.g. `@gaia` |
+| Forwarding harness questions | `AskUserQuestion` picker | Numbered list in chat |
+| Build progress | Live task list | Plain-text stage updates |
+| Getting the `gaia` binary | From npm (`@gainable.dev/cli`) | From npm (same package) |
+
+<Note>
+Codex requires you to **approve plugin hooks** before they run, so the project-orientation hook won't fire until you trust it. That's expected — the skills re-state your project context themselves, so nothing breaks if it doesn't run.
+</Note>
+
+## Asking Codex to write the code itself
+
+By default Codex uses **chat mode**, where the Gainable harness does the work. To have Codex hand-write the app code with the same validators the Build Agent uses, opt in explicitly:
+
+> "Code the sponsors view yourself with a hero KPI section."
+
+Phrases like "code it yourself" or "without the harness" switch Codex to **code mode** (`gaia code`): it pulls a local mirror of your app, edits files, validates, and pushes. See [code mode in the command reference](/cli/commands#code-mode-gaia-code).
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Command reference" icon="terminal" href="/cli/commands">
+    Every `gaia` command behind the plugin.
+  </Card>
+  <Card title="Claude Code plugin" icon="robot" href="/cli/claude-code">
+    The same experience in Claude Code.
+  </Card>
+</CardGroup>
