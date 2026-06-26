@@ -1,0 +1,163 @@
+---
+title: "Command reference"
+description: "Every gaia command, flag, and exit code"
+---
+
+The CLI follows a few consistent conventions:
+
+- **stdout** is structured **JSON** for every command — designed to be piped into other tools or read by your agent.
+- **stderr** carries human-readable status (progress, "saved to…").
+- **Exit codes** signal the outcome:
+
+| Code | Meaning |
+|---|---|
+| `0` | Success |
+| `1` | Transport error (network unreachable, bad response) |
+| `2` | Pending input (a question is waiting for a reply) |
+| `3` | Auth / validation / business error |
+
+Run `gaia --help` or `gaia <command> --help` at any time.
+
+## Commands at a glance
+
+| Command | What it does |
+|---|---|
+| [`gaia login`](#credentials) / `gaia logout` | Manage credentials |
+| [`gaia init`](#init) | Link the current folder to a project |
+| [`gaia apps`](#apps) | List or create apps |
+| [`gaia build`](#build) | Drive the new-app build journey |
+| [`gaia chat`](#chat) | Refine an already-built app |
+| [`gaia code`](#code-mode-gaia-code) | Author app code locally with validators |
+| [`gaia import`](#import) | Turn a spreadsheet into an app's data |
+| [`gaia publish`](#publish) | Publish a built app to a public URL |
+
+## Credentials
+
+```bash
+gaia login                      # prompts for the key
+gaia login --key gak_xxx_yyy    # non-interactive
+gaia logout                     # delete stored credentials
+```
+
+| Flag | Description |
+|---|---|
+| `--key <key>` | Your `gak_` API key (skips the prompt) |
+| `--api-base <url>` | Server URL (defaults to `https://build.gainable.dev`) |
+
+Credentials are stored at `~/.gainable/credentials`. The `GAINABLE_API_KEY` and `GAINABLE_API_BASE` environment variables override the file.
+
+## init
+
+Scaffold `.gaia/` in the current folder so commands know which app they target.
+
+```bash
+gaia init                  # pick a project interactively
+gaia init --project <id>   # link a specific project
+```
+
+| Flag | Description |
+|---|---|
+| `--project <id>` | Use this project ID (skip the picker) |
+| `--force` | Overwrite an existing `.gaia/project.json` |
+
+## apps
+
+```bash
+gaia apps list             # list your apps (JSON)
+gaia apps list -q sales    # filter by text
+gaia apps create "My CRM"  # create an empty project
+```
+
+## build
+
+One command drives the whole new-app journey — a short contract conversation, then the deterministic build pipeline. What you pass decides the step.
+
+```bash
+gaia build "I want a CRM for tracking SaaS deals"   # describe an idea
+gaia build --reply "Classic"                        # answer a pending question
+gaia build                                          # run the build pipeline
+```
+
+| Flag | Description |
+|---|---|
+| `--reply <label>` | Answer a pending question (repeatable; pairs in order) |
+| `--name <name>` | Name a newly auto-created project |
+| `--project <id>` | Target a specific project |
+| `--silent` | Send a silent kickoff message (used after an import) |
+
+<Note>
+In an **empty folder**, `gaia build "your idea"` auto-creates the project and writes `.gaia/project.json` — no prior `gaia init` needed. With **no arguments**, `gaia build` kicks off the build pipeline once the app's spec is ready, streaming each stage as it completes.
+</Note>
+
+## chat
+
+Refine an already-built app. The planner and Build Agent edit your views and routes and stream progress back.
+
+```bash
+gaia chat "add a probability column to the deals table"
+gaia chat --page deals "rename the Stage column to Pipeline Stage"
+```
+
+| Flag | Description |
+|---|---|
+| `--page <slug>` | Hint which page the change applies to |
+| `--project <id>` | Target a specific project |
+
+If the planner needs clarification it exits with a pending-input signal and a question; reply by running `gaia chat "<your answer>"` again.
+
+## Code mode (gaia code)
+
+For when you want your agent (or you) to **write the app code directly**, with the same validator suite the Build Agent runs. Everything happens under a local `app/` mirror; pushes are validated atomically.
+
+```bash
+gaia code pull                     # download conventions + app mirror
+gaia code status                   # show what changed locally
+gaia code validate views/deals.ejs # run validators on a file
+gaia code push --summary "Added a KPI strip to the deals view"
+```
+
+| Subcommand | What it does |
+|---|---|
+| `gaia code pull` | Bootstrap/refresh the local mirror, conventions, and read-only preflight |
+| `gaia code status` | Show created/modified files vs. the server |
+| `gaia code validate [file]` | Run the full validator suite (≈100 rules) |
+| `gaia code push --summary "<recap>"` | Validate, write files to the server, register routes, and commit |
+
+<Warning>
+`gaia code push` rejects the batch if validators fail or if the app changed on the server since you pulled. Fix the errors or `gaia code pull` and re-apply — don't force past a validator.
+</Warning>
+
+## import
+
+Turn an Excel/CSV file into an app's data, then build on top of it.
+
+```bash
+gaia import upload ./data.xlsx     # start the import survey
+gaia import state                  # peek at the current state
+gaia import answer '{"choice":"keep"}'
+gaia import finalize               # validate the proposed data plan
+gaia import attach                 # create the dataset and attach it
+gaia import cancel                 # drop the session
+```
+
+After `gaia import attach`, continue with the normal [`gaia build`](#build) flow to design the app around your imported data.
+
+## publish
+
+Publish a built app to its public `https://<slug>.gainable.app` URL — the same as the **Publish** button in the web app.
+
+```bash
+gaia publish            # publish (or republish) and print the URL
+gaia publish --status   # check publish state without deploying
+```
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Claude Code plugin" icon="robot" href="/cli/claude-code">
+    Let Claude run these commands for you.
+  </Card>
+  <Card title="Codex plugin" icon="robot" href="/cli/codex">
+    Let Codex run these commands for you.
+  </Card>
+</CardGroup>

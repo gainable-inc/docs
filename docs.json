@@ -84,6 +84,16 @@
             ]
           },
           {
+            "group": "CLI & plugins",
+            "pages": [
+              "cli/overview",
+              "cli/installation",
+              "cli/claude-code",
+              "cli/codex",
+              "cli/commands"
+            ]
+          },
+          {
             "group": "Reference",
             "pages": [
               "reference/api",
