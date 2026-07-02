@@ -15,8 +15,9 @@ The CLI is a single npm package, `@gainable.dev/cli`. It provides the `gaia` com
 <Steps>
   <Step title="Install the package globally">
     ```bash
-    npm i -g @gainable.dev/cli
+    npm i -g "@gainable.dev/cli"
     ```
+    Keep the quotes — on Windows PowerShell an unquoted `@gainable.dev` is parsed as the splatting operator and the command never reaches npm. In bash/zsh the quotes are harmless.
   </Step>
   <Step title="Verify it's on your PATH">
     ```bash
@@ -27,7 +28,7 @@ The CLI is a single npm package, `@gainable.dev/cli`. It provides the `gaia` com
 </Steps>
 
 <Tip>
-To upgrade later, run `npm update -g @gainable.dev/cli`.
+To upgrade later, run `npm update -g "@gainable.dev/cli"`.
 </Tip>
 
 ## Step 2 — Get an API key
@@ -99,7 +100,7 @@ Inside a folder for a specific app, run:
 gaia init
 ```
 
-This writes a small `.gaia/project.json` that links the folder to one of your Gainable projects, so commands like `gaia chat` and `gaia code` know which app they're working on. You'll pick a project from a list (or pass `--project <id>`).
+This writes a small `.gaia/project.json` that links the folder to one of your Gainable projects, so commands like `gaia chat` and `gaia code` know which app they're working on. You'll pick a project from a list (or pass `--project <id>`). It also seeds `.codex/rules/gaia.rules`, so [Codex runs `gaia` commands without approval prompts](/cli/codex#skip-the-approval-prompts) in that workspace.
 
 <Tip>
 You don't have to run `gaia init` for a brand-new app — `gaia build "your idea"` in an empty folder auto-creates the project for you. See the [command reference](/cli/commands).

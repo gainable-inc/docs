@@ -10,7 +10,7 @@ The Gainable plugin for [Claude Code](https://claude.com/claude-code) lets you b
 Install and authenticate the CLI first (the plugin drives it):
 
 ```bash
-npm i -g @gainable.dev/cli
+npm i -g "@gainable.dev/cli"
 gaia login --key gak_xxx_yyy
 ```
 
@@ -21,7 +21,8 @@ See [Install the CLI](/cli/installation) for details.
 In a Claude Code session:
 
 ```
-/plugin install https://github.com/gainable-inc/cli.git#gainable
+/plugin marketplace add gainable-inc/cli
+/plugin install gainable@gainable
 ```
 
 Restart Claude Code so the plugin's skills and hooks load. To update later:
@@ -31,7 +32,7 @@ Restart Claude Code so the plugin's skills and hooks load. To update later:
 ```
 
 <Note>
-The plugin no longer bundles a binary — it relies on the globally installed `gaia` from npm. If `gaia` isn't found, Claude is reminded to run `npm i -g @gainable.dev/cli`.
+The plugin no longer bundles a binary — it relies on the globally installed `gaia` from npm. If `gaia` isn't found, Claude is reminded to run `npm i -g "@gainable.dev/cli"`.
 </Note>
 
 ## What you get

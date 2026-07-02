@@ -10,7 +10,7 @@ The Gainable plugin for [OpenAI Codex](https://developers.openai.com/codex) brin
 Install and authenticate the CLI first (the plugin drives it):
 
 ```bash
-npm i -g @gainable.dev/cli
+npm i -g "@gainable.dev/cli"
 gaia login --key gak_xxx_yyy
 ```
 
@@ -31,20 +31,15 @@ Unlike Claude Code, Codex plugins don't ship a binary on your `PATH` — that's 
     Confirm a `gainable` marketplace appears in the list.
   </Step>
   <Step title="Install the plugin">
-    Start a Codex session and open the Plugins directory:
+    ```bash
+    codex plugin add gainable@gainable
     ```
-    codex
-    ```
-    Then inside the session:
-    ```
-    /plugins
-    ```
-    Find **gainable** under the marketplace you just added and install it.
+    Or interactively: run `/plugins` inside a Codex session, find **gainable** under the marketplace you just added, and install it there.
   </Step>
 </Steps>
 
 <Tip>
-To refresh after an update, run `codex plugin marketplace upgrade`. There is no `codex plugin install` command — installing and enabling a specific plugin happens inside the session via `/plugins`.
+To refresh after an update, run `codex plugin marketplace upgrade`. To uninstall later, run `codex plugin remove gainable@gainable`.
 </Tip>
 
 ## Use it
@@ -67,6 +62,32 @@ To refresh after an update, run `codex plugin marketplace upgrade`. There is no 
     When the harness needs a decision, Codex presents the options as a numbered list in chat — reply with the number or the option name and it continues.
   </Step>
 </Steps>
+
+## Skip the approval prompts
+
+Codex asks before running each new `gaia` subcommand outside its sandbox (the CLI talks to the Gainable server, so it needs network access). Choosing **always allow** in the TUI only allows that exact subcommand — you'd be prompted again for the next one.
+
+**Usually you don't have to do anything:** `gaia init` (and the auto-init in `gaia build`) seeds a project-scoped `.codex/rules/gaia.rules` that allows every `gaia` command in that workspace. Codex loads it once you trust the project.
+
+To allow `gaia` globally instead, add the same prefix rule to `~/.codex/rules/default.rules` (create the file if it doesn't exist):
+
+```python
+prefix_rule(
+    pattern = ["gaia"],
+    decision = "allow",
+    justification = "Gainable harness CLI - safe HTTP calls to build.gainable.dev",
+)
+```
+
+Restart Codex to pick it up, and verify with:
+
+```bash
+codex execpolicy check --rules ~/.codex/rules/default.rules -- gaia apps list
+```
+
+<Note>
+Rules match command prefixes and the most restrictive decision wins. Codex splits compound shell commands and evaluates each part separately, so a broad `gaia` allow can't be used to smuggle other commands past approval — `gaia build && rm -rf /` still prompts.
+</Note>
 
 ## How Codex differs from Claude Code
 
