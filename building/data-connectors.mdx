@@ -13,6 +13,10 @@ You can have several sources in one dataset, and each source's data stays separa
   If you need to merge or normalize data from multiple sources into a single unified output (e.g., matching contacts by email across HubSpot and Google Sheets), use a [data model](/building/data-models) and include it in your dataset.
 </Info>
 
+<Tip>
+  Data that doesn't come from a supported connector — an internal API, a partner feed, something you assemble yourself — can still become a dataset. Write a script that emits the rows and keep them fresh on a schedule with the CLI. See [Recurring data pipelines](/cli/datasets).
+</Tip>
+
 ## Two ways to use datasets
 
 <CardGroup cols={2}>
@@ -135,6 +139,9 @@ Use the **Sync** button in the **Preview tab** to pull the latest data from conn
   </Card>
   <Card title="Data models" icon="database" href="/building/data-models">
     Merge and normalize data from multiple sources
+  </Card>
+  <Card title="Recurring data pipelines" icon="arrows-rotate" href="/cli/datasets">
+    Collect data on a schedule and keep a dataset in sync from a script
   </Card>
   <Card title="Gaia Copilot" icon="comments" href="/copilots/overview">
     Add a conversational assistant to your app

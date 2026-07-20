@@ -1,0 +1,166 @@
+---
+title: "Recurring data pipelines"
+description: "Collect data on a schedule and keep a Gainable dataset in sync with it"
+---
+
+Connector-backed datasets pull from systems Gainable already integrates with. When your data lives somewhere else — an internal API, a partner feed, something you assemble from several places — you can write a small script that collects it and have `gaia dataset` keep a dataset in sync.
+
+The shape is **create once, sync forever**:
+
+```bash
+node collect.js | gaia dataset create - --name "Ops Metrics"   # once
+node collect.js | gaia dataset sync col_ab12cd34ef56 -          # every run
+```
+
+Rows go in as JSON. There is no need to write a spreadsheet to disk first, though a `.csv` or `.xlsx` works too — the transports are interchangeable.
+
+<Note>
+A dataset created this way is standalone. Attach it to an app whenever you want a UI over it, the same as any other dataset.
+</Note>
+
+## The three rules
+
+Everything else follows from these.
+
+<AccordionGroup>
+  <Accordion title="Full snapshot, always">
+    Every sync **replaces the entire dataset**. Your script must emit every row that should exist, every time — never a delta, never just today's rows. Rows absent from the payload are deleted.
+
+    This is deliberate. It is how corrections and deletions propagate, and it means a missed run costs nothing: the next run reconciles. There is no drift between your source and the dataset.
+  </Accordion>
+  <Accordion title="The shape is frozen at creation">
+    The dataset remembers the exact keys from your seed data. A sync missing any of them is rejected wholesale and **nothing is written**.
+
+    Adding a key is safe — extra keys are ignored. Renaming or removing one is not. To change the shape, create a new dataset.
+  </Accordion>
+  <Accordion title="Read the contract before writing the script">
+    `gaia dataset schema <id>` returns exactly what to emit — required keys, the primary key, and the expected form of every field. Never infer the shape from memory of your seed data.
+  </Accordion>
+</AccordionGroup>
+
+## Set it up
+
+<Steps>
+  <Step title="Write a collector">
+    A script that prints your rows as JSON on stdout. Anything that can produce JSON works — Node, Python, a shell pipeline.
+
+    Seed it with **5–20 representative real rows**. The analyzer infers column types and picks the primary key from actual values, and that choice is frozen for the dataset's life — a one-row seed produces a schema you cannot fix later.
+  </Step>
+  <Step title="Create the dataset">
+    ```bash
+    node collect.js | gaia dataset create - --name "Ops Metrics"
+    ```
+
+    Exit code `2` means the analyzer is asking a clarifying question — usually about which column should be the primary key. Answer it and continue:
+
+    ```bash
+    gaia dataset answer '{"primary_key":"..."}'
+    ```
+
+    Loop until exit `0`. The final output carries the `collectionId` **and the full write contract**, so you don't need a second call.
+  </Step>
+  <Step title="Write the collector against the contract">
+    The contract's `shape.requiredKeys` lists what to emit, and every field carries a `writeAs` describing its exact form — `"JSON number, not a formatted string"`, `"ISO 8601 date string"`, and so on.
+  </Step>
+  <Step title="Schedule it">
+    Any scheduler works. The command is the same either way:
+
+    <CodeGroup>
+    ```bash cron (macOS/Linux)
+    0 7 * * *  cd /path/to/pipeline && ./sync.sh >> sync.log 2>&1
+    ```
+
+    ```powershell Task Scheduler (Windows)
+    $action  = New-ScheduledTaskAction -Execute 'pwsh.exe' `
+      -Argument '-NoProfile -File "C:\path\to\sync.ps1"'
+    $trigger = New-ScheduledTaskTrigger -Daily -At 07:00
+    Register-ScheduledTask -TaskName 'My data sync' -Action $action -Trigger $trigger
+    ```
+    </CodeGroup>
+  </Step>
+</Steps>
+
+## Two collector patterns
+
+Which one you need depends on your source.
+
+**The source returns full current state** — "list all deals", "list all repos". Pipe it straight through. No local state at all, and the loop is self-healing:
+
+```bash
+node collect.js | gaia dataset sync col_ab12cd34ef56 -
+```
+
+**The source is append-only** — daily metrics, event logs. Something has to accumulate history, because a sync deletes rows absent from the payload. Your script owns that:
+
+```bash
+node collect.js                                    # merge new rows into store.json
+gaia dataset sync col_ab12cd34ef56 ./store.json    # emit the whole thing
+```
+
+Prefer the stateless shape wherever the source supports it. If you must keep a local store, write it atomically (temp file, then rename) so a crash never leaves a truncated snapshot for the next run to pick up.
+
+## Choosing a primary key
+
+This is the one decision worth slowing down for, because it cannot be changed later.
+
+Your app derives each row's comment and file thread from its primary key value. Use a **natural key that comes from the source itself** — an upstream record ID, a canonical slug. Never an array index, a row number, a collection timestamp, or a hash of fields that can be edited.
+
+<Warning>
+A rotating primary key silently destroys every comment and file attached to those rows on the next sync — and the row counts look perfectly normal while it happens.
+
+The CLI guards against this: it refuses a sync whose primary keys barely overlap what is already stored. Pass `--force` only when you genuinely intend that turnover.
+</Warning>
+
+If a key value does legitimately change — you fix a typo in the column the analyzer picked — Gainable matches the row back by its other columns and carries its identity forward, so attached comments and files survive.
+
+## Handling failures
+
+Exit codes tell your scheduler what to do:
+
+| Code | Meaning | What to do |
+|---|---|---|
+| `0` | Synced | Nothing. Per-entity `{inserted, updated, deleted}` counts are on stdout. |
+| `1` | Transport error | Retryable — nothing was written. |
+| `3` | Rejected | **Needs a human.** Do not retry blindly. |
+
+Exit `3` with `reason: "drift"` means your payload no longer matches the contract. stderr names the exact keys that are missing, and nothing was written:
+
+```
+error: the payload no longer matches this dataset's shape — nothing was synced.
+
+  sheet "Sheet1" is missing keys: mrr
+    → key names must match exactly (case-sensitive).
+      Expected: date, channel, signups, mrr
+```
+
+<Warning>
+**Never sync a partial payload.** If your collector failed halfway, abort the sync — do not send what you managed to collect. A partial payload deletes the rest of the dataset.
+
+Have your script check the collector's exit code *before* invoking `gaia dataset sync`, rather than piping the two together blindly.
+</Warning>
+
+## Working with spreadsheets instead
+
+A `.csv` or `.xlsx` works anywhere JSON does:
+
+```bash
+gaia dataset create ./seed.xlsx --name "Ops Metrics"
+gaia dataset sync col_ab12cd34ef56 ./latest.csv
+```
+
+Transports are interchangeable after creation — a dataset seeded from a workbook can still be synced from JSON, and vice versa. The CLI resolves the sheet name from the saved contract, so your collector never has to know it.
+
+<Tip>
+For a single-table dataset, prefer JSON or `.csv`. Types survive better through JSON, and the primary-key guard runs before anything is uploaded rather than after.
+</Tip>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Command reference" icon="terminal" href="/cli/commands">
+    Every `gaia dataset` flag and exit code.
+  </Card>
+  <Card title="Datasets" icon="database" href="/building/data-connectors">
+    Connector-backed datasets and how they attach to apps.
+  </Card>
+</CardGroup>

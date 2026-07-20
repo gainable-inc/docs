@@ -90,7 +90,8 @@
               "cli/installation",
               "cli/claude-code",
               "cli/codex",
-              "cli/commands"
+              "cli/commands",
+              "cli/datasets"
             ]
           },
           {

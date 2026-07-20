@@ -29,6 +29,7 @@ Run `gaia --help` or `gaia <command> --help` at any time.
 | [`gaia chat`](#chat) | Refine an already-built app |
 | [`gaia code`](#code-mode-gaia-code) | Author app code locally with validators |
 | [`gaia import`](#import) | Turn a spreadsheet into an app's data |
+| [`gaia dataset`](#dataset) | Create and sync standalone datasets |
 | [`gaia publish`](#publish) | Publish a built app to a public URL |
 
 ## Credentials
@@ -141,6 +142,53 @@ gaia import cancel                 # drop the session
 ```
 
 After `gaia import attach`, continue with the normal [`gaia build`](#build) flow to design the app around your imported data.
+
+## dataset
+
+Create a **standalone** dataset and keep it in sync from a script — for data that doesn't come from a supported connector. Where `gaia import` bootstraps an app from a spreadsheet, `gaia dataset` makes a dataset a scheduled job can keep fresh.
+
+```bash
+node collect.js | gaia dataset create - --name "Ops Metrics"   # create (once)
+gaia dataset answer '{"primary_key":"..."}'                    # reply to the analyzer
+gaia dataset schema col_ab12cd34ef56                           # print the write contract
+node collect.js | gaia dataset sync col_ab12cd34ef56 -         # sync (every run)
+gaia dataset list -q ops                                       # list datasets
+```
+
+Input is `-` for JSON on stdin, or a path to a `.json`, `.csv`, `.xlsx`, or `.xls` file. The two transports are interchangeable — a dataset seeded from a workbook can still be synced from JSON.
+
+| Command | What it does |
+|---|---|
+| `create <input>` | Create a dataset and walk the analyzer's questions. Exit `2` means a question is pending. |
+| `answer <json>` | Reply to that question. Completes the dataset when the analyzer proposes. |
+| `schema <id>` | Print the write contract — required keys, primary key, per-field form. |
+| `sync <id> [input]` | Replace the dataset's contents with a full snapshot. |
+| `list [-q text]` | List datasets with providers, row counts, and last sync. |
+
+| Flag | Applies to | Description |
+|---|---|---|
+| `--name <name>` | `create` | Dataset name (default: derived from the input file name) |
+| `--description <text>` | `create` | Dataset description |
+| `--sheet-name <name>` | `create` | Sheet name to record for JSON input (default: `Sheet1`) |
+| `--session <id>` | `answer` | Target a specific analyzer session instead of the last one |
+| `--tool-use-id <id>` | `answer` | Override the pending question's tool-use ID |
+| `--source <i>` | `schema`, `sync` | Which source, for multi-source datasets |
+| `--raw` | `schema` | Dump the untouched source definitions instead |
+| `--min-overlap <pct>` | `sync` | Refuse if fewer than this fraction of existing primary keys survive (default `0.5`) |
+| `--force` | `sync` | Skip the primary-key overlap guard |
+| `-q, --query <text>` | `list` | Filter by name |
+
+<Note>
+`--sheet-name` defaults to `Sheet1` because that is exactly what a CSV parses as — it keeps a JSON-created dataset syncable from a spreadsheet later, and vice versa. You rarely need to set it.
+</Note>
+
+`gaia dataset sync <id>` with **no input** is for Google Sheets, Excel Online, and Airtable datasets, which re-fetch from upstream. `gaia dataset schema` tells you which kind you have.
+
+<Warning>
+A sync **replaces the whole dataset** — rows absent from the payload are deleted. Never sync a partial payload; if your collector failed halfway, abort rather than sending what you managed to collect.
+</Warning>
+
+See [Recurring data pipelines](/cli/datasets) for the full workflow, including how to choose a primary key and schedule the job.
 
 ## publish
 
