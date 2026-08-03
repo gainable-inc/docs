@@ -1,0 +1,141 @@
+---
+title: "Overview"
+description: "Drive Gainable from Claude Code, Claude, Cowork, or Codex through one MCP connector"
+---
+
+Gainable isn't only a web app. The **Gaia connector** is a remote [MCP](https://modelcontextprotocol.io) server that lets an AI client build, refine, publish, and share your apps — from your terminal, from a Claude chat, or from a Cowork session.
+
+There is one endpoint and nothing to install:
+
+```
+https://build.gainable.dev/mcp
+```
+
+## What you get
+
+<CardGroup cols={2}>
+  <Card title="Nothing to install" icon="cloud">
+    No package to install and nothing to keep on your `PATH`. Add a URL, sign in through your browser, and you're building.
+  </Card>
+  <Card title="Every client, one server" icon="grid-2">
+    Claude Code, Claude, Cowork, Claude Desktop, and Codex all connect to the same endpoint and get the same tools.
+  </Card>
+  <Card title="Same harness, same quality" icon="shield-check">
+    The connector drives the exact same contract agent, planner, Build Agent, and validators as the web app. Nothing is downgraded.
+  </Card>
+  <Card title="Your session stays light" icon="feather">
+    Generated files never enter your context. The harness builds server-side and streams back a summary.
+  </Card>
+</CardGroup>
+
+## Pick your client
+
+<CardGroup cols={2}>
+  <Card title="Claude Code" icon="terminal" href="/mcp/claude-code">
+    One `claude mcp add`, then `/mcp` to sign in.
+  </Card>
+  <Card title="Claude and Cowork" icon="comments" href="/mcp/claude">
+    Add it once as a custom connector — it shows up in chat, Cowork, Desktop, and mobile.
+  </Card>
+  <Card title="Codex" icon="terminal" href="/mcp/codex">
+    `codex mcp add`, then `codex mcp login`.
+  </Card>
+  <Card title="Anything else" icon="plug">
+    Any MCP client that speaks streamable HTTP and OAuth 2.1 can connect to the same URL.
+  </Card>
+</CardGroup>
+
+## How it fits together
+
+```
+You ──▶ Claude Code / Claude / Cowork / Codex ──▶ build.gainable.dev/mcp ──▶ your app
+              (the MCP client)                      (the Gaia harness)
+```
+
+1. You describe what you want in your client's chat.
+2. The client calls a connector tool — `build`, `chat`, `import`, `publish`.
+3. The harness does the work **server-side** and streams progress back.
+4. Your client relays the harness's questions to you and your answers back to it.
+
+That relay is the whole job. When the harness asks which view should be the home page, or which column identifies a row, those are your calls — a good client forwards them verbatim rather than answering on your behalf.
+
+## Two modes
+
+Most work happens in the first one.
+
+<CardGroup cols={2}>
+  <Card title="Harness mode (default)" icon="comments">
+    Your request goes to the Gainable harness. The planner and Build Agent do the work server-side in one cheap turn — the same path as typing in the web app. Right for almost everything: "add KPIs", "fix this view", "change the layout", "build me a CRM".
+  </Card>
+  <Card title="Author mode (opt-in)" icon="pen-ruler">
+    Your client writes the app code itself: it reads the build conventions and the files it needs, edits them, runs the **same validators** the Build Agent uses, and pushes. Only when you explicitly ask — "code it yourself", "without the harness".
+  </Card>
+</CardGroup>
+
+Author mode is a separate OAuth scope, not a setting. You grant it with a checkbox when you sign in, so a connection that can build apps can't write code into them unless you said so. See [Author mode](/mcp/tools#author-mode).
+
+## Signing in
+
+The connector uses OAuth 2.1 with dynamic client registration and PKCE, so every client handles sign-in the same way: it opens your browser, you approve, and the token is stored by the client (in your OS keyring for terminal clients).
+
+| | |
+|---|---|
+| Endpoint | `https://build.gainable.dev/mcp` |
+| Transport | Streamable HTTP (`POST` only — there is no separate SSE endpoint) |
+| Scopes | `mcp` (default) · `code` (author mode) |
+| Shown in client UIs as | **Gainable (Gaia)** |
+
+You can review or revoke any connection at any time from **[Account → Connections](https://build.gainable.dev/account/connections)**, including turning author mode on or off without reconnecting.
+
+<Note>
+No Gainable account yet? You can [create one free](https://build.gainable.dev/auth/signup) during the sign-in step and carry straight on.
+</Note>
+
+## Not to be confused with your app's MCP server
+
+Gainable involves two different MCP servers, and they do opposite jobs:
+
+| | The Gaia connector | Your app's MCP server |
+|---|---|---|
+| URL | `build.gainable.dev/mcp` | `<account>.gainable.app/mcp` |
+| Purpose | **Build** apps | **Query and write** an app's data |
+| Used by | You, from Claude Code / Claude / Cowork / Codex | Your app's Copilots, and any agent you point at it |
+| Documented in | This section | [Copilot data access](/copilots/data-access) |
+
+This section is about the first one. The second is what makes an app you build this morning a queryable data source this afternoon.
+
+## What the connector can do
+
+Twelve tools, plus two more if you grant author mode. You never name them — your client picks from what you ask — but this is the shape of it:
+
+| | Tools |
+|---|---|
+| Find your way around | `apps_list` · `apps_select` · `project_setup` |
+| Build a new app | `import` · `build` |
+| Change a built app | `chat` |
+| Ship it | `publish` · `share` |
+| Keep data fresh | `dataset_create` · `dataset_sync` · `dataset_schema` · `dataset_list` |
+| Author mode | `code_context` · `code_push` |
+
+See the [tool reference](/mcp/tools) for every parameter.
+
+<Tip>
+The connector ships its own operating instructions to every client on connect, so there is no plugin, skill, or rules file to install alongside it. Adding the URL is the whole setup.
+</Tip>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Claude Code" icon="terminal" href="/mcp/claude-code">
+    Add the connector to your terminal.
+  </Card>
+  <Card title="Claude and Cowork" icon="comments" href="/mcp/claude">
+    Add it to chat, Cowork, and Desktop.
+  </Card>
+  <Card title="Tool reference" icon="wrench" href="/mcp/tools">
+    Every tool, action, and parameter.
+  </Card>
+  <Card title="Recurring data pipelines" icon="rotate" href="/mcp/datasets">
+    Create a dataset once, sync it forever.
+  </Card>
+</CardGroup>

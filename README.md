@@ -53,6 +53,14 @@ docs/
 │   ├── weavy.mdx             # Collaboration features
 │   └── design.mdx            # Themes and styling
 │
+├── mcp/                      # The Gaia MCP connector
+│   ├── overview.mdx          # What it is, and coming from the CLI
+│   ├── claude-code.mdx       # Setup in Claude Code
+│   ├── claude.mdx            # Setup in Claude chat, Cowork, Desktop
+│   ├── codex.mdx             # Setup in OpenAI Codex
+│   ├── tools.mdx             # Every tool and parameter
+│   └── datasets.mdx          # Recurring data pipelines
+│
 ├── compare/                  # vs Retool, Appsmith, Lovable, Replit, Structify
 │
 └── reference/

@@ -1,0 +1,105 @@
+---
+title: "Codex"
+description: "Add the Gaia connector to OpenAI Codex and build apps from your terminal"
+---
+
+[OpenAI Codex](https://developers.openai.com/codex) speaks MCP, so the Gaia connector works there the same way it does in Claude Code — two commands, then you're building.
+
+## Add the connector
+
+<Steps>
+  <Step title="Register the server">
+    ```bash
+    codex mcp add gainable --url https://build.gainable.dev/mcp
+    ```
+  </Step>
+  <Step title="Sign in">
+    ```bash
+    codex mcp login gainable
+    ```
+
+    Your browser opens, you sign in, and you pick which account to connect. The token is stored in your OS keyring.
+
+    <Tip>
+    The consent screen has a checkbox — *"Also let it write code in your apps."* Leave it off unless you want [author mode](/mcp/tools#author-mode); you can turn it on later from [Account → Connections](https://build.gainable.dev/account/connections) without reconnecting.
+    </Tip>
+  </Step>
+  <Step title="Check it's wired up">
+    ```bash
+    codex mcp list
+    ```
+
+    Then, in a session:
+
+    ```
+    > List my Gainable apps
+    ```
+  </Step>
+</Steps>
+
+## Build something
+
+Drop a spreadsheet in an empty folder and ask:
+
+```
+> Have Gaia build an event planning app using the Excel file in this folder
+```
+
+Codex imports the workbook, walks the contract conversation with you, then runs the build pipeline. When the harness needs a decision it presents the options as a numbered list in chat — reply with the number or the option name and it continues.
+
+<Note>
+No spreadsheet handy? Download the [event planning sample](https://www.gainable.dev/samples/horizon-summit-2026-planning.xlsx) and use that.
+</Note>
+
+Then keep talking:
+
+```
+> add a probability column to the deals table
+> publish it
+```
+
+## Long builds
+
+`build` takes 90–180 seconds and a `chat` turn can take over a minute. If your client doesn't send a progress token, the connector hands the wait back after about 50 seconds with `outcome:"running"` rather than risk the call being abandoned.
+
+That is **not** a failure. The right response is a `status` call, which Codex should make on its own.
+
+<Warning>
+Never ask Codex to run the build again to check on it. The first build is still running server-side, so a second start isn't a retry — it creates duplicate work someone has to clear by hand. The same goes for re-sending a `chat` message.
+</Warning>
+
+## Manage the connection
+
+```bash
+codex mcp list               # what's registered
+codex mcp logout gainable    # drop the stored token
+codex mcp remove gainable    # remove the server
+```
+
+You can also review or revoke the grant from [Account → Connections](https://build.gainable.dev/account/connections).
+
+## How Codex differs from Claude Code
+
+Same connector, same tools, same harness — only the client's interface differs:
+
+| | Claude Code | Codex |
+|---|---|---|
+| Add the server | `claude mcp add --transport http` | `codex mcp add --url` |
+| Sign in | `/mcp` → Authenticate | `codex mcp login gainable` |
+| Forwarding harness questions | `AskUserQuestion` picker | Numbered list in chat |
+| Build progress | Live task list | Plain-text stage updates |
+
+<Note>
+The connector is an MCP server, not a shell command, so there are no per-command approval rules to configure. Codex asks once when a tool is first used, and that's it.
+</Note>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Tool reference" icon="wrench" href="/mcp/tools">
+    Every tool the connector exposes.
+  </Card>
+  <Card title="Claude Code" icon="terminal" href="/mcp/claude-code">
+    The same connector, in Claude Code.
+  </Card>
+</CardGroup>

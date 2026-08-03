@@ -26,6 +26,8 @@ You don't need to write code, wait on an engineering backlog, or sign a $50K con
   </Card>
 </CardGroup>
 
+Either path works in the browser or from the AI agent you already use — Claude Code, Claude, Cowork, or Codex. See [Use your favorite agent](#use-your-favorite-agent).
+
 ## Who is Gainable for?
 
 Gainable is built for teams who need custom tools but don't have the time, budget, or engineering resources to build them from scratch:
@@ -87,6 +89,45 @@ Both paths lead to the same result: a complete, working app with a database, mod
 You can also combine both approaches: connect data sources and describe additional features you want on top of them.
 </Info>
 
+## Use your favorite agent
+
+You don't have to build in the browser. The **Gaia connector** is an [MCP](https://modelcontextprotocol.io) server, so the AI agent you already work in can drive Gainable for you — describe what you want and it builds, refines, and publishes the app on your behalf.
+
+There's one URL and nothing to install:
+
+```
+https://build.gainable.dev/mcp
+```
+
+Add it, sign in through your browser, and start asking:
+
+```
+Build me an app from this planning spreadsheet
+Add KPI cards to the top of the sponsors view
+Publish it
+```
+
+<CardGroup cols={2}>
+  <Card title="Claude Code" icon="terminal" href="/mcp/claude-code">
+    Build from your terminal, in the folder you're already working in.
+  </Card>
+  <Card title="Claude and Cowork" icon="comments" href="/mcp/claude">
+    Add it once and it's there in chat, Cowork, Desktop, and mobile.
+  </Card>
+  <Card title="Codex" icon="terminal" href="/mcp/codex">
+    The same connector in OpenAI Codex.
+  </Card>
+  <Card title="Anything else" icon="plug" href="/mcp/overview">
+    Any MCP client can connect to the same URL.
+  </Card>
+</CardGroup>
+
+It's the same harness either way — the same contract conversation, Build Agent, and validators as the web app, with nothing downgraded. So an operator can iterate in Cowork while an engineer works from the terminal, and both are editing the same app.
+
+<Tip>
+Prefer to keep the code in your own hands? Grant **author mode** at sign-in and your agent writes the views, routes, and models itself, checked by the same validators the Build Agent uses. See [the connector overview](/mcp/overview).
+</Tip>
+
 ## What's included in every app?
 
 Every Gainable app comes with:
@@ -111,6 +152,9 @@ Every Gainable app comes with:
   </Card>
   <Card title="Build from data" icon="database" href="/build-from-data">
     Connect your existing data and let AI design the app
+  </Card>
+  <Card title="Use your favorite agent" icon="plug" href="/mcp/overview">
+    Build from Claude Code, Claude, Cowork, or Codex
   </Card>
   <Card title="How it works" icon="gears" href="/concepts/how-it-works">
     Learn how Gainable builds your app

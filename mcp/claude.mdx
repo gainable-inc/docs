@@ -1,0 +1,168 @@
+---
+title: "Claude and Cowork"
+description: "Add the Gaia connector to Claude chat, Cowork, and Claude Desktop"
+---
+
+The Gaia connector is a **remote MCP server**, which is what Claude calls a *custom connector*. Add it once and it appears everywhere you use Claude — chat on the web, Cowork, Desktop, and mobile.
+
+This is the surface that needs no terminal at all. An operator with a spreadsheet can build the app themselves, in the same chat where they'd have asked someone else to do it.
+
+<Info>
+Claude connects to the connector from Anthropic's cloud, not from your device — so there is nothing to install locally and nothing to keep running. It works the same on mobile as on desktop.
+</Info>
+
+## Add the connector
+
+<Tabs>
+  <Tab title="Free, Pro, and Max">
+    <Steps>
+      <Step title="Open your connector settings">
+        In Claude, go to **Settings → Connectors** (some versions label this **Customize → Connectors**).
+      </Step>
+      <Step title="Add a custom connector">
+        Click **Add custom connector** (on some versions: **+** → *Add custom connector*), then enter:
+
+        ```
+        https://build.gainable.dev/mcp
+        ```
+
+        Leave **Advanced settings** alone — the connector registers itself, so you don't need to supply an OAuth client ID or secret.
+      </Step>
+      <Step title="Connect and sign in">
+        Click **Add**, then **Connect**. Your browser opens the Gainable sign-in, you pick which account to connect, and you're done.
+
+        <Tip>
+        The consent screen has a checkbox — *"Also let it write code in your apps."* Leave it off unless you want [author mode](/mcp/tools#author-mode).
+        </Tip>
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Team and Enterprise">
+    An Owner or Admin adds it once for the whole organization; members then connect their own Gainable account to it.
+
+    <Steps>
+      <Step title="Admin: add the connector">
+        Go to **Admin settings → Connectors** (also shown as **Organization settings → Connectors**), click **Add custom connector**, and enter:
+
+        ```
+        https://build.gainable.dev/mcp
+        ```
+
+        Click **Add**. It now appears for everyone in the organization, labelled **Custom**.
+      </Step>
+      <Step title="Members: connect">
+        Each member opens **Settings → Connectors**, finds **Gainable (Gaia)** under the Custom label, and clicks **Connect** to sign in with their own Gainable account.
+      </Step>
+    </Steps>
+
+    <Note>
+    Each member's connection is bound to their own Gainable account, so apps land where that person has access. The admin adds the *server*; they don't share a login.
+    </Note>
+  </Tab>
+</Tabs>
+
+## Turn it on in a conversation
+
+Adding a connector doesn't switch it on everywhere. In any chat or Cowork session, use the **+** button in the message box → **Connectors**, and toggle **Gainable (Gaia)** on.
+
+Then check it:
+
+```
+List my Gainable apps
+```
+
+Your apps listed back means everything is connected.
+
+## Build something
+
+Attach a spreadsheet to the message and ask:
+
+```
+Build me an app from this planning sheet
+```
+
+Claude imports the workbook, asks you a handful of questions about your own data — which sheet is reference material, whether a "TOTAL" row is a summary to drop — then walks the contract conversation and runs the build. Give it 90–180 seconds at the end and paste-ready URLs come back.
+
+<Note>
+No spreadsheet handy? Download the [event planning sample](https://www.gainable.dev/samples/horizon-summit-2026-planning.xlsx) and attach that.
+</Note>
+
+From there it's ordinary conversation:
+
+```
+Add a probability column to the deals table
+Make the sponsors view the home page
+Publish it
+```
+
+## Cowork specifics
+
+Cowork uses the same account-level connector list as Claude chat, so if you added it above there is nothing more to add. Two things behave differently, and both are worth knowing.
+
+### Name the app you mean
+
+Cowork re-establishes its connection before each tool call, so the connector can't tell one Cowork conversation from another on the same account. Rather than guess — and risk editing a different app you have open elsewhere — **it refuses to assume and asks which app you mean.**
+
+In practice that means the first request in a session should name the app:
+
+```
+In the Horizon Summit tracker, add a venue capacity column
+```
+
+Once Claude has the app's `projectId` from `apps_list` or from creating it, it carries it forward for the rest of the conversation. Claude Code doesn't hit this because a folder's `.gaia/project.json` answers the question for it.
+
+<Warning>
+This is a guard, not a limitation. The "currently active" app is remembered per **account**, so on a connection the server can't isolate, a remembered app is as likely to belong to another session as to yours — and building into the wrong app looks exactly like success until much later.
+</Warning>
+
+### Give it your context
+
+A Gainable app is shaped by things the connector cannot know: what you call things, your currency and date format, who uses the app, what must never appear on a list view.
+
+Ask Claude to **set up the project** and it returns a starter you can use either way:
+
+- **A Cowork project with a folder** — it writes a `README.md`, a `CLAUDE.md` for your domain context, and `data/` and `apps/` folders.
+- **A chat-only project** — there is nowhere to write files, so it shows you a block to paste into the project's **Instructions** (or the *"What are you trying to achieve?"* box when you create one). That box is the only place project-level context survives without a folder.
+
+Either way the template is placeholders in angle brackets — fill them in, or it does nothing.
+
+### If a file upload fails
+
+Cowork sandboxes can have network egress switched off, which blocks the direct upload path for spreadsheets. Claude will fall back to sending the file in slices, which works but costs context. To use the fast path, an admin can enable **Settings → Capabilities → Code execution → Allow network egress**.
+
+<Warning>
+If Claude offers to trim, split, or convert a spreadsheet "so it fits" — say no. The analyzer reads the real workbook, including section-divider rows, banded sheets, and reference tabs, to decide the schema. A slimmed file doesn't import a smaller app; it imports a different and wrong one.
+</Warning>
+
+## How it compares to Claude Code
+
+Same connector, same tools, same harness. What differs is what the client can see:
+
+| | Claude / Cowork | Claude Code |
+|---|---|---|
+| Setup | Add a URL in Settings | `claude mcp add` |
+| Which app you're working on | Name it in the conversation | `.gaia/project.json` in the folder |
+| Project context | Project Instructions | `CLAUDE.md` |
+| Spreadsheets | Attach to the message | Read from the working folder |
+| A record of the app | The chat, plus project files if it has a folder | An `<appName>.md` written to the folder |
+| Author mode | Available if granted | Available if granted |
+
+<Tip>
+Both surfaces edit the same app. An operator can iterate in Cowork while an engineer works from the terminal, so handing off no longer means handing over.
+</Tip>
+
+## Manage the connection
+
+- **Change or revoke it in Claude** — **Settings → Connectors**, then the three-dot menu.
+- **Change or revoke it in Gainable** — [Account → Connections](https://build.gainable.dev/account/connections). This is also where you turn author mode on or off without reconnecting.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Tool reference" icon="wrench" href="/mcp/tools">
+    Every tool the connector exposes.
+  </Card>
+  <Card title="Claude Code" icon="terminal" href="/mcp/claude-code">
+    The same connector, from your terminal.
+  </Card>
+</CardGroup>

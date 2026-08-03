@@ -1,0 +1,316 @@
+---
+title: "Tool reference"
+description: "Every tool the Gaia connector exposes, and what each parameter does"
+---
+
+You don't call these yourself — your AI client does, based on what you ask it in plain language. This page is here for when you want to know exactly what happened, ask for something specific, or debug a client that picked the wrong tool.
+
+The connector exposes **12 tools** by default, plus **2 more** when you grant [author mode](#author-mode).
+
+## Conventions
+
+Every tool returns pretty-printed JSON. A few patterns repeat:
+
+- **`ok: false` is a report, not a crash.** A rejected dataset sync or a drifted payload comes back as a normal result saying nothing was written. Your client should read it, not retry it.
+- **`outcome: "running"` is not a timeout.** Long operations hand the wait back rather than risk the call being dropped. The answer is a `status` call, never a second start.
+- **URLs come back as exact strings.** They're also emitted as resource links. Never construct a Gainable URL by hand — an app's own hostname isn't reachable without a key the launcher injects.
+
+### Which app a tool acts on
+
+Most tools take an optional `projectId`. Where it comes from, in order of authority:
+
+1. **`.gaia/project.json` in the working folder** — written when a tool returns a project anchor, read on the next session. This is what makes a folder remember its app.
+2. **The tool that created or selected the app**, earlier in the same conversation.
+3. **`apps_list`**, when you have neither.
+
+The "currently active" app is remembered **per account, not per conversation**. On a client the connector can't isolate — one that reconnects before every call, like Cowork — it refuses to guess and asks you to name the app instead. An active app also goes stale after 30 minutes of no use.
+
+---
+
+## Lifecycle
+
+### `project_setup`
+
+Returns a starter for a new Gainable project: a `README.md`, a `CLAUDE.md` for your domain context, `data/` and `apps/` folders, and the same context condensed into a block you can paste into a project's Instructions box when there's no folder to write to.
+
+| Parameter | Type | Description |
+|---|---|---|
+| `overwrite` | boolean | Only when you explicitly asked to reset the files. A hand-written `CLAUDE.md` is your work, not a template. |
+
+Your client should offer this once, ask before writing anything, and read your existing context instead if you already have some.
+
+### `apps_list`
+
+Lists the apps in the connected account, most recently used first.
+
+| Parameter | Type | Description |
+|---|---|---|
+| `query` | string | Case-insensitive filter on the app or project name. |
+
+### `apps_select`
+
+Sets which app the following tools act on.
+
+| Parameter | Type | Description |
+|---|---|---|
+| `app` | string · **required** | A `projectId` (`project-1784…`) or an app name. |
+
+An ambiguous name comes back as a list of matches rather than a guess.
+
+---
+
+## Building a new app
+
+### `import`
+
+Turns an Excel or CSV file into a dataset attached to a project, ready to build from.
+
+| Parameter | Type | Description |
+|---|---|---|
+| `action` | enum · **required** | `upload_url` · `upload_chunk` · `upload` · `answer` · `state` · `finalize` · `attach` · `cancel` |
+| `fileName` | string | The original filename, with its extension — the analyzer picks its parser from it. |
+| `fileBase64` | string | The file contents, for `upload`. Small files only (~40 KB). |
+| `uploadToken` | string | The token from `upload_url` or `upload_chunk`. |
+| `chunkBase64` | string | One slice of the base64 file, for `upload_chunk`. |
+| `isLastChunk` | boolean | True on the final slice — the import starts automatically. |
+| `answers` | object | Your reply to the pending question, e.g. `{"choice":"keep"}`. |
+| `importSessionId` | string | Thread this through every follow-up call. |
+| `datasetName` | string | For `attach` — defaults to the file name. |
+| `projectId` | string | For `attach` — add the data to this existing app instead of creating a new one. |
+| `projectName` | string | For `attach` — name the project this creates. |
+
+**Three ways to send the file, tried in this order:**
+
+<Steps>
+  <Step title="upload_url — start here">
+    The connector returns a URL; your client POSTs the file straight to it. No size limit, and the bytes never enter its context.
+  </Step>
+  <Step title="upload_chunk — when that can't connect">
+    Some sandboxes block network egress. The base64 goes up in slices instead: no egress needed, no size limit, but it costs context.
+  </Step>
+  <Step title="fileBase64 — small files only">
+    Simplest, but the whole string passes through your client's context, so it's capped around 40 KB.
+  </Step>
+</Steps>
+
+<Warning>
+A file that won't fit one road means take the next road. It never means shrink, split, or convert the file. Sending a "cleaned up" workbook doesn't import a simpler app — it imports a different and wrong one.
+</Warning>
+
+After `attach`, the build conversation starts with `build`.
+
+### `build`
+
+Drives the whole new-app journey: a contract conversation through five phases — `data → derives → seed → ui → autonomy` — and then the deterministic build pipeline.
+
+| Parameter | Type | Description |
+|---|---|---|
+| `action` | enum · **required** | `turn` · `reply` · `run` · `status` |
+| `message` | string | For `turn` — your idea, or the **full text** of a spec document. |
+| `replies` | string[] | For `reply` — the option **labels** you picked, in the order they were asked. A multi-select is one comma-separated string. |
+| `newApp` | boolean | For `turn` — start a fresh project instead of continuing the active one. |
+| `projectId` | string | For `turn` — continue this project's contract conversation. |
+| `projectName` | string | Name the project when this call creates it. |
+| `silent` | boolean | Don't surface this message as a chat bubble. Used for the post-import kickoff. |
+
+<Note>
+**The harness can't read files.** If you point at a spec document, your client must paste its complete contents into `message`. A path or a one-line summary makes the server design from generic domain knowledge instead of your spec.
+
+Spreadsheets are the exception — they go through `import`, never into `build` as a spec.
+</Note>
+
+`action:"run"` takes 90–180 seconds. Only `outcome:"built"` means done; anything else means keep watching with `status`.
+
+<Warning>
+**"Build an app from this" always means a new app** — even from the same spreadsheet you used an hour ago. Same data is not the same app, and silently attaching new data to an existing one is rarely what anyone wants. Only target an existing app when you name it: *"add this to the Summit tracker"*.
+</Warning>
+
+---
+
+## Changing a built app
+
+### `chat`
+
+One turn: a server-side planner decides the change and the Build Agent applies it. This is the right tool for almost every edit — adding a field, fixing a view, changing a layout, adjusting behaviour.
+
+| Parameter | Type | Description |
+|---|---|---|
+| `message` | string | What you want changed, in your own words. Required unless `action` is `status`. |
+| `pageSlug` | string | Scope the change to one view. |
+| `projectId` | string | Which app to act on. |
+| `action` | enum | `send` (default) · `status` |
+
+If the planner needs a decision it can't make, the result is `outcome:"needs_clarification"` with a question. Answer it as a **new** `chat` call — the server recognises the pending clarification and merges it in.
+
+<Warning>
+**Never re-send the same `chat` message.** The turn keeps running server-side whatever happens to the connection, so a second call isn't a retry: it runs the planner again and stacks a duplicate plan card someone has to clear by hand.
+</Warning>
+
+---
+
+## Shipping
+
+### `publish`
+
+Deploys the app to its public `https://<slug>.gainable.app` URL — the same as the **Publish** button in the web app. Idempotent.
+
+| Parameter | Type | Description |
+|---|---|---|
+| `action` | enum | `publish` (default) · `status` |
+| `projectId` | string | Which app to act on. |
+
+### `share`
+
+Reports the app's links **and who can actually open each one**: the public URL when it's published, and the in-Gainable launcher link for teammates. It mints nothing — it only tells you what exists.
+
+| Parameter | Type | Description |
+|---|---|---|
+| `projectId` | string | Which app to act on. |
+
+<Tip>
+Reach for this whenever you're about to send someone a link. The failure worth avoiding is mailing a teammate a URL that 404s for them.
+</Tip>
+
+---
+
+## Datasets
+
+`import` bootstraps an app from a spreadsheet. These four make a **standalone** dataset that a script keeps fresh — create once, sync forever. See [Recurring data pipelines](/mcp/datasets) for the full workflow.
+
+### `dataset_create`
+
+| Parameter | Type | Description |
+|---|---|---|
+| `action` | enum | `create` (default) · `answer` · `finish` · `upload_url` |
+| `name` | string | Name for the dataset. |
+| `rows` | object[] | 5–20 representative seed rows, single-entity. |
+| `sheets` | object | Multi-entity seed: `{ "<name>": [ …rows ] }`. |
+| `fileBase64` | string | Seed from a spreadsheet instead (up to ~100 KB). |
+| `fileName` | string | The filename, with extension. |
+| `uploadToken` | string | The token from `upload_url`, for larger files. |
+| `answers` | object | Your reply to the pending question. |
+| `sessionId` | string | Thread this through every follow-up call. |
+
+<Warning>
+Seed with **5–20 real rows**. The analyzer infers column types and picks the primary key from actual values, and that choice is frozen for the dataset's life — a one-row seed produces a schema you cannot fix later.
+</Warning>
+
+### `dataset_schema`
+
+Returns the **write contract**: the required keys per sheet, the primary key, and the expected form of every field. Read this before writing any collector.
+
+| Parameter | Type | Description |
+|---|---|---|
+| `dataset` | string · **required** | The `col_…` id, or the dataset name. |
+
+Each field carries a `writeAs` describing exactly what to emit:
+
+| Type | Write as |
+|---|---|
+| `number` | JSON number, not a formatted string — `1234.5`, not `"1234.5"` |
+| `boolean` | JSON `true` / `false` |
+| `date` | ISO 8601 date string, e.g. `"2026-07-28"` |
+| `stringArray` | Array of strings |
+| `objectIdArray` | The referenced row's primary value — the link is resolved server-side |
+| `string` | String |
+
+### `dataset_sync`
+
+Pushes a full snapshot, or re-fetches from upstream when no rows are given.
+
+| Parameter | Type | Description |
+|---|---|---|
+| `dataset` | string · **required** | The `col_…` id, or the dataset name. |
+| `rows` | object[] | The complete snapshot, for a single-sheet dataset. |
+| `sheets` | object | The complete snapshot for a multi-sheet dataset. |
+| `sourceIndex` | integer | Which source to write to, when the dataset has several. |
+| `minOverlap` | number | Minimum share of existing primary keys the payload must still contain. Default `0.5`. |
+| `force` | boolean | Proceed despite low overlap. **This is the flag that destroys comment threads.** |
+
+<Warning>
+**Every sync replaces everything.** Rows absent from the payload are deleted. Send the complete set every time — if a collector failed halfway, abort rather than syncing what it managed to collect.
+</Warning>
+
+### `dataset_list`
+
+| Parameter | Type | Description |
+|---|---|---|
+| `query` | string | Case-insensitive filter on the dataset name. |
+
+Returns each dataset's provider, row count, last sync, and whether each source is syncable from a payload or only re-fetchable from upstream.
+
+---
+
+## Author mode
+
+Two extra tools appear **only** when you granted the `code` scope — the *"Also let it write code in your apps"* checkbox at sign-in. You can turn it on or off later from [Account → Connections](https://build.gainable.dev/account/connections) without reconnecting.
+
+<Note>
+This is a scope, not a setting, for two reasons. A token that can build apps shouldn't automatically be able to author code into them. And a model can't over-reach for a tool that isn't in its list, which is a harder guarantee than a description asking it not to.
+</Note>
+
+<Warning>
+**Only ask for author mode when you actually want it.** Ordinary requests — "add KPIs to the sponsors view", "redesign the deals page", "fix the kanban bug" — belong to `chat`, which is one cheap turn and does them well. Author mode reads conventions, reads files, and runs validators. It's the exception, not the upgrade.
+</Warning>
+
+### `code_context`
+
+Step one: read before you write.
+
+| Parameter | Type | Description |
+|---|---|---|
+| `action` | enum · **required** | `manifest` · `conventions_file` · `app_file` |
+| `id` | string | For `conventions_file` — a guide id from the manifest. |
+| `path` | string | For `app_file` — a path relative to the app root, e.g. `views/deals.ejs`. |
+| `projectId` | string | Which app to act on. |
+
+`manifest` returns the app index — every file with its path, mode, and hash — plus the list of convention guides, with no file contents. Your client then fetches the two or three guides for the area it's touching and the files it will actually change, rather than everything.
+
+`app_file` returns the content **and a hash**. That hash goes back as `baseHash` when you push.
+
+### `code_push`
+
+Step two: check your work, then commit it.
+
+| Parameter | Type | Description |
+|---|---|---|
+| `action` | enum · **required** | `validate` · `push` |
+| `files` | object[] · **required** | `{ path, content, baseHash }`. `baseHash` is required when editing an existing file, omitted when creating one. |
+| `summary` | string | Required for `push`. One to three sentences on what changed and why. |
+| `projectId` | string | Which app to act on. |
+
+`push` validates the whole batch, writes it atomically, registers new view routes, commits to the app's git history, and records the session in the project's chat history — which is why `summary` is mandatory: it's what the human sees alongside their own refinements.
+
+**The rules that make this work:**
+
+1. **Only `rw` files are writable** — `views/`, `routes/`, `db/models/`, `public/css/`, `public/js/`. Everything else is framework-owned and push rejects it.
+2. **`server.js` belongs to the registrar.** Write the view and the route; push wires them up.
+3. **Push the whole stack of a feature in one call** — view, route, and model together. The cross-file validators judge the batch as a whole, so a view whose route is "coming next" is correctly rejected.
+4. **Treat validator output as binding.** Those ~100 rules each encode a production incident someone already had. A rejection is the rule being right.
+5. **Pass `baseHash` when editing.** A `stale` rejection means the file changed server-side since you read it: re-read, re-apply, re-push. Don't drop the hash to force it through.
+
+---
+
+## When something goes wrong
+
+| What you see | What it means |
+|---|---|
+| `outcome: "running"` | Still working. Call `status` — don't start it again. |
+| `outcome: "needs_clarification"` | The planner needs a decision. Answer as a new `chat` call. |
+| `ok: false, reason: "drift"` | The payload no longer matches the dataset's frozen shape. Nothing was written. Fix the collector. |
+| `ok: false, reason: "low_primary_key_overlap"` | The payload barely matches what's stored — the signature of a truncated run or a regenerated key. Nothing was written. |
+| `reason: "stale"` (author mode) | The file changed server-side since you read it. Re-read and re-apply. |
+| "A turn is already running for this project" | Two calls hit the same app at once. Wait for the first, or call `status`. |
+| "This app belongs to a different account" | You're connected to the wrong Gainable account for this app. |
+| "No active subscription or its trial has expired" | Check [billing](https://build.gainable.dev). |
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Recurring data pipelines" icon="rotate" href="/mcp/datasets">
+    The full dataset workflow, end to end.
+  </Card>
+  <Card title="Overview" icon="plug" href="/mcp/overview">
+    How the connector fits together.
+  </Card>
+</CardGroup>

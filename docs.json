@@ -84,14 +84,14 @@
             ]
           },
           {
-            "group": "CLI & plugins",
+            "group": "MCP connector",
             "pages": [
-              "cli/overview",
-              "cli/installation",
-              "cli/claude-code",
-              "cli/codex",
-              "cli/commands",
-              "cli/datasets"
+              "mcp/overview",
+              "mcp/claude-code",
+              "mcp/claude",
+              "mcp/codex",
+              "mcp/tools",
+              "mcp/datasets"
             ]
           },
           {
@@ -154,6 +154,13 @@
     { "source": "/agents/agent-action-log", "destination": "/autopilot/agent-action-log" },
     { "source": "/agents/connect-outbound", "destination": "/autopilot/connect-outbound" },
     { "source": "/agents/recipes", "destination": "/autopilot/recipes" },
+
+    { "source": "/cli/overview", "destination": "/mcp/overview" },
+    { "source": "/cli/installation", "destination": "/mcp/overview" },
+    { "source": "/cli/claude-code", "destination": "/mcp/claude-code" },
+    { "source": "/cli/codex", "destination": "/mcp/codex" },
+    { "source": "/cli/commands", "destination": "/mcp/tools" },
+    { "source": "/cli/datasets", "destination": "/mcp/datasets" },
 
     { "source": "/compare", "destination": "https://www.gainable.dev/compare", "permanent": true },
     { "source": "/compare/retool", "destination": "https://www.gainable.dev/compare/retool", "permanent": true },

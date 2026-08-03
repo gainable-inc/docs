@@ -1,0 +1,132 @@
+---
+title: "Claude Code"
+description: "Add the Gaia connector to Claude Code and build apps from your terminal"
+---
+
+Two commands and you're building. [Claude Code](https://claude.com/claude-code) talks to the Gaia connector over MCP, so describing a change is enough — Claude picks the right tool, relays the harness's questions back to you, and pastes the resulting URL into your session.
+
+## Add the connector
+
+<Steps>
+  <Step title="Register the server">
+    ```bash
+    claude mcp add --transport http gainable https://build.gainable.dev/mcp
+    ```
+
+    Add `--scope user` to make it available in every project instead of just this one.
+  </Step>
+  <Step title="Sign in">
+    ```bash
+    claude
+    ```
+    ```
+    > /mcp
+    ```
+
+    Pick **gainable**, choose **Authenticate**, and finish in the browser. Your token is stored in your OS keyring.
+
+    <Tip>
+    The consent screen has a checkbox — *"Also let it write code in your apps."* Leave it off unless you want [author mode](/mcp/tools#author-mode); you can turn it on later from [Account → Connections](https://build.gainable.dev/account/connections) without reconnecting.
+    </Tip>
+  </Step>
+  <Step title="Check it's wired up">
+    ```
+    > List my Gainable apps
+    ```
+
+    Your apps listed back means everything is connected.
+  </Step>
+</Steps>
+
+## Build something
+
+Drop a spreadsheet in an empty folder and ask:
+
+```
+> Have Gaia build an event planning app using the Excel file in this folder
+```
+
+Claude imports the workbook, walks the contract conversation with you, then runs the build pipeline. That last stage takes 90–180 seconds and streams back as a live checklist.
+
+<Note>
+No spreadsheet handy? Download the [event planning sample](https://www.gainable.dev/samples/horizon-summit-2026-planning.xlsx) and use that.
+</Note>
+
+Then keep talking:
+
+```
+> add a probability column to the deals table
+✓ completion ready: 2 files changed
+
+> Publish it
+{"event":"app_published","payload":{"url":"https://deals-pipeline.gainable.app"}}
+```
+
+Each refinement is a single turn: the harness's planner decides, the Build Agent edits, validators check, and the summary streams back.
+
+## Why the terminal is the best seat
+
+Claude Code has a working directory, and the connector uses it.
+
+<CardGroup cols={2}>
+  <Card title="Folders remember their app" icon="location-dot">
+    When a tool returns a project anchor, Claude writes `.gaia/project.json`. Tomorrow's session in that folder picks up the same app instead of whatever was last active on your account.
+  </Card>
+  <Card title="Your context travels with you" icon="file-lines">
+    A `CLAUDE.md` in the folder tells the harness what you call things, your currency and date format, who uses the app. `project_setup` writes a starter if you don't have one.
+  </Card>
+  <Card title="Apps get recorded" icon="floppy-disk">
+    After a build, Claude writes `<appName>.md` with the launcher URL, the public URL, and one line on what it does — so the app isn't just a link that scrolls away.
+  </Card>
+  <Card title="Big files never touch context" icon="upload">
+    Claude asks for an upload URL and `curl`s the spreadsheet straight there. A 5 MB workbook costs zero tokens.
+  </Card>
+</CardGroup>
+
+## Multiple accounts
+
+If you connect more than one Gainable account — a personal one and a work one, say — give them distinct names:
+
+```bash
+claude mcp add --transport http gainable-work https://build.gainable.dev/mcp
+```
+
+Claude will ask which one to use before creating anything, because that choice decides where the app lands.
+
+## Manage the connection
+
+```bash
+claude mcp list              # what's registered, and whether it's connected
+claude mcp get gainable      # details for one server
+claude mcp remove gainable   # disconnect
+```
+
+To sign out without removing the server, revoke the connection at [Account → Connections](https://build.gainable.dev/account/connections) and re-authenticate with `/mcp`.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="/mcp shows the server as failed or disconnected">
+    Run `claude mcp list` to see the error. The most common cause is an expired or revoked token — re-authenticate from `/mcp`. Check [Account → Connections](https://build.gainable.dev/account/connections) to confirm the connection still exists.
+  </Accordion>
+  <Accordion title="Claude says a build timed out">
+    It probably didn't. `build action:"run"` takes 90–180 seconds and may hand the wait back with `outcome:"running"` before it finishes. The right move is `status`, which Claude should call on its own. **Never ask it to run the build again** — the first one is still going server-side, and a second start creates duplicate work someone has to clear by hand.
+  </Accordion>
+  <Accordion title="It edited the wrong app">
+    The active app is remembered per *account*, not per conversation, so a session in another folder can leave a different one selected. Ask Claude to select the app by name, or keep a `.gaia/project.json` in the folder — that file is authoritative and survives between sessions.
+  </Accordion>
+  <Accordion title="Claude answered a design question instead of asking me">
+    Tell it to relay the connector's questions verbatim. Layout, scope, and which field identifies a row are your calls; answering them for you produces an app you didn't ask for.
+  </Accordion>
+</AccordionGroup>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Tool reference" icon="wrench" href="/mcp/tools">
+    Every tool the connector exposes.
+  </Card>
+  <Card title="Claude and Cowork" icon="comments" href="/mcp/claude">
+    The same connector, away from the terminal.
+  </Card>
+</CardGroup>

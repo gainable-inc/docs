@@ -1,0 +1,177 @@
+---
+title: "Recurring data pipelines"
+description: "Collect data on a schedule and keep a Gainable dataset in sync with it"
+---
+
+Connector-backed datasets pull from systems Gainable already integrates with. When your data lives somewhere else — an internal API, a partner feed, something you assemble from several places — you can write a small script that collects it and keep a dataset in sync with it.
+
+The shape is **create once, sync forever**:
+
+```
+Create a dataset called "Ops Metrics" from what collect.js prints
+→ types the columns, picks a stable key, prints the write contract
+
+Run collect.js and sync Ops Metrics
+✓ metrics: 214 rows (+3 ~209 -2)
+```
+
+<Note>
+A dataset created this way is standalone. Attach it to an app whenever you want a UI over it, the same as any other dataset.
+</Note>
+
+## The three rules
+
+Everything else follows from these.
+
+<AccordionGroup>
+  <Accordion title="Full snapshot, always">
+    Every sync **replaces the entire dataset**. Your script must emit every row that should exist, every time — never a delta, never just today's rows. Rows absent from the payload are deleted.
+
+    This is deliberate. It is how corrections and deletions propagate, and it means a missed run costs nothing: the next run reconciles. There is no drift between your source and the dataset.
+  </Accordion>
+  <Accordion title="The shape is frozen at creation">
+    The dataset remembers the exact keys from your seed data. A sync missing any of them is rejected wholesale and **nothing is written**.
+
+    Adding a key is safe — extra keys are ignored. Renaming or removing one is not. To change the shape, create a new dataset.
+  </Accordion>
+  <Accordion title="Read the contract before writing the script">
+    `dataset_schema` returns exactly what to emit — required keys, the primary key, and the expected form of every field. Never infer the shape from memory of your seed data.
+  </Accordion>
+</AccordionGroup>
+
+## Set it up
+
+<Steps>
+  <Step title="Write a collector">
+    A script that prints your rows as JSON on stdout. Anything that can produce JSON works — Node, Python, a shell pipeline.
+
+    Seed it with **5–20 representative real rows**. The analyzer infers column types and picks the primary key from actual values, and that choice is frozen for the dataset's life — a one-row seed produces a schema you cannot fix later.
+  </Step>
+  <Step title="Create the dataset">
+    Ask your client to create it from the collector's output. The analyzer will ask a clarifying question or two — usually about which column should be the primary key. **Those are your calls, not the model's**; a good client relays them rather than answering them.
+
+    The final result carries the `collectionId` and the full write contract, so there's no second call to make.
+  </Step>
+  <Step title="Write the collector against the contract">
+    The contract's `requiredKeys` lists what to emit, and every field carries a `writeAs` describing its exact form — *"JSON number, not a formatted string"*, *"ISO 8601 date string"*, and so on. Keys are matched exactly and are case-sensitive.
+  </Step>
+  <Step title="Schedule it">
+    See [Putting it on a schedule](#putting-it-on-a-schedule) below.
+  </Step>
+</Steps>
+
+## Two collector patterns
+
+Which one you need depends on your source.
+
+**The source returns full current state** — "list all deals", "list all repos". Emit it straight through. No local state at all, and the loop is self-healing.
+
+**The source is append-only** — daily metrics, event logs. Something has to accumulate history, because a sync deletes rows absent from the payload. Your script owns that: merge new rows into a local store, then emit the whole store.
+
+Prefer the stateless shape wherever the source supports it. If you must keep a local store, write it atomically (temp file, then rename) so a crash never leaves a truncated snapshot for the next run to pick up.
+
+## Choosing a primary key
+
+This is the one decision worth slowing down for, because it cannot be changed later.
+
+Your app derives each row's comment and file thread from its primary key value. Use a **natural key that comes from the source itself** — an upstream record ID, a canonical slug. Never an array index, a row number, a collection timestamp, or a hash of fields that can be edited.
+
+<Warning>
+A rotating primary key silently destroys every comment and file attached to those rows on the next sync — and the row counts look perfectly normal while it happens.
+
+The connector guards against this: it refuses a sync whose primary keys barely overlap what is already stored. `force` overrides the guard and should only be used when you genuinely intend that turnover.
+</Warning>
+
+If a key value does legitimately change — you fix a typo in the column the analyzer picked — Gainable matches the row back by its other columns and carries its identity forward, so attached comments and files survive.
+
+## Putting it on a schedule
+
+The sync goes through the connector, so a scheduled sync is a scheduled **agent** run. Two ways to get one, depending on where the connector lives.
+
+<Tabs>
+  <Tab title="Cowork">
+    Set the sync up as recurring work in Cowork. Once the connector is [added and enabled](/mcp/claude), schedule a task that says what to collect and where to put it:
+
+    ```
+    Every weekday at 07:00, run the ops metrics collector and
+    sync the result to the Ops Metrics dataset.
+    If the collector fails, don't sync — tell me instead.
+    ```
+
+    Best when the data comes from somewhere Cowork can already reach, and when you want the failures to land in front of a person rather than in a log file.
+  </Tab>
+  <Tab title="Claude Code on a cron">
+    Run Claude Code non-interactively from your own scheduler, on a machine where the connector is [already signed in](/mcp/claude-code):
+
+    <CodeGroup>
+    ```bash cron (macOS/Linux)
+    0 7 * * *  cd /path/to/pipeline && ./sync.sh >> sync.log 2>&1
+    ```
+
+    ```powershell Task Scheduler (Windows)
+    $action  = New-ScheduledTaskAction -Execute 'pwsh.exe' `
+      -Argument '-NoProfile -File "C:\path\to\sync.ps1"'
+    $trigger = New-ScheduledTaskTrigger -Daily -At 07:00
+    Register-ScheduledTask -TaskName 'My data sync' -Action $action -Trigger $trigger
+    ```
+    </CodeGroup>
+
+    Keep the instruction specific enough that there's nothing to decide at 7am — name the collector, name the dataset, and say what to do when it fails:
+
+    ```
+    Run collect.js in this folder and sync its output to the Ops Metrics
+    dataset. If collect.js exits non-zero, do not sync.
+    ```
+
+    Best when the collector has to run next to something private — a VPN, a local database, a machine with the right credentials.
+  </Tab>
+</Tabs>
+
+<Note>
+Whichever you pick, the run needs to be able to use the connector's tools without stopping to ask. Allow them up front, or the job hangs on a permission prompt nobody is there to answer.
+</Note>
+
+### Reading the result
+
+`dataset_sync` reports what happened rather than throwing:
+
+| Result | Meaning |
+|---|---|
+| `ok: true` | Synced. Per-entity inserted / updated / deleted counts come back with it. |
+| `ok: false`, `reason: "drift"` | The payload no longer matches the frozen shape. **Nothing was written.** Fix the collector; don't retry unchanged. |
+| `ok: false`, `reason: "low_primary_key_overlap"` | The payload barely overlaps what's stored — the signature of a truncated run or a regenerated key. **Nothing was written.** |
+
+Both failures need a human. Have the job surface them rather than retrying in a loop.
+
+<Warning>
+**Never sync a partial payload.** If your collector fails halfway, abort the run — do not sync what it managed to collect, because a partial payload deletes the rest of the dataset.
+
+Make that explicit in the instruction, and have the collector exit non-zero on failure so there's an unambiguous signal to stop on.
+</Warning>
+
+<Tip>
+Ask your agent for `dataset_schema` once before writing the collector. It gives you the exact sheet name, every required key, and the form each field must take — all of which are matched exactly at sync time.
+</Tip>
+
+## Working with spreadsheets instead
+
+A `.csv` or `.xlsx` works anywhere JSON does. Transports are interchangeable after creation — a dataset seeded from a workbook can still be synced from JSON, and vice versa.
+
+For a single-table dataset, prefer JSON. Types survive better through it, and the primary-key guard runs before anything is uploaded rather than after.
+
+## Datasets that re-fetch themselves
+
+Google Sheets, Excel Online, and Airtable datasets pull from upstream instead of being pushed to. For those, a sync with **no payload** tells Gainable to go and re-read the source.
+
+`dataset_list` shows which of your sources are syncable from a payload; `dataset_schema` reports each source's transport.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Tool reference" icon="wrench" href="/mcp/tools#datasets">
+    Every dataset tool and parameter.
+  </Card>
+  <Card title="Data connectors" icon="database" href="/building/data-connectors">
+    Connector-backed datasets and how they attach to apps.
+  </Card>
+</CardGroup>
