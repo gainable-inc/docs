@@ -26,7 +26,7 @@ Two commands and you're building. [Claude Code](https://claude.com/claude-code) 
     Pick **gainable**, choose **Authenticate**, and finish in the browser. Your token is stored in your OS keyring.
 
     <Tip>
-    The consent screen has a checkbox — *"Also let it write code in your apps."* Leave it off unless you want [author mode](/mcp/tools#author-mode); you can turn it on later from [Account → Connections](https://build.gainable.dev/account/connections) without reconnecting.
+    The consent screen has up to three checkboxes — for your **datasets**, for **managing people** on the account, and for [author mode](/mcp/tools#author-mode). Building, changing, publishing and sharing apps works without any of them. Tick what you need now or later, from [Account → Connections](https://build.gainable.dev/account/connections), without reconnecting. See [what you're granting](/mcp/overview#what-youre-granting).
     </Tip>
   </Step>
   <Step title="Check it's wired up">
@@ -52,7 +52,11 @@ Claude imports the workbook, walks the contract conversation with you, then runs
 No spreadsheet handy? Download the [event planning sample](https://www.gainable.dev/samples/horizon-summit-2026-planning.xlsx) and use that.
 </Note>
 
-Then keep talking:
+<Tip>
+Note the **"Have Gaia"** at the front. The first message has to name the product or Claude will just answer it itself, without ever calling the connector — see [Say "Gaia" in your first message](/mcp/overview#say-gaia-in-your-first-message).
+</Tip>
+
+Then keep talking. The app is in context now, so follow-ups don't need to name it:
 
 ```
 > add a probability column to the deals table

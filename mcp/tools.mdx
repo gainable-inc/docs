@@ -5,7 +5,7 @@ description: "Every tool the Gaia connector exposes, and what each parameter doe
 
 You don't call these yourself — your AI client does, based on what you ask it in plain language. This page is here for when you want to know exactly what happened, ask for something specific, or debug a client that picked the wrong tool.
 
-The connector exposes **12 tools** by default, plus **2 more** when you grant [author mode](#author-mode).
+The connector exposes **10 tools** by default, and up to **18** depending on which [scopes](#scopes) you granted when you signed in.
 
 ## Conventions
 
@@ -14,6 +14,27 @@ Every tool returns pretty-printed JSON. A few patterns repeat:
 - **`ok: false` is a report, not a crash.** A rejected dataset sync or a drifted payload comes back as a normal result saying nothing was written. Your client should read it, not retry it.
 - **`outcome: "running"` is not a timeout.** Long operations hand the wait back rather than risk the call being dropped. The answer is a `status` call, never a second start.
 - **URLs come back as exact strings.** They're also emitted as resource links. Never construct a Gainable URL by hand — an app's own hostname isn't reachable without a key the launcher injects.
+
+### Scopes
+
+Three groups of tools are **absent from the connection entirely** unless you ticked their box at sign-in. Not hidden, not refused — not in the list your client can see at all, which is a harder guarantee than a description asking a model not to reach for something.
+
+| Scope | Checkbox at sign-in | Tools it adds |
+|---|---|---|
+| `mcp` | Always on | The ten below: lifecycle, build, chat, ship, app access |
+| `datasets` | *"Also let it work with your datasets"* | `dataset_list` · `dataset_schema` · `dataset_records` · `dataset_sync` · `dataset_delete` |
+| `users` | *"Also let it add and manage people on the account"* | `account_users` |
+| `code` | *"Also let it write code in your apps"* | `code_context` · `code_push` |
+
+You can turn any of them on or off later from **[Account → Connections](https://build.gainable.dev/account/connections)** without reconnecting; the change takes effect on the connection's next request.
+
+<Note>
+The `users` box is only **offered** to someone who could manage users themselves — the account owner, or a member holding the `manage_users` permission. Connecting a client can never hand out more than the human behind it already had.
+</Note>
+
+<Tip>
+If your client can't find a `dataset_*` tool, that's the scope, not a bug. `import` deliberately stays on the default scope, so building an app from a spreadsheet works without the datasets box.
+</Tip>
 
 ### Which app a tool acts on
 
@@ -38,6 +59,10 @@ Returns a starter for a new Gainable project: a `README.md`, a `CLAUDE.md` for y
 | `overwrite` | boolean | Only when you explicitly asked to reset the files. A hand-written `CLAUDE.md` is your work, not a template. |
 
 Your client should offer this once, ask before writing anything, and read your existing context instead if you already have some.
+
+<Tip>
+The starter teaches one habit worth knowing yourself: **name Gaia in the request**. An assistant with several tools connected has nothing else to go on — *"build me an app to track expenses"* is just as likely to be answered out of its own head as routed to the connector. *"Using Gaia, build me…"* is what makes it land.
+</Tip>
 
 ### `apps_list`
 
@@ -131,16 +156,28 @@ Spreadsheets are the exception — they go through `import`, never into `build` 
 
 ### `chat`
 
-One turn: a server-side planner decides the change and the Build Agent applies it. This is the right tool for almost every edit — adding a field, fixing a view, changing a layout, adjusting behaviour.
+One turn: a server-side planner decides the change and the Build Agent applies it. This is the right tool for almost every edit — adding a field, fixing a view, changing a layout, adjusting behaviour. Asking for a page the app doesn't have creates it; renaming a page is a **display** change, so the slug, the URL and the filenames stay put.
 
 | Parameter | Type | Description |
 |---|---|---|
 | `message` | string | What you want changed, in your own words. Required unless `action` is `status`. |
-| `pageSlug` | string | Scope the change to one view. |
+| `pageSlug` | string | The page you're talking about. Context for the turn, not a restriction — the change lands wherever it belongs. |
 | `projectId` | string | Which app to act on. |
+| `chatId` | string | Continue a specific conversation, using a `chatId` from an earlier result. |
+| `newChat` | boolean | Start a separate conversation instead of continuing the current one. |
 | `action` | enum | `send` (default) · `status` |
 
 If the planner needs a decision it can't make, the result is `outcome:"needs_clarification"` with a question. Answer it as a **new** `chat` call — the server recognises the pending clarification and merges it in.
+
+<Note>
+**The plan auto-accepts on this path.** In the web builder the planner's plan card waits for you to click Accept; through `chat` it applies as soon as it's written. There is no approval step to wait for and no button to look for.
+</Note>
+
+#### Every turn belongs to a chat
+
+Work done through the connector lands in the same conversation unit the builder screen shows, so you can open the app in Gainable and see it. Calls continue the current chat; `newChat:true` starts a separate one when you move to an unrelated topic.
+
+The `chatId` comes back in **every** result. A client that reconnects between calls — Cowork does — loses its in-memory sense of which conversation it was in, so passing the `chatId` back is how a turn rejoins the right thread rather than starting a new one each time.
 
 <Warning>
 **Never re-send the same `chat` message.** The turn keeps running server-side whatever happens to the connection, so a second call isn't a retry: it runs the planner again and stacks a duplicate plan card someone has to clear by hand.
@@ -173,27 +210,116 @@ Reach for this whenever you're about to send someone a link. The failure worth a
 
 ---
 
-## Datasets
+## Who can use an app
 
-`import` bootstraps an app from a spreadsheet. These four make a **standalone** dataset that a script keeps fresh — create once, sync forever. See [Recurring data pipelines](/mcp/datasets) for the full workflow.
+`share` reports the links. These two decide who those links work for — the **Users** tab of an app in Gainable, reachable from your client.
 
-### `dataset_create`
+### `app_access`
+
+Reads or changes the app's audience. Two independent questions, and the tool answers both in words as well as values.
 
 | Parameter | Type | Description |
 |---|---|---|
-| `action` | enum | `create` (default) · `answer` · `finish` · `upload_url` |
-| `name` | string | Name for the dataset. |
-| `rows` | object[] | 5–20 representative seed rows, single-entity. |
-| `sheets` | object | Multi-entity seed: `{ "<name>": [ …rows ] }`. |
-| `fileBase64` | string | Seed from a spreadsheet instead (up to ~100 KB). |
-| `fileName` | string | The filename, with extension. |
-| `uploadToken` | string | The token from `upload_url`, for larger files. |
-| `answers` | object | Your reply to the pending question. |
-| `sessionId` | string | Thread this through every follow-up call. |
+| `action` | enum | `get` (default) · `set` |
+| `accessMode` | enum | Which members of the **owning account** get in. `account` = every active member. `invited` = only members added to this app. |
+| `externalAccess` | enum | Whether people **outside** the account exist at all. `none` = no login page. `invited` = you add them by hand. `signup` = anyone can create an account on the app. |
+| `requireEmailVerification` | boolean | Signup only — make new signups verify their email first. |
+| `domainWhitelist` | string[] | Signup only — restrict signup to these email domains. `[]` clears it. |
+| `projectId` | string | Which app to act on. |
 
 <Warning>
-Seed with **5–20 real rows**. The analyzer infers column types and picks the primary key from actual values, and that choice is frozen for the dataset's life — a one-row seed produces a schema you cannot fix later.
+**The two axes land at different times.** `accessMode` is enforced on every launch, so it takes effect the moment it's saved. `externalAccess`, `requireEmailVerification` and `domainWhitelist` become part of the app when it's **published** — a published app keeps its old login and signup pages until you republish it.
+
+The result says which: `requiresRepublish: true` means the live app still behaves the old way.
 </Warning>
+
+Narrowing `accessMode` to `invited` revokes access for every account member who isn't on the app's list, immediately. The tool says so in its `next`, but it's your call to make before asking for it.
+
+### `app_users`
+
+The people list. Two kinds of member, and the difference isn't cosmetic:
+
+- **Internal** (`external:false`, the default) — someone already on this Gainable account, added to this app. They sign in with their Gainable login and arrive over SSO.
+- **External** (`external:true`) — a user who exists only inside this app, with their own password and no Gainable account.
+
+| Parameter | Type | Description |
+|---|---|---|
+| `action` | enum | `list` (default) · `add` · `remove` · `update` |
+| `users` | object[] | For `add` — `{ email, name?, isAdmin? }`. `name` is required when `external:true`. |
+| `emails` | string[] | For `remove` and `update`. Also a shorthand for `add` when adding account members. |
+| `external` | boolean | `add` only — which kind of user to create. |
+| `isAdmin` | boolean | `update` only — the admin flag to set on everyone in `emails`. This is the **app's** admin, not a Gainable account role. |
+| `query` | string | `list` only — case-insensitive filter on name or email. |
+| `projectId` | string | Which app to act on. |
+
+Both kinds of `add` are gated on the access settings, and the tool enforces the gates rather than describing them:
+
+| You asked for | It refuses unless |
+|---|---|
+| An internal user | `accessMode` is `invited` — while it's `account` everyone can already open the app, so adding one person changes nothing |
+| An external user | `externalAccess` is on — with no login page there's no way for them to sign in |
+
+<Note>
+**No invitation email is sent, either way.** External users are created without a password and set their first one through *Forgot password* on the app's own login page. Internal users simply find the app in their launcher. Tell them yourself.
+</Note>
+
+A `list` in `account` mode is **not** authoritative — every active member can open the app whether or not they appear, and rows appear as people first use it. It only becomes the gate once `accessMode` is `invited`.
+
+Removing an external user **deletes them** — that app login was the only one they had. Removing an internal user only revokes their access to that app; their Gainable account is untouched.
+
+---
+
+## People on the account
+
+### `account_users`
+
+<Info>Needs the `users` scope, and the connected person must be the account owner.</Info>
+
+Everyone on the Gainable **account**, as opposed to on one app — the Users page in settings. This is where somebody has to exist before `app_users` can add them to an app, and it's the refusal `app_users` gives when they don't.
+
+| Parameter | Type | Description |
+|---|---|---|
+| `action` | enum | `list` (default) · `invite` · `resend` · `remove` · `set_type` · `set_permissions` |
+| `users` | object[] | For `invite` — `{ email, type?, permissions? }`. |
+| `emails` | string[] | For `resend`, `remove` and `set_type`. |
+| `type` | enum | `builder` or `app-user`. |
+| `permissions` | enum[] | The **complete** set of account capabilities, applied to everyone in the call. Anything left out is revoked. |
+| `query` | string | `list` only — case-insensitive filter on name or email. |
+
+Two types of person, and the difference is money and reach:
+
+| Type | What they get | Cost |
+|---|---|---|
+| `builder` | Full platform access — builds and edits apps | **Uses a paid seat** from the plan |
+| `app-user` | Only the launcher and the apps they're given | Unlimited |
+
+Separately from the type, a person can hold account **capabilities**: `manage_users` (invite and manage people), `api_keys` (mint account API keys), `connections` (manage connected apps), `account_views` (create shared views in the apps grid). These are orthogonal — either type may hold any of them — and `[]` is a normal answer, but it has to be an answer rather than an omission. You can't pass on a capability you don't hold yourself.
+
+<Warning>
+**Inviting sends email to a third party and can spend money.** `action:"invite"` mails an invitation link that expires in 14 days; they are not on the account until they accept it. The right word in a report is *invited*, not *added*.
+
+`list` comes back with `builderSeatsUsed`, `builderSeatLimit` and `builderSeatsFree`, so a client can tell you a promotion will fail before it tries.
+</Warning>
+
+---
+
+## Datasets
+
+<Info>All five need the `datasets` scope. `import` does not — that's the spreadsheet-to-app path, and scoping it would mean a connection without the box ticked couldn't build an app from a file at all.</Info>
+
+`import` bootstraps an app from a spreadsheet. These five work with **standalone** datasets that a script keeps fresh — create once, sync forever. See [Recurring data pipelines](/mcp/datasets) for the full workflow.
+
+### `dataset_list`
+
+Find a dataset before syncing, reading or deleting it.
+
+| Parameter | Type | Description |
+|---|---|---|
+| `query` | string | Case-insensitive filter on the dataset name, applied across **every** dataset rather than the current page. |
+| `limit` | integer | How many to return. Default `25`, max `100`. |
+| `skip` | integer | How many to skip, for paging. Newest first. |
+
+Each row carries the provider, row count, last sync, whether the source is syncable from a payload or only re-fetchable from upstream, and **`connectedApps`** — which apps depend on it. That last one is what you need before proposing to replace or delete anything, so it's always there rather than behind a flag.
 
 ### `dataset_schema`
 
@@ -214,36 +340,83 @@ Each field carries a `writeAs` describing exactly what to emit:
 | `objectIdArray` | The referenced row's primary value — the link is resolved server-side |
 | `string` | String |
 
-### `dataset_sync`
+### `dataset_records`
 
-Pushes a full snapshot, or re-fetches from upstream when no rows are given.
+Reads the **rows** — the actual values, not the shape. Before this existed, the only way to see whether a sync landed was to build an app over the dataset.
 
 | Parameter | Type | Description |
 |---|---|---|
 | `dataset` | string · **required** | The `col_…` id, or the dataset name. |
-| `rows` | object[] | The complete snapshot, for a single-sheet dataset. |
-| `sheets` | object | The complete snapshot for a multi-sheet dataset. |
+| `sourceKey` | string | Which entity to read, as `s<sourceIndex>_e<entityIndex>` — e.g. `s0_e1`. Defaults to the first; the response always says which it read. |
+| `limit` | integer | Rows to return. Default `25`, max `200`. |
+| `skip` | integer | Rows to skip, for paging. |
+| `include` | enum[] | `relations` and/or `attachments`. Both are large per-row blobs, omitted by default. |
+
+`availableEntities` is on every response even when there's only one, so a multi-entity dataset never gets reported as if its first entity were the whole thing.
+
+<Note>
+Only adapter-backed sources store rows in Gainable. A source whose data stays at the provider comes back as an explicit refusal naming the entity, rather than as an empty page you'd have no way to see through.
+</Note>
+
+### `dataset_sync`
+
+Gets data **into** a dataset — creating one when there isn't one yet. This was two tools; which applied depended on whether the dataset already existed, which is a fact about the account rather than about what you meant.
+
+| Parameter | Type | Description |
+|---|---|---|
+| `action` | enum | `sync` (default) · `create` · `answer` · `finish` · `upload_url` |
+| `dataset` | string | For `sync` — the `col_…` id or dataset name to replace. |
+| `name` | string | For `create` — name for the new dataset. |
+| `createIfMissing` | boolean | For `sync` — create it instead of failing when nothing matches `dataset`. |
+| `rows` | object[] | The complete snapshot for a single-sheet dataset. On `create`, 5–20 representative real rows instead. |
+| `sheets` | object | The complete snapshot for a multi-sheet dataset: `{ "<sheetName>": [ …rows ] }`. |
+| `fileBase64` | string | A spreadsheet instead of JSON rows. Works for both creating and replacing; keep it small (~100 KB). |
+| `uploadToken` | string | The token from `action:"upload_url"`, once the file has been POSTed. Preferred over `fileBase64`. |
+| `fileName` | string | The filename, with extension, when sending a file. |
 | `sourceIndex` | integer | Which source to write to, when the dataset has several. |
-| `minOverlap` | number | Minimum share of existing primary keys the payload must still contain. Default `0.5`. |
+| `minOverlap` | number | Minimum share of existing primary keys the payload must still contain. Default `0.5`. JSON rows only. |
 | `force` | boolean | Proceed despite low overlap. **This is the flag that destroys comment threads.** |
+| `sessionId` | string | Thread this through every follow-up call during a `create`. |
+| `answers` | object | For `answer` — your reply to the analyzer's pending question. |
+
+**Three transports, picked by what you send:**
+
+| You send | What happens |
+|---|---|
+| `rows` or `sheets` | The snapshot is pushed in |
+| A file | Same, but the server parses it |
+| Nothing | Gainable re-fetches from upstream — the Google Sheets / Excel Online / Airtable path |
 
 <Warning>
 **Every sync replaces everything.** Rows absent from the payload are deleted. Send the complete set every time — if a collector failed halfway, abort rather than syncing what it managed to collect.
 </Warning>
 
-### `dataset_list`
+<Note>
+**Syncing never creates.** An unmatched name is an error, because the server can't tell a typo from a new dataset and would silently make a duplicate — `"Deals Pipeline (2)"` — while the real one quietly goes stale.
+
+Use `action:"create"` when you want a new dataset every time, or `createIfMissing:true` for an unattended collector that should seed on its first run and replace on every run after. Not for a one-off sync you're driving by hand, where a caught typo is the point.
+</Note>
+
+<Warning>
+Seed a `create` with **5–20 real rows**. The analyzer infers column types and picks the primary key from actual values, and that choice is frozen for the dataset's life — a one-row seed produces a schema you cannot fix later.
+</Warning>
+
+### `dataset_delete`
+
+Permanently deletes the dataset, its configuration and every row in it. No undo, no export first.
 
 | Parameter | Type | Description |
 |---|---|---|
-| `query` | string | Case-insensitive filter on the dataset name. |
+| `dataset` | string · **required** | The `col_…` id, or the dataset name. |
+| `confirm` | string · **required** | The dataset's **exact** name, repeated back. A mismatch refuses the delete. |
 
-Returns each dataset's provider, row count, last sync, and whether each source is syncable from a payload or only re-fetchable from upstream.
+Two guards, against two different mistakes. `confirm` is against deleting the wrong thing on a vague instruction — *"get rid of the old pipeline one"* resolves to exactly one dataset without anybody having seen which, so the name has to travel through the conversation where you can catch it. And a dataset any app is still using can't be deleted at all: the refusal names the apps, and they have to be detached first.
 
 ---
 
 ## Author mode
 
-Two extra tools appear **only** when you granted the `code` scope — the *"Also let it write code in your apps"* checkbox at sign-in. You can turn it on or off later from [Account → Connections](https://build.gainable.dev/account/connections) without reconnecting.
+Two extra tools appear **only** when you granted the `code` [scope](#scopes) — the *"Also let it write code in your apps"* checkbox at sign-in.
 
 <Note>
 This is a scope, not a setting, for two reasons. A token that can build apps shouldn't automatically be able to author code into them. And a model can't over-reach for a tool that isn't in its list, which is a harder guarantee than a description asking it not to.
@@ -299,9 +472,15 @@ Step two: check your work, then commit it.
 | `outcome: "needs_clarification"` | The planner needs a decision. Answer as a new `chat` call. |
 | `ok: false, reason: "drift"` | The payload no longer matches the dataset's frozen shape. Nothing was written. Fix the collector. |
 | `ok: false, reason: "low_primary_key_overlap"` | The payload barely matches what's stored — the signature of a truncated run or a regenerated key. Nothing was written. |
+| `ok: false, reason: "not_found"` (dataset) | Nothing matched the name. **Nothing was created either** — the nearest existing datasets come back with it. Fix the typo, or ask for `action:"create"`. |
 | `reason: "stale"` (author mode) | The file changed server-side since you read it. Re-read and re-apply. |
+| A tool your client can't find | Its [scope](#scopes) wasn't granted. Tick the box at [Account → Connections](https://build.gainable.dev/account/connections). |
 | "A turn is already running for this project" | Two calls hit the same app at once. Wait for the first, or call `status`. |
 | "This app belongs to a different account" | You're connected to the wrong Gainable account for this app. |
+| "confirm does not match" | `dataset_delete` guard. The exact name has to be repeated back — don't just copy the expected value across, show it to a human. |
+| "Every member of this account can already open this app" | `app_users` on an app whose `accessMode` is `account`. Adding one person there changes nothing; narrow it with `app_access` first. |
+| "This app has no login page" | Adding an external user while `externalAccess` is `none`. Turn it on with `app_access` — and republish if the app is already live. |
+| "Only the account owner can manage who is on the account" | `account_users` needs the owner. The scope says what the connection may attempt; the permission says what the person may do, and both have to pass. |
 | "No active subscription or its trial has expired" | Check [billing](https://build.gainable.dev). |
 
 ## Next steps

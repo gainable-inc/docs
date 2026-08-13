@@ -32,7 +32,7 @@ Claude connects to the connector from Anthropic's cloud, not from your device �
         Click **Add**, then **Connect**. Your browser opens the Gainable sign-in, you pick which account to connect, and you're done.
 
         <Tip>
-        The consent screen has a checkbox — *"Also let it write code in your apps."* Leave it off unless you want [author mode](/mcp/tools#author-mode).
+        The consent screen has up to three checkboxes — for your **datasets**, for **managing people** on the account, and for [author mode](/mcp/tools#author-mode). Building, changing, publishing and sharing apps works without any of them. See [what you're granting](/mcp/overview#what-youre-granting).
         </Tip>
       </Step>
     </Steps>
@@ -78,16 +78,20 @@ Your apps listed back means everything is connected.
 Attach a spreadsheet to the message and ask:
 
 ```
-Build me an app from this planning sheet
+Have Gaia build me an app from this planning sheet
 ```
 
 Claude imports the workbook, asks you a handful of questions about your own data — which sheet is reference material, whether a "TOTAL" row is a summary to drop — then walks the contract conversation and runs the build. Give it 90–180 seconds at the end and paste-ready URLs come back.
+
+<Warning>
+**Name Gaia in the first message.** Without it, *"build me an app from this sheet"* is a request Claude can answer by itself — and it will, without ever calling the connector. See [Say "Gaia" in your first message](/mcp/overview#say-gaia-in-your-first-message).
+</Warning>
 
 <Note>
 No spreadsheet handy? Download the [event planning sample](https://www.gainable.dev/samples/horizon-summit-2026-planning.xlsx) and attach that.
 </Note>
 
-From there it's ordinary conversation:
+From there it's ordinary conversation — the app is in context now, so you don't need to name Gaia again:
 
 ```
 Add a probability column to the deals table
@@ -145,7 +149,7 @@ Same connector, same tools, same harness. What differs is what the client can se
 | Project context | Project Instructions | `CLAUDE.md` |
 | Spreadsheets | Attach to the message | Read from the working folder |
 | A record of the app | The chat, plus project files if it has a folder | An `<appName>.md` written to the folder |
-| Author mode | Available if granted | Available if granted |
+| Optional scopes | Available if granted | Available if granted |
 
 <Tip>
 Both surfaces edit the same app. An operator can iterate in Cowork while an engineer works from the terminal, so handing off no longer means handing over.
@@ -154,7 +158,7 @@ Both surfaces edit the same app. An operator can iterate in Cowork while an engi
 ## Manage the connection
 
 - **Change or revoke it in Claude** — **Settings → Connectors**, then the three-dot menu.
-- **Change or revoke it in Gainable** — [Account → Connections](https://build.gainable.dev/account/connections). This is also where you turn author mode on or off without reconnecting.
+- **Change or revoke it in Gainable** — [Account → Connections](https://build.gainable.dev/account/connections). This is also where you turn any of the three optional [scopes](/mcp/tools#scopes) — datasets, people, author mode — on or off without reconnecting.
 
 ## Next steps
 

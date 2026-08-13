@@ -19,6 +19,10 @@ Run collect.js and sync Ops Metrics
 A dataset created this way is standalone. Attach it to an app whenever you want a UI over it, the same as any other dataset.
 </Note>
 
+<Info>
+The dataset tools sit behind the `datasets` [scope](/mcp/tools#scopes) — the *"Also let it work with your datasets"* checkbox when you connect. If your client can't find them, tick it at [Account → Connections](https://build.gainable.dev/account/connections); no reconnect needed.
+</Info>
+
 ## The three rules
 
 Everything else follows from these.
@@ -48,17 +52,32 @@ Everything else follows from these.
     Seed it with **5–20 representative real rows**. The analyzer infers column types and picks the primary key from actual values, and that choice is frozen for the dataset's life — a one-row seed produces a schema you cannot fix later.
   </Step>
   <Step title="Create the dataset">
-    Ask your client to create it from the collector's output. The analyzer will ask a clarifying question or two — usually about which column should be the primary key. **Those are your calls, not the model's**; a good client relays them rather than answering them.
+    Ask your client to create it from the collector's output — that's `dataset_sync` with `action:"create"`. The analyzer will ask a clarifying question or two, usually about which column should be the primary key. **Those are your calls, not the model's**; a good client relays them rather than answering them.
 
     The final result carries the `collectionId` and the full write contract, so there's no second call to make.
   </Step>
   <Step title="Write the collector against the contract">
     The contract's `requiredKeys` lists what to emit, and every field carries a `writeAs` describing its exact form — *"JSON number, not a formatted string"*, *"ISO 8601 date string"*, and so on. Keys are matched exactly and are case-sensitive.
   </Step>
+  <Step title="Check what actually landed">
+    Ask for the dataset's rows — `dataset_records` — after the first real sync. It reads back the stored values, so *"did the sync land, and did the dates survive as dates"* is one question rather than a whole app you have to build to find out.
+  </Step>
   <Step title="Schedule it">
     See [Putting it on a schedule](#putting-it-on-a-schedule) below.
   </Step>
 </Steps>
+
+### Creating and syncing are one tool
+
+`dataset_sync` does both, but it will never quietly switch between them:
+
+| What you want | Ask for |
+|---|---|
+| A new dataset, every time | `action:"create"` |
+| Replace an existing one | `action:"sync"` — the default |
+| Seed on the first run, replace on every run after | `action:"sync"` with `createIfMissing:true` |
+
+A plain sync against a name that matches nothing is an **error**, and nothing is created. That's deliberate: the server can't tell a typo from a new dataset, so without the guard a mistyped name on a nightly job would mint *"Ops Metrics (2)"* and fill it happily while the real dataset went stale in silence. `createIfMissing` is for an unattended collector that owns its dataset — not for a sync you're driving by hand, where catching the typo is the point.
 
 ## Two collector patterns
 
@@ -93,7 +112,7 @@ The sync goes through the connector, so a scheduled sync is a scheduled **agent*
     Set the sync up as recurring work in Cowork. Once the connector is [added and enabled](/mcp/claude), schedule a task that says what to collect and where to put it:
 
     ```
-    Every weekday at 07:00, run the ops metrics collector and
+    Every weekday at 07:00, run the ops metrics collector and have Gaia
     sync the result to the Ops Metrics dataset.
     If the collector fails, don't sync — tell me instead.
     ```
@@ -119,8 +138,8 @@ The sync goes through the connector, so a scheduled sync is a scheduled **agent*
     Keep the instruction specific enough that there's nothing to decide at 7am — name the collector, name the dataset, and say what to do when it fails:
 
     ```
-    Run collect.js in this folder and sync its output to the Ops Metrics
-    dataset. If collect.js exits non-zero, do not sync.
+    Run collect.js in this folder and have Gaia sync its output to the
+    Ops Metrics dataset. If collect.js exits non-zero, do not sync.
     ```
 
     Best when the collector has to run next to something private — a VPN, a local database, a machine with the right credentials.
@@ -131,6 +150,10 @@ The sync goes through the connector, so a scheduled sync is a scheduled **agent*
 Whichever you pick, the run needs to be able to use the connector's tools without stopping to ask. Allow them up front, or the job hangs on a permission prompt nobody is there to answer.
 </Note>
 
+<Warning>
+**Name Gaia in the instruction.** An unattended run that doesn't is the worst version of this failure: the assistant answers the request itself, reports success, and never touches your dataset — every morning, with nothing in the log to say so. See [Say "Gaia" in your first message](/mcp/overview#say-gaia-in-your-first-message).
+</Warning>
+
 ### Reading the result
 
 `dataset_sync` reports what happened rather than throwing:
@@ -140,8 +163,9 @@ Whichever you pick, the run needs to be able to use the connector's tools withou
 | `ok: true` | Synced. Per-entity inserted / updated / deleted counts come back with it. |
 | `ok: false`, `reason: "drift"` | The payload no longer matches the frozen shape. **Nothing was written.** Fix the collector; don't retry unchanged. |
 | `ok: false`, `reason: "low_primary_key_overlap"` | The payload barely overlaps what's stored — the signature of a truncated run or a regenerated key. **Nothing was written.** |
+| `ok: false`, `reason: "not_found"` | No dataset matched the name. **Nothing was written and nothing was created.** The nearest existing names come back with it. |
 
-Both failures need a human. Have the job surface them rather than retrying in a loop.
+All three need a human. Have the job surface them rather than retrying in a loop.
 
 <Warning>
 **Never sync a partial payload.** If your collector fails halfway, abort the run — do not sync what it managed to collect, because a partial payload deletes the rest of the dataset.
@@ -164,6 +188,12 @@ For a single-table dataset, prefer JSON. Types survive better through it, and th
 Google Sheets, Excel Online, and Airtable datasets pull from upstream instead of being pushed to. For those, a sync with **no payload** tells Gainable to go and re-read the source.
 
 `dataset_list` shows which of your sources are syncable from a payload; `dataset_schema` reports each source's transport.
+
+## Retiring one
+
+`dataset_list` reports `connectedApps` on every row — which apps depend on that dataset. A dataset any app is still using **cannot be deleted**; the refusal names them, and they have to be detached first.
+
+Deleting one that is free drops its configuration and every row it holds, with no undo and no export. Your client has to repeat the dataset's exact name back to go through with it, which is what forces the name into the conversation where you can catch the wrong one.
 
 ## Next steps
 

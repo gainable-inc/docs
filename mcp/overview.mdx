@@ -82,14 +82,65 @@ The connector uses OAuth 2.1 with dynamic client registration and PKCE, so every
 |---|---|
 | Endpoint | `https://build.gainable.dev/mcp` |
 | Transport | Streamable HTTP (`POST` only — there is no separate SSE endpoint) |
-| Scopes | `mcp` (default) · `code` (author mode) |
+| Scopes | `mcp` (always) · `datasets` · `users` · `code` |
 | Shown in client UIs as | **Gainable (Gaia)** |
 
-You can review or revoke any connection at any time from **[Account → Connections](https://build.gainable.dev/account/connections)**, including turning author mode on or off without reconnecting.
+### What you're granting
+
+Building, changing, publishing and sharing apps comes with every connection. Three groups of tools sit behind their own checkbox on the consent screen, and a connection that doesn't have one **can't see those tools at all** — they're absent from the list, not refused at call time.
+
+| Checkbox | Scope | What it adds |
+|---|---|---|
+| *Also let it work with your datasets* | `datasets` | List datasets and read their rows, create new ones, replace the contents of one, delete one no app is using. Importing a spreadsheet into a new app works without it. |
+| *Also let it add and manage people on the account* | `users` | Invite people by email, change whether they're a builder or an app user, remove them. **Inviting a builder uses a paid seat.** |
+| *Also let it write code in your apps* | `code` | [Author mode](/mcp/tools#author-mode) — write views, routes and models directly instead of asking Gainable to make the change. |
+
+You can review or revoke any connection at any time from **[Account → Connections](https://build.gainable.dev/account/connections)**, and flip any of the three scopes there without reconnecting — the change takes effect on the connection's next request.
+
+<Note>
+The people checkbox is only **offered** to someone who could manage users themselves. Connecting a client can never hand out more access than you already had.
+</Note>
+
+After you approve, Gainable opens a short **what-now** page with a few first prompts you can copy. Every one of them names the product — see below for why that matters.
 
 <Note>
 No Gainable account yet? You can [create one free](https://build.gainable.dev/auth/signup) during the sign-in step and carry straight on.
 </Note>
+
+## Say "Gaia" in your first message
+
+This is the single thing most worth knowing, and the most common reason a connected client does nothing.
+
+Connecting the server doesn't make your assistant use it. *"Build me an app to track expenses"* is a request it can answer from its own head — and it will, producing something that looks like an answer and never touching Gainable at all. Naming the product is what routes the request.
+
+<CodeGroup>
+```text Routes to Gaia
+Have Gaia build an event planning app from this spreadsheet
+```
+
+```text Answered from its own head
+Build me an app to track expenses
+```
+</CodeGroup>
+
+**Only the first message needs it.** Once a tool has run, the app's `projectId` is in the conversation and everything after it is ordinary follow-up:
+
+```text
+Have Gaia build a deals pipeline from this sheet   ← names it
+Add a probability column to the deals table        ← doesn't need to
+Make the sponsors view the home page
+Publish it
+```
+
+<Tip>
+Gaia, Gainable, "Gaia Build" and "Gainable Build" all name the same product, so any of them routes correctly. In ChatGPT you can also pick the connector directly with **@ Gaia** instead of naming it in the sentence.
+</Tip>
+
+<Warning>
+This matters most where nobody is watching. A [scheduled sync](/mcp/datasets#putting-it-on-a-schedule) whose instruction doesn't name Gaia can run every morning, answer itself, and never touch your dataset — with nothing in the log to say so.
+</Warning>
+
+Starting a genuinely new app later in the same conversation is also a first message: name Gaia again, and say it's a new app, or you may get a change to the one you already have.
 
 ## Not to be confused with your app's MCP server
 
@@ -106,16 +157,18 @@ This section is about the first one. The second is what makes an app you build t
 
 ## What the connector can do
 
-Twelve tools, plus two more if you grant author mode. You never name them — your client picks from what you ask — but this is the shape of it:
+Ten tools by default, and up to eighteen depending on which scopes you granted. You never name them — your client picks from what you ask — but this is the shape of it:
 
-| | Tools |
-|---|---|
-| Find your way around | `apps_list` · `apps_select` · `project_setup` |
-| Build a new app | `import` · `build` |
-| Change a built app | `chat` |
-| Ship it | `publish` · `share` |
-| Keep data fresh | `dataset_create` · `dataset_sync` · `dataset_schema` · `dataset_list` |
-| Author mode | `code_context` · `code_push` |
+| | Tools | Scope |
+|---|---|---|
+| Find your way around | `apps_list` · `apps_select` · `project_setup` | `mcp` |
+| Build a new app | `import` · `build` | `mcp` |
+| Change a built app | `chat` | `mcp` |
+| Ship it | `publish` · `share` | `mcp` |
+| Decide who can open it | `app_access` · `app_users` | `mcp` |
+| Work with your data | `dataset_list` · `dataset_schema` · `dataset_records` · `dataset_sync` · `dataset_delete` | `datasets` |
+| Manage the account's people | `account_users` | `users` |
+| Author mode | `code_context` · `code_push` | `code` |
 
 See the [tool reference](/mcp/tools) for every parameter.
 
