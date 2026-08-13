@@ -1,0 +1,338 @@
+---
+title: "Changing a built app"
+description: "How to ask for changes once your app is up and running"
+---
+
+Building an app is one conversation. Changing it is a different one, with different rules — the app already exists, so every request lands against something real.
+
+<Info>
+This page is about the chat panel in the Gainable builder. Driving Gaia from Claude Code, Claude, or Cowork instead? The same planner does the work and the same advice applies — see the [`chat` tool reference](/mcp/tools#chat) for what differs.
+</Info>
+
+## What happens when you send a change
+
+<Steps>
+  <Step title="The planner reads your request">
+    It sees what's already built, not just your sentence.
+  </Step>
+  <Step title="A plan card appears">
+    A title, a one-line summary, and a checklist — written live, filling in as the planner works.
+  </Step>
+  <Step title="You accept or reject it">
+    Nothing changes until you click **Accept**. **Reject** doesn't undo anything; it throws the plan away so you can describe it differently.
+  </Step>
+  <Step title="The build runs">
+    The send button becomes a **stop** button and the input reads *"Agent working…"*. Click stop to cancel.
+  </Step>
+</Steps>
+
+<Frame>
+  <img src="/images/plan-card.png" alt="A plan card in the chat panel, with a title, a summary, a one-item checklist, and Reject and Accept buttons" />
+</Frame>
+
+Reading the plan card before accepting is the cheapest quality check available. If the checklist mentions a page you didn't ask about, reject it and say which page you meant — that costs seconds, where letting it run costs a build and an undo.
+
+Notice how short that checklist is. A one-line request should produce a one-line plan; a checklist that has grown extra items is usually a sign the request carried more than you meant it to.
+
+<Tip>
+The **Auto accept plans** toggle in the chat toolbar skips the approval step. Useful once you trust a run of small changes; turn it back off for anything structural.
+</Tip>
+
+<Warning>
+**One change runs per app at a time.** Sending a second request while one is building is refused rather than queued — wait for the first to finish.
+</Warning>
+
+### When Gaia asks a question back
+
+Sometimes the plan card is replaced by a question with two to four options. That happens when the request has more than one reasonable reading, is missing something the planner can't infer, or is too vague to scope.
+
+It is not a failure, and it's cheaper than the alternative. Answer it and the turn continues.
+
+<Note>
+If your request was about something you screenshotted, attach the screenshot again with your answer. The follow-up is an ordinary message, and re-attaching is the reliable way to keep the picture in play.
+</Note>
+
+## Say where the change goes
+
+### The page you're on is a hint, not a target
+
+The builder tells the planner which page you're looking at, but treats it as a clue rather than an instruction — because a request that names somewhere else has to win.
+
+<CodeGroup>
+```text Good
+On the deals page, add a filter dropdown for status
+```
+
+```text Ambiguous
+Add filtering
+```
+</CodeGroup>
+
+Name the page whenever the change belongs to a specific one. Asking about deals while standing on Companies has produced a plan that targeted Companies — the page you're on is a strong hint, and an unnamed request lets it win.
+
+<Tip>
+Attaching a screenshot or selecting an element on the page removes the ambiguity entirely. Then the page isn't a hint any more — it's the thing you pointed at.
+</Tip>
+
+### Name the thing you're changing
+
+Reference what already exists, by the name the app uses for it.
+
+<CodeGroup>
+```text Good
+Add a due date field to the Task model
+```
+
+```text Less clear
+Add due dates
+```
+</CodeGroup>
+
+<CodeGroup>
+```text Good
+Add a chart showing Tasks grouped by status
+```
+
+```text Creates confusion
+Add a chart showing items by category
+```
+</CodeGroup>
+
+### Say it in the app's own words
+
+If the app already has a component that does the job, name it and you'll get that component. Describe the behaviour instead and you may get a hand-written reimplementation of something that already shipped.
+
+<CodeGroup>
+```text Good
+Add a task list to the deal detail page
+```
+
+```text Invites a reimplementation
+Add a checklist where I can tick things off,
+with overdue ones in red
+```
+</CodeGroup>
+
+## Bug or preference?
+
+This distinction is worth more than any other phrasing tip on this page.
+
+A **bug** is the app failing to do what it was built to do. A **preference** is you wanting it to do something different. Gaia handles both, but it handles them through different paths — and a preference reported as a bug sends it hunting for a defect that was never there.
+
+<CodeGroup>
+```text Preference — say it as a change
+Change the notes field on the task form
+from required to optional
+```
+
+```text Reads as a bug report
+Notes shouldn't be mandatory, please fix this
+```
+</CodeGroup>
+
+"Make notes not mandatory" phrased as a defect has cost thirty turns of diagnosis for what was a one-line change. If the app is doing exactly what you asked for and you've changed your mind, say so plainly — *"change X to Y"*, not *"X is broken"*.
+
+When something genuinely is broken, describe what you saw and what you expected:
+
+<CodeGroup>
+```text Good
+The deal amount is showing without a dollar sign.
+It should display as currency, like $50,000
+```
+
+```text Vague
+The amounts look wrong
+```
+</CodeGroup>
+
+<CodeGroup>
+```text Good
+On the deals page, when I click Add Deal and submit the form,
+the deal doesn't appear in the list. I have to refresh to see it
+```
+
+```text Vague
+Adding doesn't work
+```
+</CodeGroup>
+
+<Tip>
+Can't pin down what's wrong? Run [Audit codebase](/reference/troubleshooting#audit-codebase) — it checks the whole app rather than the part you suspect.
+</Tip>
+
+## Keep the request small
+
+### One change per message
+
+A small request gets a small, correctly-scoped plan. Padding one with extras you don't need produces a plan that touches more of the app than it should.
+
+<CodeGroup>
+```text Good
+Add a phone number field to the Contact form
+```
+
+```text Over-scoped
+Add a phone number field to the Contact form, and while
+you're there tidy up the layout, check the validation,
+and maybe add a country code picker
+```
+</CodeGroup>
+
+Send them as separate messages instead. Each one gets its own plan you can read.
+
+### Name both ends of a move
+
+A move needs a source and a destination. With only one, there's nothing to change.
+
+<CodeGroup>
+```text Good
+Move the Notes field from the sidebar into the main form
+```
+
+```text Does nothing
+Move the Notes field
+```
+</CodeGroup>
+
+### Don't add "keep X unchanged"
+
+It reads like a safety net and works as the opposite. If `X` doesn't match something actually on the page, the clause sends the planner looking for it, and the request it was protecting gets lost. Existing views are edited surgically, never rewritten wholesale — the things you didn't mention are already safe.
+
+<CodeGroup>
+```text Good
+Add a due date column to the tasks table
+```
+
+```text Risky
+Add a due date column to the tasks table, but keep the
+sort order and grouping exactly as they are
+```
+</CodeGroup>
+
+## Show it instead: screenshots
+
+Sometimes words aren't enough. Take a screenshot of your app and **annotate it** with drawings, arrows, and text to show exactly what you mean.
+
+<Steps>
+  <Step title="Click the camera icon in the chat toolbar">
+    <Frame>
+      <img src="/images/screenshot-icon.png" alt="Screenshot button in the chat toolbar" />
+    </Frame>
+  </Step>
+  <Step title="Allow the browser to capture the tab">
+    <Frame>
+      <img src="/images/screenshot-allow.png" alt="Browser permission dialog to capture the tab" />
+    </Frame>
+  </Step>
+  <Step title="Annotate it">
+    Draw freehand, add arrows, drop in text labels, or box an area.
+
+    <Frame>
+      <img src="/images/screenshot-annotate.png" alt="Screenshot annotation editor with drawing tools, arrows, and text" />
+    </Frame>
+  </Step>
+  <Step title="Add a written description and send">
+    The drawing says where; the sentence says what.
+  </Step>
+</Steps>
+
+Reach for it when something **looks** wrong, when a layout needs rearranging, when an element is missing and you can point at the gap, or when position matters more than words can carry.
+
+<Tip>
+A circle and an arrow with "move this here" beats a paragraph. It also pins the page, so there's no ambiguity about which one you mean.
+</Tip>
+
+## Asking versus changing
+
+Gaia can answer questions about your app without touching it.
+
+<CodeGroup>
+```text Asks — nothing is built
+How does the task filtering work?
+What fields does the Deal model have?
+```
+
+```text Changes — a plan card appears
+Add a due date field to tasks
+Change the dashboard to show monthly data
+```
+</CodeGroup>
+
+<Tip>
+Opening with "how", "what", "where", or "explain" gets you an answer. If a plan card appears when you only wanted to know something, reject it — nothing has changed.
+</Tip>
+
+## Adding a page, renaming a page
+
+Asking for a page that doesn't exist **creates** it. You don't need a different command for a new page than for a change to an existing one — describe what you want and the planner checks it against the app's real page list.
+
+Renaming a page is a **display** change. The name updates everywhere you see it, while the slug, the URL, and the underlying filenames stay as they are — so existing links keep working.
+
+<Note>
+Changing the URL is a different, larger request. Say so explicitly if that's what you want.
+</Note>
+
+## Conversations
+
+Every change belongs to a **chat** — the same conversation unit you see in the builder. An app can have as many as you like, and each is titled automatically from its first message.
+
+<Frame>
+  <img src="/images/chats-panel.png" alt="The Chats panel listing two conversations, each auto-titled from its first message" />
+</Frame>
+
+Start a new chat when you move to an unrelated topic. A long chat carries its history into every new request, which helps while you're iterating on one thing and gets in the way once you've moved on. You can pin, rename, and archive chats as they accumulate.
+
+<Note>
+Which page you're looking at doesn't decide which chat you're in. A chat can span the whole app.
+</Note>
+
+## Undoing a change
+
+Every successful build is a snapshot. The most recent one can be reverted with the **Undo this build** button on its completion message.
+
+<Frame>
+  <img src="/images/build-complete-undo.png" alt="A completed build's summary message with the Undo this build button beneath it" />
+</Frame>
+
+To go further back, use commit history. See [How iteration works](/concepts/how-it-works#how-iteration-works) for both, including how rollback safety works.
+
+<Tip>
+The completion message is a summary of what the agent *did*, not proof of what you'll *see*. When a change is visual, look at the app before moving on — expanding the completion row shows which files were actually edited.
+</Tip>
+
+## Example requests
+
+Refinement-shaped requests, in the form that works:
+
+```text
+On the deals page, add a filter dropdown for status
+
+Add a due date field to the Task model and show it in the tasks table
+
+Move the Notes field from the sidebar into the main form
+
+Change the notes field on the task form from required to optional
+
+The chart should group deals by status, but it's grouping by company
+
+Make the sponsors view the home page
+```
+
+Looking for a specific feature instead? Those live with the feature: [charts](/skills/chartjs), [kanban boards](/skills/kanban), [collaboration](/skills/weavy), [real-time updates](/building/real-time), [filters and views](/building/views), and [themes and colours](/skills/design).
+
+## Learn more
+
+<CardGroup cols={2}>
+  <Card title="Best practices" icon="star" href="/prompting/best-practices">
+    Writing the prompt that builds it in the first place
+  </Card>
+  <Card title="How it works" icon="gear" href="/concepts/how-it-works">
+    Iteration, undo, and commit history
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/reference/troubleshooting">
+    When something's wrong and you can't say what
+  </Card>
+  <Card title="From your own agent" icon="terminal" href="/mcp/tools#chat">
+    The same changes from Claude Code, Claude, or Cowork
+  </Card>
+</CardGroup>

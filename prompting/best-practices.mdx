@@ -171,149 +171,13 @@ Build checkout with:
 
 ---
 
-## Updating existing apps
+## Changing an app you have already built
 
-When modifying an app you've already built:
+Everything above is about the prompt that creates an app. Once it exists, the rules shift: you are naming things that are already there, and a plan card appears before anything changes.
 
-### Reference existing elements
-
-<CodeGroup>
-```text Good
-Add a due date field to the Task model
-```
-
-```text Less clear
-Add due dates
-```
-</CodeGroup>
-
-### Specify where to make changes
-
-<CodeGroup>
-```text Good
-On the deals page, add a filter dropdown for status
-```
-
-```text Ambiguous
-Add filtering
-```
-</CodeGroup>
-
-### Build on what exists
-
-<CodeGroup>
-```text Good
-Add a chart showing Tasks grouped by status
-```
-
-```text Creates confusion
-Add a chart showing items by category
-(What items? What category?)
-```
-</CodeGroup>
-
----
-
-## Screenshot and annotate — your secret weapon
-
-Sometimes words aren't enough. Instead of trying to describe exactly what's wrong or what you want changed, you can **take a screenshot of your app and annotate it** with drawings, arrows, and text to show the agent exactly what you mean.
-
-### How it works
-
-1. Click the **camera icon** in the chat input toolbar
-
-<Frame>
-  <img src="/images/screenshot-icon.png" alt="Screenshot button in the chat toolbar" />
-</Frame>
-
-2. **Allow** the browser to capture your current tab when prompted
-
-<Frame>
-  <img src="/images/screenshot-allow.png" alt="Browser permission dialog to capture the tab" />
-</Frame>
-
-3. The **Annotate Screenshot** editor opens — use the toolbar to:
-   - **Draw** freehand circles, underlines, or highlights
-   - **Add arrows** pointing to specific elements
-   - **Add text** labels explaining what to change
-   - **Draw rectangles** to highlight areas of interest
-
-4. Add a **written description** in the text field below the screenshot
-5. Click **send** to submit the annotated screenshot with your instructions
-
-<Frame>
-  <img src="/images/screenshot-annotate.png" alt="Screenshot annotation editor with drawing tools, arrows, and text" />
-</Frame>
-
-### When to use it
-
-- **Something looks wrong** — circle it and say "this should be blue, not red"
-- **Layout issues** — draw arrows showing where elements should move
-- **Missing elements** — point to where a button or field should appear
-- **Exact positioning** — show precisely where you want a chart or component placed
-
-<Tip>
-Annotated screenshots are the fastest way to communicate visual changes. A quick circle and arrow with "move this here" is worth a thousand words.
-</Tip>
-
----
-
-## Asking questions vs requesting builds
-
-Gainable can answer questions about your project without making changes.
-
-### To ask a question
-
-```text
-How does the task filtering work?
-What fields does the Deal model have?
-Where is the dashboard code?
-```
-
-### To request a change
-
-```text
-Add a due date field to tasks
-Change the dashboard to show monthly data
-Fix the filter to include all statuses
-```
-
-<Tip>
-Start questions with "how", "what", "where", or "explain" to get information without triggering a build.
-</Tip>
-
----
-
-## Recovery from mistakes
-
-If something wasn't built correctly:
-
-### Be specific about what's wrong
-
-<CodeGroup>
-```text Clear
-The deal amount is showing without the dollar sign.
-Format it as currency.
-```
-
-```text Vague
-The amounts look wrong
-```
-</CodeGroup>
-
-### Describe what you expected
-
-<CodeGroup>
-```text Clear
-The chart should show deals grouped by status, but
-it's showing them grouped by company. Change it to
-group by status.
-```
-
-```text Vague
-The chart is wrong
-```
-</CodeGroup>
+<Card title="Changing a built app" icon="wand-magic-sparkles" href="/prompting/refining">
+  Naming pages and components, bug versus preference, screenshots, and the plan card.
+</Card>
 
 ---
 
@@ -326,12 +190,13 @@ The chart is wrong
 | Adding charts | Name the chart type and what data it shows |
 | Adding features | Use feature names (kanban, chat, filter) |
 | Styling | Reference theme names or specific colors |
-| Updating | Reference existing elements by name |
-| Fixing issues | Describe what's wrong and what you expected |
 
 ## Learn more
 
 <CardGroup cols={2}>
+  <Card title="Changing a built app" icon="wand-magic-sparkles" href="/prompting/refining">
+    Prompting once it's up and running
+  </Card>
   <Card title="Examples" icon="lightbulb" href="/prompting/examples">
     See real prompts in action
   </Card>
