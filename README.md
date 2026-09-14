@@ -72,25 +72,25 @@ docs/
 
 1. Install the Mintlify CLI:
    ```bash
-   npm i -g mintlify
+   npm i -g mint
    ```
 
 2. Run the local development server:
    ```bash
-   mintlify dev
+   mint dev
    ```
 
 3. Open `http://localhost:3000` to preview the docs.
 
+4. Before opening a pull request, run `mint broken-links` and `mint validate`.
+
 ## Deployment
 
-Documentation is automatically deployed when changes are pushed to the main branch.
+Documentation is automatically deployed when changes are pushed to the main branch. Every pull request gets a Mintlify preview link.
 
 ## Contributing
 
-1. Make changes to the relevant `.mdx` files
-2. Preview locally with `mintlify dev`
-3. Create a pull request
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow: setup, fixing an item with Claude Code (`/docfix`), screenshots, and review rules.
 
 ## Resources
 
