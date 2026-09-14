@@ -18,9 +18,10 @@ You don't need a Mintlify account. Preview links are public, and publishing happ
 
 ### 1. Get access
 
+Ask Rickard for **GitHub** write access to `gainable-inc/docs`. Only repo admins can add people.
+
 Ask Malcolm (docs owner) for:
 
-- **GitHub**: write access to `gainable-inc/docs`.
 - **Claude**: a Pro, Max, Team or Enterprise plan. Claude in Chrome needs one of these.
 - **Gainable**: an account on https://build.gainable.dev with a demo app, for checking steps and taking screenshots. Never use a customer's app.
 - **Docs Site Tracker**: access to the app.
