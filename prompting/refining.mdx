@@ -27,12 +27,12 @@ This page is about the chat panel in the Gainable builder. Driving Gaia from Cla
 </Steps>
 
 <Frame>
-  <img src="/images/plan-card.png" alt="A plan card in the chat panel, with a title, a summary, a one-item checklist, and Reject and Accept buttons" />
+  <img src="/images/plan-card.png" alt="A change request and the plan card Gaia proposes for it, with a title, a summary, a three-item checklist, and Reject and Accept buttons" />
 </Frame>
 
 Reading the plan card before accepting is the cheapest quality check available. If the checklist mentions a page you didn't ask about, reject it and say which page you meant — that costs seconds, where letting it run costs a build and an undo.
 
-Notice how short that checklist is. A one-line request should produce a one-line plan; a checklist that has grown extra items is usually a sign the request carried more than you meant it to.
+Notice how closely that checklist follows the request: one field, shown in one table. A checklist that has grown items you didn't ask for is usually a sign the request carried more than you meant it to.
 
 <Tip>
 The **Auto accept plans** toggle in the chat toolbar skips the approval step. Useful once you trust a run of small changes; turn it back off for anything structural.
@@ -277,7 +277,7 @@ Changing the URL is a different, larger request. Say so explicitly if that's wha
 Every change belongs to a **chat** — the same conversation unit you see in the builder. An app can have as many as you like, and each is titled automatically from its first message.
 
 <Frame>
-  <img src="/images/chats-panel.png" alt="The Chats panel listing two conversations, each auto-titled from its first message" />
+  <img src="/images/chats-panel.png" alt="The Chats panel listing three conversations, each titled from its first message, next to the open chat" />
 </Frame>
 
 Start a new chat when you move to an unrelated topic. A long chat carries its history into every new request, which helps while you're iterating on one thing and gets in the way once you've moved on. You can pin, rename, and archive chats as they accumulate.
@@ -288,13 +288,13 @@ Which page you're looking at doesn't decide which chat you're in. A chat can spa
 
 ## Undoing a change
 
-Every successful build is a snapshot. The most recent one can be reverted with the **Undo this build** button on its completion message.
+Every successful build is a commit. To undo one, open the **three-dot menu** (⋮) at the top of the chat panel, select **Commit history**, and select **Rollback** on the version you want to return to. The newest entry is marked **Current**.
 
 <Frame>
-  <img src="/images/build-complete-undo.png" alt="A completed build's summary message with the Undo this build button beneath it" />
+  <img src="/images/commit-history.png" alt="The Commit History dialog listing builds with their descriptions and ages, the newest marked Current and the rest with a Rollback button" />
 </Frame>
 
-To go further back, use commit history. See [How iteration works](/concepts/how-it-works#how-iteration-works) for both, including how rollback safety works.
+Rolling back changes the app's code. Your chat history is kept as it is. See [How iteration works](/concepts/how-it-works#how-iteration-works) for how rollback safety works.
 
 <Tip>
 The completion message is a summary of what the agent *did*, not proof of what you'll *see*. When a change is visual, look at the app before moving on — expanding the completion row shows which files were actually edited.
