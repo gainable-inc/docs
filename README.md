@@ -26,8 +26,12 @@ docs/
 │   └── share-assistant.mdx   # Share the Assistant over MCP
 │
 ├── use/
-│   ├── overview.mdx          # Using Gainable: Apps grid, messages, the Assistant
-│   └── assistant.mdx         # Work with the Assistant
+│   ├── overview.mdx          # Using Gainable: where to start
+│   ├── apps-grid.mdx         # The Apps grid: tabs, account views, groups, widgets
+│   ├── working-in-an-app.mdx # Pages, records, comments, live updates
+│   ├── assistant.mdx         # Work with the Assistant
+│   ├── notifications.mdx     # Notifications, Messenger, team updates
+│   └── mobile.mdx            # Home screen and push notifications
 │
 ├── concepts/
 │   ├── how-it-works.mdx      # How Gainable builds apps

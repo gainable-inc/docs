@@ -33,8 +33,11 @@
             "group": "Designing the app",
             "pages": [
               "building/views",
+              "building/real-time",
+              "building/collaboration",
               "skills/chartjs",
               "skills/kanban",
+              "skills/weavy",
               "skills/design"
             ]
           },
@@ -103,15 +106,11 @@
             "group": "Use Gainable",
             "pages": [
               "use/overview",
-              "use/assistant"
-            ]
-          },
-          {
-            "group": "Working in an app",
-            "pages": [
-              "building/collaboration",
-              "building/real-time",
-              "skills/weavy"
+              "use/apps-grid",
+              "use/working-in-an-app",
+              "use/assistant",
+              "use/notifications",
+              "use/mobile"
             ]
           }
         ]
