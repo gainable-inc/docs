@@ -17,7 +17,11 @@ docs/
 │   └── spreadsheets.mdx      # How Gaia reads spreadsheets
 │
 ├── own/
-│   ├── overview.mdx          # Owning an app: access, data, the Assistant
+│   ├── overview.mdx          # Owning an app: where everything is
+│   ├── who-does-what.mdx     # Every kind of user side by side
+│   ├── access.mdx            # Access, roles, groups and rules
+│   ├── data.mdx              # The app's Data page: sync, approval, two-way, schedule
+│   ├── activity.mdx          # Activity log
 │   ├── assistant.mdx         # Set up the Assistant: scheduled tasks, memory, tools
 │   └── share-assistant.mdx   # Share the Assistant over MCP
 │

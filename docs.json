@@ -70,7 +70,21 @@
           {
             "group": "Own an app",
             "pages": [
-              "own/overview"
+              "own/overview",
+              "own/who-does-what"
+            ]
+          },
+          {
+            "group": "Access",
+            "pages": [
+              "own/access"
+            ]
+          },
+          {
+            "group": "Data",
+            "pages": [
+              "own/data",
+              "own/activity"
             ]
           },
           {

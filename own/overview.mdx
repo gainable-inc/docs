@@ -3,41 +3,37 @@ title: "Own an app"
 description: "Control who gets into your app, keep its data current, and set up its Assistant"
 ---
 
-Once an app is built, its owners and administrators decide who uses it, what each person sees, and how its data and Assistant behave. This page shows where each of those settings lives.
+Once an app is built, its owners decide who uses it, what each person sees, and how its data and Assistant behave. Most of this lives in the builder: open your app at [build.gainable.dev](https://build.gainable.dev) and use the icons in the left rail.
 
-## Who can get in
+<CardGroup cols={2}>
+  <Card title="Access, roles and rules" icon="shield-halved" href="/own/access">
+    Who can open the app, Administrators and Data managers, roles, groups, and rules for who sees which records.
+  </Card>
+  <Card title="Who does what" icon="users" href="/own/who-does-what">
+    Every kind of user side by side, with common setups.
+  </Card>
+  <Card title="Keep the app's data current" icon="arrows-rotate" href="/own/data">
+    Sync from files and sheets, approve changes, schedule syncs and send edits back to the sheets.
+  </Card>
+  <Card title="Set up the Assistant" icon="sliders" href="/own/assistant">
+    Name and instructions, scheduled tasks, memory and outside tools.
+  </Card>
+  <Card title="Share the Assistant" icon="share-nodes" href="/own/share-assistant">
+    Let people reach the Assistant from ChatGPT, Claude and other AI tools.
+  </Card>
+  <Card title="Activity log" icon="clock-rotate-left" href="/own/activity">
+    See who changed what, and when.
+  </Card>
+</CardGroup>
 
-In the builder, open your app and select the people icon in the left rail. The **Access & sign-in** panel sets who can open the app:
+## Where things are
 
-| Setting | Options |
-|---------|---------|
-| **Who can access** | **Open**: everyone in your Gainable account. **Invited only**: only the people you add. |
-| **External users** (people outside your Gainable account) | **None**, **Invited externals only**, or **Anyone can sign up** |
-
-Next to it, the **Users**, **Roles** and **Groups** tabs list who is in the app. Roles and groups decide what people see. They don't decide what people can administer.
-
-## What each person can do
-
-Select a user and you can make them an **Administrator**, or a **Data manager**. A Data manager can sync the app's data from its files and sheets and approve those syncs, across all of the app's data. Administrators can already do this.
-
-You can also describe access rules in plain words in the builder chat, for example "owners only see their own deals", and Gaia sets them up.
-
-## Keep the app's data current
-
-The app's **Data** page, opened from the app's header, lists the files and sheets the app was built from:
-
-- **Sync** brings a source up to date. Upload a new version of a file, or sync connected sheets. Changes people made in the app are kept.
-- **Log** shows past syncs.
-- **Settings** sets who approves a sync (**Ask every time**, **Approve automatically when clean**, or **Always approve automatically**) and a schedule for connected sheets.
-
-## Set up the Assistant
-
-See [Set up the Assistant](/own/assistant) and [Share the Assistant](/own/share-assistant) for the details. In short: in the app, switch the sidebar to **Assistant**. At the bottom of the chat list:
-
-- **Scheduled** lists the Assistant's recurring tasks.
-- **Memory** is knowledge the Assistant reads in every chat.
-- **Connectors** lets you give the Assistant outside tools through MCP servers. Its **Share** tab turns on **Share this Assistant**, so people can reach the Assistant from ChatGPT, Claude or another MCP client with their Gainable account. **Copy link to Assistant** gives you the link to hand out, and **Connected users** shows who is connected. Turning sharing off disconnects everyone.
-
-<Note>
-Your app's Assistant may have its own name. Owners can rename it, so it might be called something like "Property Desk" in your app. These docs call it the Assistant.
-</Note>
+| You want to | Go to |
+|-------------|-------|
+| Change the app | The builder chat. See [Changing a built app](/prompting/refining). |
+| Make changes live | **Publish** in the builder. It shows a dot when there are changes that aren't live yet. |
+| Decide who gets in | The people icon in the builder's left rail. |
+| See the data behind the app | The database icon in the builder's left rail lists the app's collections. See also [Datasets](/build/datasets). |
+| See what happened | The clock icon in the builder's left rail. |
+| Sync the app's data | The **Data** icon in the app's header. |
+| Set up the Assistant | **Assistant** in the app's sidebar, then **Scheduled**, **Memory** or **Connectors**. |
