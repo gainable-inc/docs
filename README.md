@@ -13,10 +13,13 @@ docs/
 ├── build-from-data.mdx       # Build from spreadsheets and other data
 │
 ├── own/
-│   └── overview.mdx          # Owning an app: access, data, the Assistant
+│   ├── overview.mdx          # Owning an app: access, data, the Assistant
+│   ├── assistant.mdx         # Set up the Assistant: scheduled tasks, memory, tools
+│   └── share-assistant.mdx   # Share the Assistant over MCP
 │
 ├── use/
-│   └── overview.mdx          # Using Gainable: Apps grid, messages, the Assistant
+│   ├── overview.mdx          # Using Gainable: Apps grid, messages, the Assistant
+│   └── assistant.mdx         # Work with the Assistant
 │
 ├── concepts/
 │   ├── how-it-works.mdx      # How Gainable builds apps
@@ -35,26 +38,6 @@ docs/
 │   ├── views.mdx             # UI and pages
 │   ├── real-time.mdx         # Live updates
 │   └── collaboration.mdx     # Chat, files, comments
-│
-├── copilots/                 # Gaia Copilot: conversational AI in apps
-│   ├── overview.mdx
-│   ├── configuring.mdx
-│   ├── data-access.mdx
-│   ├── knowledge.mdx
-│   └── embedding.mdx
-│
-├── autopilot/                # Gaia Autopilot: autonomous, draft-and-approve
-│   ├── overview.mdx
-│   ├── objectives.mdx
-│   ├── playbooks.mdx
-│   ├── triggers.mdx
-│   ├── tools.mdx
-│   ├── risk-tiers.mdx
-│   ├── inbox.mdx
-│   ├── scopes.mdx
-│   ├── agent-action-log.mdx
-│   ├── connect-outbound.mdx
-│   └── recipes.mdx
 │
 ├── skills/
 │   ├── chartjs.mdx           # Data visualization

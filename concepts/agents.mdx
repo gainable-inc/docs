@@ -8,7 +8,7 @@ description: "Meet the build agents that turn your prompt into a working applica
 Gainable uses multiple specialized build agents, each with a specific role in turning your prompt into a working app. Think of them as a team of experts working together.
 
 <Info>
-**Build agents vs Gaia.** This page is about the agents that *build* your app: Planner, DataAnalyzer, Build, Validation, Conversation. Once your app is live, two more pieces of Gaia run *inside* it: [Gaia Copilot](/copilots/overview) for conversation and [Gaia Autopilot](/autopilot/overview) for autonomous work.
+**Build agents vs the Assistant.** This page is about the agents that *build* your app: Planner, DataAnalyzer, Build, Validation, Conversation. Once your app is live, its [Assistant](/use/assistant) works *inside* it.
 </Info>
 
 ## Planner Agent
@@ -200,21 +200,16 @@ To get the most from the agent system:
 3. **Use natural language** - Write like you're explaining to a colleague
 4. **Request by feature name** - "Add a pie chart" is clearer than "visualize this somehow"
 
-## Gaia inside your finished apps
+## The Assistant inside your finished apps
 
-The agents described above (Planner, Build, Validation, Conversation) are **build agents** that work behind the scenes to create your app. Once your app is live, two more pieces of Gaia run inside it:
-
-- **Gaia Copilot.** The conversational assistant. The user asks; the Copilot answers. It reads your app's live data and references uploaded knowledge.
-- **Gaia Autopilot.** The autonomous side. They watch data, draft work, and land it in Autopilot for approval. They run on their own.
-
-The two are designed to work side by side. Copilot is reactive. Agents are proactive.
+The agents described above (Planner, Build, Validation, Conversation) are **build agents** that work behind the scenes to create your app. Once your app is live, its **Assistant** works inside it: people ask it questions, have it update records and write documents, and give it [scheduled tasks](/own/assistant#scheduled-tasks) that it runs on its own.
 
 <CardGroup cols={2}>
-  <Card title="Gaia Copilot" icon="comments" href="/copilots/overview">
-    Conversational assistant with data access, knowledge bases, and an embedded chat interface
+  <Card title="Set up the Assistant" icon="sliders" href="/own/assistant">
+    Shape your app's Assistant, its scheduled tasks and its tools
   </Card>
-  <Card title="Gaia Autopilot" icon="robot" href="/autopilot/overview">
-    Autonomous agents that watch data and draft work for approval in Autopilot
+  <Card title="Work with the Assistant" icon="comments" href="/use/assistant">
+    Ask questions, update records and write documents with the Assistant
   </Card>
 </CardGroup>
 
@@ -227,10 +222,10 @@ The two are designed to work side by side. Copilot is reactive. Agents are proac
   <Card title="Prompting guide" icon="message" href="/prompting/overview">
     Write better prompts for better results
   </Card>
-  <Card title="Gaia Copilot" icon="comments" href="/copilots/overview">
-    The conversational layer of every app
+  <Card title="Set up the Assistant" icon="sliders" href="/own/assistant">
+    Shape your app's Assistant, its scheduled tasks and its tools
   </Card>
-  <Card title="Gaia Autopilot" icon="robot" href="/autopilot/overview">
-    The proactive, autonomous layer
+  <Card title="Work with the Assistant" icon="comments" href="/use/assistant">
+    Ask questions, update records and write documents with the Assistant
   </Card>
 </CardGroup>

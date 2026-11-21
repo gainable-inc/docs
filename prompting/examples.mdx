@@ -262,110 +262,43 @@ Each feature has a page of its own, with the prompts and the options that go wit
 
 ---
 
-## Gaia Copilot
+## The Assistant
 
-### Create a data-aware Copilot
+Every app has its own Assistant. Use the builder chat to shape it:
+
+### Give it a name and a voice
 
 ```text
-Build a CRM with companies, contacts, and deals.
-
-Create a Sales Coach Copilot that:
-- Helps reps find and analyze deals
-- Can query deals, contacts, and companies data
-- Uses a friendly, encouraging tone
-- Has conversation starters:
-  "Show my open deals"
-  "Deals closing this month"
-  "Find contacts at a company"
-  "Pipeline summary"
+Rename the Assistant to "Sales Coach". It should be friendly and
+encouraging, and always suggest a next step for the deal.
 ```
 
-### Create a knowledge-based Copilot
+### Change its conversation starters
 
 ```text
-Create a Support Assistant Copilot that:
-- Answers customer questions using our FAQ and troubleshooting docs
-- Can search the web for additional product information
-- Uses a helpful, patient tone
-- Has conversation starters:
-  "How do I reset my password?"
-  "Check my order status"
-  "Return policy"
-  "Contact support"
+Change the Assistant's conversation starters to:
+"Show my open deals", "Deals closing this month",
+"Find contacts at a company", "Pipeline summary"
 ```
 
-### Add a Copilot to a page
+### Recurring work
+
+Scheduled tasks run on their own. Describe one to the Assistant, or set it up under **Scheduled** in the Assistant sidebar (see [Scheduled tasks](/own/assistant#scheduled-tasks)):
 
 ```text
-Add a Copilot to the deals page connected
-to the Sales Coach.
+Every weekday at 9 AM, find deals over $5,000 that haven't
+moved stage in 14 days, draft a follow-up email to each
+contact, and tell the deal owner.
 ```
 
-### Full Copilot setup
-
 ```text
-Build an employee onboarding app with:
-- New hires (name, email, start date, department, buddy)
-- Onboarding tasks (task name, description, due date, status, linked to new hire)
-- A checklist view for each new hire's tasks
-
-Create an Onboarding Guide Copilot that:
-- Helps new hires find their tasks and deadlines
-- Can query new hires and onboarding tasks data
-- Uses a warm, welcoming tone
-- Has conversation starters:
-  "What are my onboarding tasks?"
-  "What's due this week?"
-  "Who is my onboarding buddy?"
-  "Company policies"
-
-Upload our employee handbook and IT setup guide
-to the Copilot's knowledge base.
-
-Add the Onboarding Guide Copilot to the onboarding
-checklist page.
+Every Monday at 8 AM, summarize the top 5 deals closing this
+week and the tasks due this week, and post it for the sales team.
 ```
 
----
-
-## Gaia Autopilot
-
-### Stalled-deal chaser
-
 ```text
-Add a stalled-deal chaser. Watch the deals collection.
-Every weekday at 9 AM, find deals over $5,000 that
-haven't moved stage in 14 days. Draft a follow-up email
-to the contact and route it to the deal owner's
-Autopilot inbox.
-```
-
-### Daily briefing per user
-
-```text
-Add a personal daily briefing for each sales rep.
-At 8 AM in their timezone on weekdays, summarize:
-top 5 deals closing this week, tasks due today and
-tomorrow. Land the draft in the user's Autopilot inbox.
-One per day max.
-```
-
-### SLA enforcer for tickets
-
-```text
-Add an SLA enforcer to the support app. Every 15 minutes,
-find open tickets older than 24 hours with no first
-response. Notify the assignee in-app, and draft a customer
-status update for the team lead's Autopilot inbox.
-```
-
-### Inventory watchdog
-
-```text
-Add an inventory watchdog. Watch the products collection.
-When a product's quantity drops to or below its reorder
-point, draft a reorder request email to the preferred
-supplier and route it to the operations lead's Autopilot.
+Every hour, find open tickets older than 24 hours with no first
+response and remind the assignee.
 ```
 
 ---

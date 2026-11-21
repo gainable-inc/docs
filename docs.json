@@ -73,29 +73,10 @@
             ]
           },
           {
-            "group": "Gaia Copilot",
+            "group": "The Assistant",
             "pages": [
-              "copilots/overview",
-              "copilots/configuring",
-              "copilots/data-access",
-              "copilots/knowledge",
-              "copilots/embedding"
-            ]
-          },
-          {
-            "group": "Gaia Autopilot",
-            "pages": [
-              "autopilot/overview",
-              "autopilot/objectives",
-              "autopilot/playbooks",
-              "autopilot/triggers",
-              "autopilot/tools",
-              "autopilot/risk-tiers",
-              "autopilot/inbox",
-              "autopilot/scopes",
-              "autopilot/agent-action-log",
-              "autopilot/connect-outbound",
-              "autopilot/recipes"
+              "own/assistant",
+              "own/share-assistant"
             ]
           }
         ]
@@ -106,7 +87,8 @@
           {
             "group": "Use Gainable",
             "pages": [
-              "use/overview"
+              "use/overview",
+              "use/assistant"
             ]
           },
           {
@@ -176,34 +158,48 @@
     }
   },
   "redirects": [
-    { "source": "/agents/creating-agents", "destination": "/copilots/configuring" },
-    { "source": "/agents/functions", "destination": "/copilots/data-access" },
-    { "source": "/agents/knowledge", "destination": "/copilots/knowledge" },
-    { "source": "/agents/copilot", "destination": "/copilots/embedding" },
-    { "source": "/agents/overview", "destination": "/autopilot/overview" },
-    { "source": "/agents/objectives", "destination": "/autopilot/objectives" },
-    { "source": "/agents/playbooks", "destination": "/autopilot/playbooks" },
-    { "source": "/agents/triggers", "destination": "/autopilot/triggers" },
-    { "source": "/agents/tools", "destination": "/autopilot/tools" },
-    { "source": "/agents/risk-tiers", "destination": "/autopilot/risk-tiers" },
-    { "source": "/agents/autopilot", "destination": "/autopilot/inbox" },
-    { "source": "/agents/scopes", "destination": "/autopilot/scopes" },
-    { "source": "/agents/agent-action-log", "destination": "/autopilot/agent-action-log" },
-    { "source": "/agents/connect-outbound", "destination": "/autopilot/connect-outbound" },
-    { "source": "/agents/recipes", "destination": "/autopilot/recipes" },
-
+    { "source": "/agents/creating-agents", "destination": "/own/assistant" },
+    { "source": "/agents/functions", "destination": "/own/assistant" },
+    { "source": "/agents/knowledge", "destination": "/own/assistant#memory" },
+    { "source": "/agents/copilot", "destination": "/use/assistant" },
+    { "source": "/agents/overview", "destination": "/own/assistant#scheduled-tasks" },
+    { "source": "/agents/objectives", "destination": "/own/assistant#scheduled-tasks" },
+    { "source": "/agents/playbooks", "destination": "/own/assistant#scheduled-tasks" },
+    { "source": "/agents/triggers", "destination": "/own/assistant#scheduled-tasks" },
+    { "source": "/agents/tools", "destination": "/own/assistant#outside-tools" },
+    { "source": "/agents/risk-tiers", "destination": "/own/assistant#scheduled-tasks" },
+    { "source": "/agents/autopilot", "destination": "/use/assistant" },
+    { "source": "/agents/scopes", "destination": "/own/assistant#what-the-assistant-can-see" },
+    { "source": "/agents/agent-action-log", "destination": "/own/assistant#scheduled-tasks" },
+    { "source": "/agents/connect-outbound", "destination": "/own/assistant#outside-tools" },
+    { "source": "/agents/recipes", "destination": "/prompting/examples#the-assistant" },
     { "source": "/cli/overview", "destination": "/mcp/overview" },
     { "source": "/cli/installation", "destination": "/mcp/overview" },
     { "source": "/cli/claude-code", "destination": "/mcp/claude-code" },
     { "source": "/cli/codex", "destination": "/mcp/codex" },
     { "source": "/cli/commands", "destination": "/mcp/tools" },
     { "source": "/cli/datasets", "destination": "/mcp/datasets" },
-
-    { "source": "/compare", "destination": "https://www.gainable.dev/compare", "permanent": true },
-    { "source": "/compare/retool", "destination": "https://www.gainable.dev/compare/retool", "permanent": true },
-    { "source": "/compare/appsmith", "destination": "https://www.gainable.dev/compare/appsmith", "permanent": true },
-    { "source": "/compare/lovable", "destination": "https://www.gainable.dev/compare/lovable", "permanent": true },
-    { "source": "/compare/replit", "destination": "https://www.gainable.dev/compare/replit", "permanent": true },
-    { "source": "/compare/structify", "destination": "https://www.gainable.dev/compare/structify", "permanent": true }
+    { "source": "/compare", "destination": "https://www.gainable.dev/compare", "permanent": true},
+    { "source": "/compare/retool", "destination": "https://www.gainable.dev/compare/retool", "permanent": true},
+    { "source": "/compare/appsmith", "destination": "https://www.gainable.dev/compare/appsmith", "permanent": true},
+    { "source": "/compare/lovable", "destination": "https://www.gainable.dev/compare/lovable", "permanent": true},
+    { "source": "/compare/replit", "destination": "https://www.gainable.dev/compare/replit", "permanent": true},
+    { "source": "/compare/structify", "destination": "https://www.gainable.dev/compare/structify", "permanent": true},
+    { "source": "/copilots/overview", "destination": "/use/assistant" },
+    { "source": "/copilots/configuring", "destination": "/own/assistant" },
+    { "source": "/copilots/data-access", "destination": "/own/assistant" },
+    { "source": "/copilots/knowledge", "destination": "/own/assistant#memory" },
+    { "source": "/copilots/embedding", "destination": "/use/assistant" },
+    { "source": "/autopilot/overview", "destination": "/own/assistant#scheduled-tasks" },
+    { "source": "/autopilot/objectives", "destination": "/own/assistant#scheduled-tasks" },
+    { "source": "/autopilot/playbooks", "destination": "/own/assistant#scheduled-tasks" },
+    { "source": "/autopilot/triggers", "destination": "/own/assistant#scheduled-tasks" },
+    { "source": "/autopilot/tools", "destination": "/own/assistant#outside-tools" },
+    { "source": "/autopilot/risk-tiers", "destination": "/own/assistant#scheduled-tasks" },
+    { "source": "/autopilot/inbox", "destination": "/use/assistant" },
+    { "source": "/autopilot/scopes", "destination": "/own/assistant#what-the-assistant-can-see" },
+    { "source": "/autopilot/agent-action-log", "destination": "/own/assistant#scheduled-tasks" },
+    { "source": "/autopilot/connect-outbound", "destination": "/own/assistant#outside-tools" },
+    { "source": "/autopilot/recipes", "destination": "/prompting/examples#the-assistant" }
   ]
 }
