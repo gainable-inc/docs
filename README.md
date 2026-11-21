@@ -4,10 +4,19 @@ This repository contains the documentation for [Gainable](https://build.gainable
 
 ## Documentation Structure
 
+The site has four tabs, one per reader: **Build**, **Own**, **Use** and **Develop**. `docs.json` maps each page to its tab.
+
 ```
 docs/
-├── introduction.mdx          # Platform overview
+├── introduction.mdx          # Platform overview and the four paths
 ├── quickstart.mdx            # First app in 5 minutes
+├── build-from-data.mdx       # Build from spreadsheets and other data
+│
+├── own/
+│   └── overview.mdx          # Owning an app: access, data, the Assistant
+│
+├── use/
+│   └── overview.mdx          # Using Gainable: Apps grid, messages, the Assistant
 │
 ├── concepts/
 │   ├── how-it-works.mdx      # How Gainable builds apps
@@ -60,8 +69,6 @@ docs/
 │   ├── codex.mdx             # Setup in OpenAI Codex
 │   ├── tools.mdx             # Every tool and parameter
 │   └── datasets.mdx          # Recurring data pipelines
-│
-├── compare/                  # vs Retool, Appsmith, Lovable, Replit, Structify
 │
 └── reference/
     ├── api.mdx               # Generated app APIs

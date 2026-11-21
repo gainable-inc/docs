@@ -21,7 +21,19 @@ This file lives in `.claude/` on purpose. Mintlify turns markdown files in the r
 - A new page must be added to `navigation` in `docs.json`, and to the tree in `README.md`.
 - Renaming or moving a page needs an entry in `redirects` in `docs.json` so old links keep working.
 - Components already in use: `Steps`/`Step`, `Card`/`CardGroup`, `Accordion`/`AccordionGroup`, `Tabs`/`Tab`, `CodeGroup`, `Note`, `Tip`, `Info`, `Warning`, `Frame`. Prefer these over introducing new ones.
-- Current names: **Gaia** is Gainable's AI; **Gaia Copilot** is conversational AI inside apps and **Gaia Autopilot** is autonomous, draft-and-approve. Data lives in **datasets** (not "data connectors"). **The MCP connector** replaced the retired CLI (`/cli/*` redirects to `/mcp/*`).
+- Current names. The rule is **"Gaia builds, the Assistant works in your app."**
+  - **Gaia** is Gainable's AI. It builds and changes apps, in the builder or through the MCP connector.
+  - Every app has its own **Assistant**. Owners can rename it, but the docs always say "the Assistant" and may note once that it can have another name.
+  - The Assistant replaced **Gaia Copilot**, **Gaia Autopilot**, Ask AI and Cowork. All four are retired. Don't use those names in new text. The `copilots/*` and `autopilot/*` pages are being replaced.
+  - Data lives in **datasets** (not "data connectors"). **The MCP connector** replaced the retired CLI (`/cli/*` redirects to `/mcp/*`).
+  - "Building your own data connector" means your AI tool (Claude Code and others) reads a source and pushes it into a dataset with `dataset_sync`. It is not a Gainable feature.
+  - **Data manager** is a per-user permission next to Administrator, not a role. Roles and groups decide what people see, never what they administer.
+- The site has four tabs, one per reader. Put a page in the tab its reader works in:
+  - **Build**: building apps and working with datasets.
+  - **Own**: app owners and admins (access, the app's data, setting up the Assistant). New pages go in `own/`.
+  - **Use**: everyone in an app (Apps grid, notifications, messaging, the Assistant, mobile). New pages go in `use/`.
+  - **Develop**: the MCP connector, plugins and code.
+  - The full restructure plan is in `.claude/plans/docs-restructure-2026-11.md`.
 - `fin-ai-training-questions.csv` is the Q&A set that trains the Intercom Fin support bot. If a fix changes a fact, search the CSV for it and update the answer too.
 
 ## Screenshots
@@ -36,6 +48,7 @@ This file lives in `.claude/` on purpose. Mintlify turns markdown files in the r
   ```
 
   Alt text describes what the image shows as a full phrase. Never just "screenshot".
+- Capture from the docs demo account (the "Docs" organization) that is signed in to Chrome, never from a real account. You can create and change anything in it. Its app sign-in links carry a `key=` parameter, so never put one in a page or a commit.
 - Light mode, demo data only. No real customer names, emails, API keys or tokens in frame. Crop to the part of the UI the text is about, with no browser tab bar or address bar.
 - To capture with Claude in Chrome, take a `screenshot` to locate the region, then capture it with the `zoom` action and `save_to_disk: true`, which saves a full-resolution PNG. Don't publish a saved full-page `screenshot`: it's a downscaled JPEG and looks soft on the site. Copy the PNG into `images/`, then open it (Read) and confirm it shows what the text says before you reference it.
 - When the user captured it themselves, Windows Snipping Tool saves to `%USERPROFILE%\Pictures\Screenshots`. "Use my last screenshot" means the newest file there.

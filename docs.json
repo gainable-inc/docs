@@ -11,7 +11,7 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Documentation",
+        "tab": "Build",
         "groups": [
           {
             "group": "Get started",
@@ -30,6 +30,22 @@
             ]
           },
           {
+            "group": "Datasets and data",
+            "pages": [
+              "building/data-connectors",
+              "building/data-models"
+            ]
+          },
+          {
+            "group": "Designing the app",
+            "pages": [
+              "building/views",
+              "skills/chartjs",
+              "skills/kanban",
+              "skills/design"
+            ]
+          },
+          {
             "group": "Prompt guide",
             "pages": [
               "prompting/overview",
@@ -40,13 +56,20 @@
             ]
           },
           {
-            "group": "Building apps",
+            "group": "Help",
             "pages": [
-              "building/data-connectors",
-              "building/data-models",
-              "building/views",
-              "building/real-time",
-              "building/collaboration"
+              "reference/troubleshooting"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Own",
+        "groups": [
+          {
+            "group": "Own an app",
+            "pages": [
+              "own/overview"
             ]
           },
           {
@@ -74,16 +97,31 @@
               "autopilot/connect-outbound",
               "autopilot/recipes"
             ]
-          },
+          }
+        ]
+      },
+      {
+        "tab": "Use",
+        "groups": [
           {
-            "group": "Skills reference",
+            "group": "Use Gainable",
             "pages": [
-              "skills/chartjs",
-              "skills/kanban",
-              "skills/weavy",
-              "skills/design"
+              "use/overview"
             ]
           },
+          {
+            "group": "Working in an app",
+            "pages": [
+              "building/collaboration",
+              "building/real-time",
+              "skills/weavy"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Develop",
+        "groups": [
           {
             "group": "MCP connector",
             "pages": [
@@ -98,8 +136,7 @@
           {
             "group": "Reference",
             "pages": [
-              "reference/api",
-              "reference/troubleshooting"
+              "reference/api"
             ]
           }
         ]
