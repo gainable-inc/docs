@@ -119,19 +119,21 @@
         "tab": "Develop",
         "groups": [
           {
-            "group": "MCP connector",
+            "group": "Gaia connector",
             "pages": [
               "mcp/overview",
               "mcp/claude-code",
               "mcp/claude",
               "mcp/codex",
-              "mcp/tools",
-              "mcp/datasets"
+              "mcp/other-clients",
+              "mcp/plugins"
             ]
           },
           {
             "group": "Reference",
             "pages": [
+              "mcp/tools",
+              "mcp/datasets",
               "reference/api"
             ]
           }

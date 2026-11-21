@@ -1,9 +1,9 @@
 ---
 title: "Overview"
-description: "Drive Gainable from Claude Code, Claude, Cowork, or Codex through one MCP connector"
+description: "Build and change Gainable apps from Claude, ChatGPT, Codex, Cursor and any other MCP client"
 ---
 
-Gainable isn't only a web app. The **Gaia harness** is accessible via a remote [MCP](https://modelcontextprotocol.io) server, so an AI client can build, refine, publish, and share your apps — from your terminal, from a Claude chat, or from a Cowork session.
+Gainable isn't only a web app. The **Gaia harness** is accessible via a remote [MCP](https://modelcontextprotocol.io) server, so the AI tool you already work in can build, change, publish and share your apps: Claude Code, Claude, Cowork, ChatGPT, Codex, Cursor, Gemini, Goose or any other MCP client.
 
 There is one endpoint and nothing to install:
 
@@ -18,7 +18,7 @@ https://build.gainable.dev/mcp
     No package to install and nothing to keep on your `PATH`. Add a URL, sign in through your browser, and you're building.
   </Card>
   <Card title="Every client, one server" icon="grid-2">
-    Claude Code, Claude, Cowork, Claude Desktop, and Codex all connect to the same endpoint and get the same tools.
+    Claude Code, Claude, Cowork, ChatGPT, Codex, Cursor and any other MCP client connect to the same endpoint and get the same tools.
   </Card>
   <Card title="Same harness, same quality" icon="shield-check">
     The connector drives the exact same contract agent, planner, Build Agent, and validators as the web app. Nothing is downgraded.
@@ -40,8 +40,11 @@ https://build.gainable.dev/mcp
   <Card title="Codex" icon="terminal" href="/mcp/codex">
     `codex mcp add`, then `codex mcp login`.
   </Card>
-  <Card title="Anything else" icon="plug">
+  <Card title="ChatGPT, Cursor and others" icon="plug" href="/mcp/other-clients">
     Any MCP client that speaks streamable HTTP and OAuth 2.1 can connect to the same URL.
+  </Card>
+  <Card title="Plugins" icon="puzzle-piece" href="/mcp/plugins">
+    In Claude Code, Cowork and Codex, one install brings the connector and the Gainable skill.
   </Card>
 </CardGroup>
 
@@ -142,18 +145,13 @@ This matters most where nobody is watching. A [scheduled sync](/mcp/datasets#put
 
 Starting a genuinely new app later in the same conversation is also a first message: name Gaia again, and say it's a new app, or you may get a change to the one you already have.
 
-## Not to be confused with your app's MCP server
+## Three ways Gainable uses MCP
 
-Gainable involves two different MCP servers, and they do opposite jobs:
-
-| | The Gaia harness MCP | Your app's MCP server |
+| | What it's for | Where it's documented |
 |---|---|---|
-| URL | `build.gainable.dev/mcp` | `<account>.gainable.app/mcp` |
-| Purpose | **Build** apps | **Query and write** an app's data |
-| Used by | You, from Claude Code / Claude / Cowork / Codex | Your app's Assistant |
-| Documented in | This section | [Set up the Assistant](/own/assistant) |
-
-This section is about the first one. The second is what makes an app you build this morning a queryable data source this afternoon.
+| **The Gaia connector**, `build.gainable.dev/mcp` | **Build** and change apps from your AI tool | This section |
+| **An app's Assistant** | **Work with one app's data** from your AI tool, through that app's Assistant, once its owner shares it | [Share the Assistant](/own/share-assistant) |
+| **Outside MCP servers** | Give an app's Assistant **tools outside Gainable**, such as Linear, Notion or HubSpot | [Set up the Assistant](/own/assistant#outside-tools) |
 
 ## What the connector can do
 
@@ -173,7 +171,7 @@ Ten tools by default, and up to eighteen depending on which scopes you granted. 
 See the [tool reference](/mcp/tools) for every parameter.
 
 <Tip>
-The connector ships its own operating instructions to every client on connect, so there is no plugin, skill, or rules file to install alongside it. Adding the URL is the whole setup.
+The connector ships its own operating instructions to every client on connect, so adding the URL is all the setup you need. In Claude Code, Cowork and Codex, the [plugin](/mcp/plugins) adds guidance the agent reads before its first turn.
 </Tip>
 
 ## Next steps
@@ -188,7 +186,7 @@ The connector ships its own operating instructions to every client on connect, s
   <Card title="Tool reference" icon="wrench" href="/mcp/tools">
     Every tool, action, and parameter.
   </Card>
-  <Card title="Recurring data pipelines" icon="rotate" href="/mcp/datasets">
-    Create a dataset once, sync it forever.
+  <Card title="Bring any source" icon="rotate" href="/mcp/datasets">
+    Your AI tool as the connector for any data.
   </Card>
 </CardGroup>

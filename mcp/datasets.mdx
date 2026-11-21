@@ -1,9 +1,9 @@
 ---
-title: "Recurring data pipelines"
-description: "Collect data on a schedule and keep a Gainable dataset in sync with it"
+title: "Bring any source"
+description: "Your AI tool is the connector: collect data from anywhere and keep a Gainable dataset in sync with it"
 ---
 
-Connector-backed datasets pull from systems Gainable already integrates with. When your data lives somewhere else — an internal API, a partner feed, something you assemble from several places — you can write a small script that collects it and keep a dataset in sync with it.
+Gainable reads spreadsheets and a set of [connected tools](/build/datasets#connect-a-tool) directly. For everything else (an internal API, a database, a partner feed, something you assemble from several places), your AI tool is the connector. Claude Code, Codex, Cursor or any other MCP client collects the data, usually with a small script, and sends it to a dataset through the Gaia connector. From there it works like any other dataset: build an app on it, sync it on a schedule, and keep your team's edits.
 
 The shape is **create once, sync forever**:
 
@@ -29,9 +29,14 @@ Everything else follows from these.
 
 <AccordionGroup>
   <Accordion title="Full snapshot, always">
-    Every sync **replaces the entire dataset**. Your script must emit every row that should exist, every time — never a delta, never just today's rows. Rows absent from the payload are deleted.
+    Every sync sends **the whole source**. Your script must emit every row that should exist, every time: never a delta, never just today's rows. Rows absent from the payload are removed from the dataset.
 
-    This is deliberate. It is how corrections and deletions propagate, and it means a missed run costs nothing: the next run reconciles. There is no drift between your source and the dataset.
+    This is deliberate. It's how corrections and deletions propagate, and it means a missed run costs nothing: the next run reconciles.
+
+    Edits people made in the app are kept. A value changed both in your source and in the app is a question for a person, not something the sync decides.
+  </Accordion>
+  <Accordion title="Planned first, written once approved">
+    A sync is planned first. Whether it's written straight away depends on the dataset's [approval setting](/build/datasets#approval-and-two-way-sync): with **Approve automatically when clean**, a run with nothing to decide is written at once. Otherwise the result is a summary to show a person and a `runId` to approve with.
   </Accordion>
   <Accordion title="The shape is frozen at creation">
     The dataset remembers the exact keys from your seed data. A sync missing any of them is rejected wholesale and **nothing is written**.
@@ -98,7 +103,7 @@ Your app derives each row's comment and file thread from its primary key value. 
 <Warning>
 A rotating primary key silently destroys every comment and file attached to those rows on the next sync — and the row counts look perfectly normal while it happens.
 
-The connector guards against this: it refuses a sync whose primary keys barely overlap what is already stored. `force` overrides the guard and should only be used when you genuinely intend that turnover.
+The connector guards against this: a sync whose primary keys barely overlap what is already stored is stopped for a person to look at. `force` confirms that turnover is intended, and should only be set once a person has said so.
 </Warning>
 
 If a key value does legitimately change — you fix a typo in the column the analyzer picked — Gainable matches the row back by its other columns and carries its identity forward, so attached comments and files survive.
@@ -160,12 +165,13 @@ Whichever you pick, the run needs to be able to use the connector's tools withou
 
 | Result | Meaning |
 |---|---|
-| `ok: true` | Synced. Per-entity inserted / updated / deleted counts come back with it. |
-| `ok: false`, `reason: "drift"` | The payload no longer matches the frozen shape. **Nothing was written.** Fix the collector; don't retry unchanged. |
-| `ok: false`, `reason: "low_primary_key_overlap"` | The payload barely overlaps what's stored — the signature of a truncated run or a regenerated key. **Nothing was written.** |
-| `ok: false`, `reason: "not_found"` | No dataset matched the name. **Nothing was written and nothing was created.** The nearest existing names come back with it. |
+| `written: true` | The dataset's approval setting approved the run, and it was written. Per-table counts come back with it. |
+| A `summary` and a `runId` | The run is planned and waiting. Show the summary to a person. Once they approve, call `dataset_sync` again with the `runId` and `approve: true`. |
+| A question in the summary | The run isn't clean: a value changed on both sides, rows the app edited are missing from the payload, or the payload hardly matches what's stored. The person's answers go back in `decisions`. |
+| `reason: "drift"` | The payload no longer matches the frozen shape. **Nothing was written.** Fix the collector; don't retry unchanged. |
+| `reason: "not_found"` | No dataset matched the name. **Nothing was written and nothing was created.** The nearest existing names come back with it. |
 
-All three need a human. Have the job surface them rather than retrying in a loop.
+For an unattended collector, set the dataset's approval to **Approve automatically when clean**, so ordinary runs are written without anyone, and anything unusual waits for a person. Have the job surface a waiting run rather than retrying in a loop.
 
 <Warning>
 **Never sync a partial payload.** If your collector fails halfway, abort the run — do not sync what it managed to collect, because a partial payload deletes the rest of the dataset.

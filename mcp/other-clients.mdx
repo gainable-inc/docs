@@ -1,0 +1,52 @@
+---
+title: "ChatGPT, Cursor and other clients"
+description: "Connect any MCP client to Gaia: ChatGPT, Cursor, Gemini, Goose and more"
+---
+
+Gaia isn't tied to one AI tool. Any client that supports remote MCP servers over streamable HTTP with OAuth can connect to the same endpoint and get the same tools as Claude Code or Codex:
+
+```
+https://build.gainable.dev/mcp
+```
+
+## Set it up
+
+<Steps>
+  <Step title="Add a remote MCP server">
+    In your client's settings for connectors, apps or MCP servers, add a new server with the URL above. If the client asks for a transport, choose HTTP (streamable HTTP). If it asks for authentication, choose OAuth.
+  </Step>
+  <Step title="Sign in">
+    The client opens your browser. Sign in to Gainable, pick the account if you have more than one, and tick the [optional checkboxes](/mcp/overview#what-youre-granting) you need.
+  </Step>
+  <Step title="Name Gaia in your first message">
+    Start with something like *"Use Gaia to build me an app from this spreadsheet"*. See [Say "Gaia" in your first message](/mcp/overview#say-gaia-in-your-first-message) for why.
+  </Step>
+</Steps>
+
+## Client notes
+
+<AccordionGroup>
+  <Accordion title="ChatGPT">
+    Add Gainable as a connector where your ChatGPT plan lets you add custom connectors, using the URL above. In a chat, you can pick it directly with **@ Gaia**.
+  </Accordion>
+  <Accordion title="Cursor">
+    Add the server to your MCP configuration, for example in `~/.cursor/mcp.json`:
+
+    ```json
+    {
+      "mcpServers": {
+        "gainable": { "url": "https://build.gainable.dev/mcp" }
+      }
+    }
+    ```
+
+    Sign in to Gainable when Cursor prompts you.
+  </Accordion>
+  <Accordion title="Gemini, Goose and others">
+    Add a remote HTTP MCP server with the URL above, the same way you add any other. The connector sends its own operating instructions when the client connects, so no extra setup is needed.
+  </Accordion>
+</AccordionGroup>
+
+## Use an app's Assistant instead
+
+This page connects your AI tool to **Gaia**, to build and change apps. To work with the data in one app, connect to that app's [Assistant](/use/assistant#from-your-own-ai-tool) instead. Its owner [shares it](/own/share-assistant) with a link.
