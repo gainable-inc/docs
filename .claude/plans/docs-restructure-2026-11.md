@@ -30,7 +30,7 @@ The site is organized around product features. It should be organized around **w
 
 I'd use Mintlify **tabs** (`navigation.tabs` in `docs.json`), one per audience. The working names are verbs, so the reader picks a job instead of a feature.
 
-Every tab shares a short **front** group: *What is Gainable*, *Who does what* (roles), *What's new*.
+Every tab shares a short **front** group: *What is Gainable* and *Who does what* (roles).
 
 ### Tab 1 — Build — *"Build apps from your data"*
 For builders.
@@ -75,7 +75,7 @@ For developers and power users.
 
 1. **A role-picker home page.** `introduction.mdx` becomes four Cards ("I want to build an app / I own an app / I use Gainable / I'm a developer"). That one page carries the whole persona model.
 2. **A "Who does what" page.** One table of Account admin, Builder, App admin, Data manager, Member and External, with what each can do. All four tabs link to it. This is where ACL confusion gets solved.
-3. **What's new / changelog page**, written from the internal release notes in customer language. It should be updated on each prod release, which also gives the docs a release rhythm.
+3. ~~What's new page~~ Dropped (2026-11-21). The docs describe the product as it is now, with no history, no "replaces" and no "used to".
 4. **Write each feature once and link it from the other tabs.** For example, the Assistant MCP *setup* lives in Own and the *usage* lives in Use, with each page linking to the other.
 5. **Retire with redirects, not deletes.** `copilots/*` and `autopilot/*` → Assistant pages; `building/data-connectors` → Datasets; `concepts/agents` → Assistant overview. Every moved URL gets a `redirects` entry.
 6. **Rebuild the Fin CSV** after the content lands. Almost every Copilot/Autopilot answer is wrong now, and Fin is answering customers with it today. As a stopgap, update the worst Fin rows in phase 1.
@@ -88,12 +88,12 @@ For developers and power users.
 | Phase | PR | Content |
 |---|---|---|
 | 0 | `docs/naming-and-ia` | Update CLAUDE.md naming; tabs skeleton in `docs.json`; move existing pages into tabs; redirects; role-picker intro; README tree. No new content |
-| 1 | `docs/assistant` | Assistant pages (tabs 2+3), retire Copilot/Autopilot, stopgap Fin update |
+| 1 | `docs/assistant` | Assistant pages (tabs 2+3); remove Copilot/Autopilot pages and links (redirects only, never mentioned on a page); stopgap Fin update |
 | 2 | `docs/build-datasets` | Tab 1: multi-sheet build, datasets, sync, review decisions |
 | 3 | `docs/access-control` | Tab 2: access, roles/groups, row rules, Data manager, "Who does what" |
 | 4 | `docs/apps-grid-and-mobile` | Tab 3: grid, notifications, messaging, mobile |
 | 5 | `docs/developer` | Tab 4: Builder MCP for every client, plugins, Author mode |
-| 6 | `docs/fin-refresh` | Full Fin CSV rewrite; What's new page |
+| 6 | `docs/fin-refresh` | Full Fin CSV rewrite (current product only, no history) |
 
 Phases 2 and 3 include the post-Nov 9 features (Data manager, two-way sync, Data page). They can go first or wait for the next prod release, depending on question 1.
 
