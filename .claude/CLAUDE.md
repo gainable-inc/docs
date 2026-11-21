@@ -31,7 +31,7 @@ This file lives in `.claude/` on purpose. Mintlify turns markdown files in the r
   - **Data manager** is a per-user permission next to Administrator, not a role. Roles and groups decide what people see, never what they administer.
 - The site has four tabs, one per reader. Put a page in the tab its reader works in:
   - **Build**: building apps and working with datasets.
-  - **Own**: app owners and admins (access, the app's data, setting up the Assistant). New pages go in `own/`.
+  - **Manage**: app owners and admins, everything around an app that isn't building it (access, the app's data, setting up the Assistant). New pages go in `manage/`.
   - **Use**: everyone in an app (Apps grid, notifications, messaging, the Assistant, mobile). New pages go in `use/`.
   - **Develop**: the MCP connector, plugins and code.
   - The full restructure plan is in `.claude/plans/docs-restructure-2026-11.md`.

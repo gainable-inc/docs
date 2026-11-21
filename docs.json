@@ -68,33 +68,33 @@
         ]
       },
       {
-        "tab": "Own",
+        "tab": "Manage",
         "groups": [
           {
-            "group": "Own an app",
+            "group": "Manage an app",
             "pages": [
-              "own/overview",
-              "own/who-does-what"
+              "manage/overview",
+              "manage/who-does-what"
             ]
           },
           {
             "group": "Access",
             "pages": [
-              "own/access"
+              "manage/access"
             ]
           },
           {
             "group": "Data",
             "pages": [
-              "own/data",
-              "own/activity"
+              "manage/data",
+              "manage/activity"
             ]
           },
           {
             "group": "The Assistant",
             "pages": [
-              "own/assistant",
-              "own/share-assistant"
+              "manage/assistant",
+              "manage/share-assistant"
             ]
           }
         ]
@@ -175,20 +175,20 @@
     }
   },
   "redirects": [
-    { "source": "/agents/creating-agents", "destination": "/own/assistant" },
-    { "source": "/agents/functions", "destination": "/own/assistant" },
-    { "source": "/agents/knowledge", "destination": "/own/assistant#memory" },
+    { "source": "/agents/creating-agents", "destination": "/manage/assistant" },
+    { "source": "/agents/functions", "destination": "/manage/assistant" },
+    { "source": "/agents/knowledge", "destination": "/manage/assistant#memory" },
     { "source": "/agents/copilot", "destination": "/use/assistant" },
-    { "source": "/agents/overview", "destination": "/own/assistant#scheduled-tasks" },
-    { "source": "/agents/objectives", "destination": "/own/assistant#scheduled-tasks" },
-    { "source": "/agents/playbooks", "destination": "/own/assistant#scheduled-tasks" },
-    { "source": "/agents/triggers", "destination": "/own/assistant#scheduled-tasks" },
-    { "source": "/agents/tools", "destination": "/own/assistant#outside-tools" },
-    { "source": "/agents/risk-tiers", "destination": "/own/assistant#scheduled-tasks" },
+    { "source": "/agents/overview", "destination": "/manage/assistant#scheduled-tasks" },
+    { "source": "/agents/objectives", "destination": "/manage/assistant#scheduled-tasks" },
+    { "source": "/agents/playbooks", "destination": "/manage/assistant#scheduled-tasks" },
+    { "source": "/agents/triggers", "destination": "/manage/assistant#scheduled-tasks" },
+    { "source": "/agents/tools", "destination": "/manage/assistant#outside-tools" },
+    { "source": "/agents/risk-tiers", "destination": "/manage/assistant#scheduled-tasks" },
     { "source": "/agents/autopilot", "destination": "/use/assistant" },
-    { "source": "/agents/scopes", "destination": "/own/assistant#what-the-assistant-can-see" },
-    { "source": "/agents/agent-action-log", "destination": "/own/assistant#scheduled-tasks" },
-    { "source": "/agents/connect-outbound", "destination": "/own/assistant#outside-tools" },
+    { "source": "/agents/scopes", "destination": "/manage/assistant#what-the-assistant-can-see" },
+    { "source": "/agents/agent-action-log", "destination": "/manage/assistant#scheduled-tasks" },
+    { "source": "/agents/connect-outbound", "destination": "/manage/assistant#outside-tools" },
     { "source": "/agents/recipes", "destination": "/prompting/examples#the-assistant" },
     { "source": "/cli/overview", "destination": "/mcp/overview" },
     { "source": "/cli/installation", "destination": "/mcp/overview" },
@@ -203,21 +203,28 @@
     { "source": "/compare/replit", "destination": "https://www.gainable.dev/compare/replit", "permanent": true},
     { "source": "/compare/structify", "destination": "https://www.gainable.dev/compare/structify", "permanent": true},
     { "source": "/copilots/overview", "destination": "/use/assistant" },
-    { "source": "/copilots/configuring", "destination": "/own/assistant" },
-    { "source": "/copilots/data-access", "destination": "/own/assistant" },
-    { "source": "/copilots/knowledge", "destination": "/own/assistant#memory" },
+    { "source": "/copilots/configuring", "destination": "/manage/assistant" },
+    { "source": "/copilots/data-access", "destination": "/manage/assistant" },
+    { "source": "/copilots/knowledge", "destination": "/manage/assistant#memory" },
     { "source": "/copilots/embedding", "destination": "/use/assistant" },
-    { "source": "/autopilot/overview", "destination": "/own/assistant#scheduled-tasks" },
-    { "source": "/autopilot/objectives", "destination": "/own/assistant#scheduled-tasks" },
-    { "source": "/autopilot/playbooks", "destination": "/own/assistant#scheduled-tasks" },
-    { "source": "/autopilot/triggers", "destination": "/own/assistant#scheduled-tasks" },
-    { "source": "/autopilot/tools", "destination": "/own/assistant#outside-tools" },
-    { "source": "/autopilot/risk-tiers", "destination": "/own/assistant#scheduled-tasks" },
+    { "source": "/autopilot/overview", "destination": "/manage/assistant#scheduled-tasks" },
+    { "source": "/autopilot/objectives", "destination": "/manage/assistant#scheduled-tasks" },
+    { "source": "/autopilot/playbooks", "destination": "/manage/assistant#scheduled-tasks" },
+    { "source": "/autopilot/triggers", "destination": "/manage/assistant#scheduled-tasks" },
+    { "source": "/autopilot/tools", "destination": "/manage/assistant#outside-tools" },
+    { "source": "/autopilot/risk-tiers", "destination": "/manage/assistant#scheduled-tasks" },
     { "source": "/autopilot/inbox", "destination": "/use/assistant" },
-    { "source": "/autopilot/scopes", "destination": "/own/assistant#what-the-assistant-can-see" },
-    { "source": "/autopilot/agent-action-log", "destination": "/own/assistant#scheduled-tasks" },
-    { "source": "/autopilot/connect-outbound", "destination": "/own/assistant#outside-tools" },
+    { "source": "/autopilot/scopes", "destination": "/manage/assistant#what-the-assistant-can-see" },
+    { "source": "/autopilot/agent-action-log", "destination": "/manage/assistant#scheduled-tasks" },
+    { "source": "/autopilot/connect-outbound", "destination": "/manage/assistant#outside-tools" },
     { "source": "/autopilot/recipes", "destination": "/prompting/examples#the-assistant" },
-    { "source": "/building/data-connectors", "destination": "/build/datasets" }
+    { "source": "/building/data-connectors", "destination": "/build/datasets" },
+    { "source": "/own/overview", "destination": "/manage/overview" },
+    { "source": "/own/who-does-what", "destination": "/manage/who-does-what" },
+    { "source": "/own/access", "destination": "/manage/access" },
+    { "source": "/own/data", "destination": "/manage/data" },
+    { "source": "/own/activity", "destination": "/manage/activity" },
+    { "source": "/own/assistant", "destination": "/manage/assistant" },
+    { "source": "/own/share-assistant", "destination": "/manage/share-assistant" }
   ]
 }

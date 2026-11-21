@@ -4,7 +4,7 @@ This repository contains the documentation for [Gainable](https://build.gainable
 
 ## Documentation Structure
 
-The site has four tabs, one per reader: **Build**, **Own**, **Use** and **Develop**. `docs.json` maps each page to its tab.
+The site has four tabs, one per reader: **Build**, **Manage**, **Use** and **Develop**. `docs.json` maps each page to its tab.
 
 ```
 docs/
@@ -16,7 +16,7 @@ docs/
 │   ├── datasets.mdx          # Datasets, connections, sync and two-way sync
 │   └── spreadsheets.mdx      # How Gaia reads spreadsheets
 │
-├── own/
+├── manage/
 │   ├── overview.mdx          # Owning an app: where everything is
 │   ├── who-does-what.mdx     # Every kind of user side by side
 │   ├── access.mdx            # Access, roles, groups and rules
