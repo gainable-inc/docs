@@ -22,17 +22,10 @@
             ]
           },
           {
-            "group": "Concepts",
+            "group": "Datasets",
             "pages": [
-              "concepts/how-it-works",
-              "concepts/agents",
-              "concepts/skills"
-            ]
-          },
-          {
-            "group": "Datasets and data",
-            "pages": [
-              "building/data-connectors",
+              "build/datasets",
+              "build/spreadsheets",
               "building/data-models"
             ]
           },
@@ -53,6 +46,14 @@
               "prompting/refining",
               "prompting/examples",
               "prompting/common-patterns"
+            ]
+          },
+          {
+            "group": "How it works",
+            "pages": [
+              "concepts/how-it-works",
+              "concepts/agents",
+              "concepts/skills"
             ]
           },
           {
@@ -200,6 +201,7 @@
     { "source": "/autopilot/scopes", "destination": "/own/assistant#what-the-assistant-can-see" },
     { "source": "/autopilot/agent-action-log", "destination": "/own/assistant#scheduled-tasks" },
     { "source": "/autopilot/connect-outbound", "destination": "/own/assistant#outside-tools" },
-    { "source": "/autopilot/recipes", "destination": "/prompting/examples#the-assistant" }
+    { "source": "/autopilot/recipes", "destination": "/prompting/examples#the-assistant" },
+    { "source": "/building/data-connectors", "destination": "/build/datasets" }
   ]
 }

@@ -12,6 +12,10 @@ docs/
 ├── quickstart.mdx            # First app in 5 minutes
 ├── build-from-data.mdx       # Build from spreadsheets and other data
 │
+├── build/
+│   ├── datasets.mdx          # Datasets, connections, sync and two-way sync
+│   └── spreadsheets.mdx      # How Gaia reads spreadsheets
+│
 ├── own/
 │   ├── overview.mdx          # Owning an app: access, data, the Assistant
 │   ├── assistant.mdx         # Set up the Assistant: scheduled tasks, memory, tools
@@ -33,7 +37,6 @@ docs/
 │   └── common-patterns.mdx   # Templates for common apps
 │
 ├── building/
-│   ├── data-connectors.mdx   # Datasets and external sources
 │   ├── data-models.mdx       # Data and schemas
 │   ├── views.mdx             # UI and pages
 │   ├── real-time.mdx         # Live updates

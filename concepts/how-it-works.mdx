@@ -12,7 +12,7 @@ Gainable uses specialized build agents that work together to create your applica
     Write what you want in plain English. The Planner Agent creates a build plan, the Build Agent generates code, and the Validation Agent ensures quality.
   </Card>
   <Card title="Build from data" icon="database">
-    Connect external data sources. The DataAnalyzer Agent examines your schema, recommends features through interactive Q&A, and produces a build specification.
+    Drop in spreadsheets or connect your tools. Gaia reads them together, designs a data model and an app, and lets you review its decisions before building.
   </Card>
 </CardGroup>
 
@@ -41,23 +41,20 @@ Both paths converge at the Build Agent, which generates your complete applicatio
 ### Path 2: Build from data
 
 <Steps>
-  <Step title="Connect and sync your data">
-    Choose a data source (Google Sheets, HubSpot, Stripe, etc.), authenticate, and sync your data into Gainable.
+  <Step title="Bring your data">
+    Drop in one or more spreadsheets, or pick a dataset with Google Sheets, Excel Online or connected tools such as HubSpot.
   </Step>
-  <Step title="DataAnalyzer Agent examines your schema">
-    The agent analyzes your field names, types, sample rows, and enum values. It identifies the domain (CRM, project management, finance, etc.) and detects patterns like pipeline stages, currency fields, or contact records.
+  <Step title="Gaia imports and designs">
+    Gaia reads every source together, designs one data model that links them, imports your rows, and designs the app: pages, calculations, lists and the Assistant's scheduled work. The preview fills in as it goes.
   </Step>
-  <Step title="Interactive refinement">
-    The agent asks 2-3 clarifying questions through multiple-choice options. You shape the app spec through conversation.
+  <Step title="You review its decisions">
+    Keep Gaia's recommendations, or walk through **Review decisions** to change the home page, who can sign in, and what the Assistant does on a schedule.
   </Step>
-  <Step title="Build Agent generates code">
-    The same Build Agent used in the prompt path executes the spec, creating views, dashboards, and collaboration features matched to your data.
-  </Step>
-  <Step title="Validation ensures quality">
-    Validation checks run to catch common issues before delivery.
+  <Step title="Build and validation">
+    The Build Agent generates the app from the design, and validation checks catch common issues before delivery.
   </Step>
   <Step title="Your app is ready">
-    A fully functional application appears, pre-populated with your synced data.
+    A working app, already filled with your data, with its Assistant ready to answer questions.
   </Step>
 </Steps>
 
@@ -156,11 +153,11 @@ You now have a working task tracker you can use immediately.
 </Accordion>
 
 <Accordion title="Example: Building from a Google Sheet of sales deals">
-**1. You connect and sync your Google Sheet**
+**1. You connect your Google Sheet**
 
 The sheet has columns: Deal Name, Company, Amount, Stage (New, Qualified, Proposal, Won, Lost), Close Date, Owner.
 
-**2. DataAnalyzer Agent analyzes the schema**
+**2. Gaia reads the sheet and designs the app**
 
 The agent identifies:
 - Domain: CRM / Sales (deal + amount + stage enum)
@@ -168,15 +165,13 @@ The agent identifies:
 - Currency field: Amount → KPI cards and charts
 - Date field: Close Date → timeline filtering
 
-**3. Agent asks clarifying questions**
+**3. You review its decisions**
 
-"I see a sales pipeline with 5 stages and deal values. What should be the primary view?"
+Gaia recommends the pipeline overview as the home page, keeps the owners as a list, and suggests an overdue-deal check for the Assistant. You open **Review decisions**, make the Owner column into app users, and keep the rest.
 
-Options: Pipeline Board / Revenue Dashboard / Deal Table
+**4. You choose a layout and colors**
 
-**4. You refine through Q&A**
-
-You pick "Pipeline Board" as the primary view. The agent asks one more question about how to handle the Owner field.
+You pick the classic sidebar layout and a theme under **App shell and colors**, then select **Build the app**.
 
 **5. Build Agent generates the app**
 

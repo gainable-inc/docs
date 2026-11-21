@@ -52,13 +52,14 @@ This plan is then handed to the Build Agent.
 
 ## DataAnalyzer Agent
 
-The DataAnalyzer is used when you [build from data](/build-from-data) instead of describing an app. It examines your synced data and designs an app spec through conversation.
+The DataAnalyzer is used when you [build from data](/build-from-data) instead of describing an app. It reads all of your sources together and designs an app around them.
 
 <Card title="What the DataAnalyzer does" icon="magnifying-glass-chart">
 - Analyzes schema, field types, and sample data from connected sources
 - Identifies the domain (CRM, project management, finance, etc.)
 - Detects patterns that map to features (pipeline enums → kanban, currency → dashboards)
-- Asks clarifying questions through interactive multiple-choice options
+- Links records across sheets and sources, by ID, name or email
+- Prepares the decisions you can review before building: home page, who can sign in, and scheduled work
 - Produces a multi-stage build specification
 - Decides where to place collaboration features based on domain context
 </Card>
@@ -80,7 +81,7 @@ Recommended views:
 - Deals table (searchable, sortable)
 ```
 
-It then asks 2-3 questions to refine the spec before handing off to the Build Agent.
+You can then [review its decisions](/build-from-data#review-decisions) before it hands off to the Build Agent.
 
 ## Build Agent
 

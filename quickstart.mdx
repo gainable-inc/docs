@@ -1,120 +1,75 @@
 ---
 title: "Quickstart"
-description: "Build your first app in 5 minutes"
+description: "Turn a few spreadsheets into a working app in about five minutes"
 ---
 
-<Info>
-This quickstart shows the "Describe your app" path. If you already have data in Google Sheets, HubSpot, or another tool, check out [Build from data](/build-from-data) for a guided experience that starts from your existing data.
-</Info>
+This quickstart builds a sales pipeline app from five spreadsheets. You'll watch Gaia design the app, review what it decided, build it, and make your first change.
 
-## Create your first app
+## 1. Drop in your sheets
 
-Let's build a simple deal tracker to see Gainable in action. This will take about 5 minutes.
+Go to [gainable.dev](https://www.gainable.dev) and drop your spreadsheets into the box, or choose **Excel or CSV**, **Google Sheets** or **Excel Online**. You can add as many sheets as belong together, and Gaia works out how they connect.
 
-### Step 1: Start a new project
+No sheets at hand? Pick a sample under **Try a sample**. This quickstart uses **Deals Pipeline**, which has five sheets: accounts, contacts, deals, activities and quotes.
 
-1. Go to [build.gainable.dev](https://build.gainable.dev)
+<Frame>
+  <img src="/images/front-door-sheets.png" alt="The Gainable start box with five spreadsheets attached and a one-line description of the workflow above them" />
+</Frame>
 
-### Step 2: Describe what you want
-
-In the input box, type your first prompt:
-
-<CodeGroup>
-
-```text Good prompt wrap
-Setup a dashboard with 3 KPIs: Total deals, won deals, and lost deals. 
-
-Create a table listing deals with customer, amount, assigned to, and close date for each deal; include a "Add new" deal button. 
-
-Lastly, add a line chart showing deals for each status over the last 12 months by deal close date. 
-
-Have it all vertically stacked; with KPIs 1st, chart 2nd, and table last.
-```
-
-
-```text What this creates
-- A Deal data model with all your fields
-- A deals page with a table to manage deals
-- Add, edit, and delete functionality
-- A dashboard with KPI cards and a line chart
-```
-
-</CodeGroup>
+Gaia writes a one-line description of the work the sheets support. Edit it if it's not quite right, because it steers what gets built. Then select **Build this**.
 
 <Tip>
-  Being specific about your fields (like "deal name, company, and amount") helps Gainable create exactly what you need.
+Already signed in? You can also start from [build.gainable.dev](https://build.gainable.dev): choose **Build from data** to use a dataset you have, or **Describe your app** to start from an idea instead of data.
 </Tip>
 
-### Step 3: Watch it build
+## 2. Watch Gaia design the app
 
-Gainable will show you a plan of what it's going to build, and if you choose to accept it will generate your entire application. You'll see:
+Gaia reads your sheets, designs a data model, imports your rows, and then designs the app: its data models, calculations, pages, lists and the Assistant. The preview fills in as it goes, first with placeholders and then with your real data.
 
-1. **Plan preview** - What features will be created; if Gainable finds the request ambiguous it will ask follow-up questions
-2. **Build progress** - Watch the build being generated
-3. **Your app** - A working application appears in the preview panel with a message telling you what's been done
+<Frame>
+  <img src="/images/builder-design-preview.png" alt="The builder with the design steps checked off on the left and a preview of the Sales Pipeline overview, with KPI cards and charts, on the right" />
+</Frame>
 
-### Step 4: Use your app
+While it works, pick the app's layout and colors from **App shell and colors** under the preview.
 
-Once the build completes, you can:
+## 3. Review Gaia's decisions
 
-- **Add a deal** - Click the "Add Deal" button and fill in the form
-- **View your dashboard** - See your data visualized in charts
-- **Edit or delete** - Click on any deal to modify it
+When the design is done, you can build straight away with **Build with recommendations**, or select **Review decisions** first to check the choices Gaia made for you, such as which page opens first, whether the people in your sheets get to sign in, and which recurring jobs the Assistant should run. See [Review decisions](/build-from-data#review-decisions).
 
-<Note>
-  Your app updates in real-time. If you add a deal, the dashboard chart updates automatically.
-</Note>
+## 4. Build the app
 
-## Try adding a feature
+Select **Build the app**. If you aren't signed in yet, this is when you create your account, with email or Google. Your design is kept.
 
-Now let's add something new. In the chat, type:
+The build takes a few minutes. When it's done, select **Go to app**.
+
+## 5. Make your first change
+
+The builder opens with your app on the right and a chat on the left. Describe a change in plain words:
 
 ```text
-Add a kanban board view where I can drag deals between status columns
+Add a "Next step" text field to deals and show it on the deal cards
 ```
 
-Gainable shows you a plan first. Accept it, and the kanban board is added to your existing app, preserving everything you've already built.
+Gaia shows a plan of what it will change. Accept it, and the preview updates when the change is built. See [Changing a built app](/prompting/refining).
 
-<Tip>
-Changing an app follows different rules from building one — name the page you mean, keep each request to one change, and read the plan before accepting. See [Changing a built app](/prompting/refining).
-</Tip>
+## 6. Publish and invite your team
 
-## Tips for success
+Select **Publish** to make your changes live. Then open the people icon in the builder's left rail to decide who can get in. See [Own an app](/own/overview).
 
-<AccordionGroup>
-  <Accordion title="Be specific about your data">
-    Instead of "track customers", say "track customers with name, email, company, and signup date"
-  </Accordion>
-  <Accordion title="Describe relationships">
-    If things are connected, say so: "each project has many tasks" or "contacts belong to companies"
-  </Accordion>
-  <Accordion title="Iterate incrementally">
-    Start simple and add features one at a time. Don't try to build everything in one prompt.
-  </Accordion>
-  <Accordion title="Request features by name">
-    Ask for specific features: "add a pie chart", "add a kanban board", "add real-time updates"
-  </Accordion>
-</AccordionGroup>
+Everyone you invite finds the app on their [Apps grid](/use/overview), and its [Assistant](/use/assistant) is ready to answer questions about your data.
 
 ## What's next?
 
 <CardGroup cols={2}>
-  <Card title="Learn about prompting" icon="message" href="/prompting/overview">
-    Write prompts that get great results
-  </Card>
-  <Card title="See examples" icon="lightbulb" href="/prompting/examples">
-    Copy and adapt real prompts
-  </Card>
-  <Card title="Explore skills" icon="wand-magic-sparkles" href="/concepts/skills">
-    Discover built-in features you can request
-  </Card>
   <Card title="Build from data" icon="database" href="/build-from-data">
-    Connect existing data sources and build on top of them
+    Everything about turning your data into an app
+  </Card>
+  <Card title="Datasets" icon="layer-group" href="/build/datasets">
+    Connect sources and keep your data in sync
+  </Card>
+  <Card title="Changing a built app" icon="pen" href="/prompting/refining">
+    Ask for changes once your app is running
   </Card>
   <Card title="Set up the Assistant" icon="sliders" href="/own/assistant">
-    Shape your app's Assistant, its scheduled tasks and its tools
-  </Card>
-  <Card title="Work with the Assistant" icon="comments" href="/use/assistant">
-    Ask questions, update records and write documents with the Assistant
+    Shape your app's Assistant and its scheduled tasks
   </Card>
 </CardGroup>

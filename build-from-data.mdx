@@ -1,178 +1,106 @@
 ---
 title: "Build from data"
-description: "Connect your existing data sources and let AI build an app around them"
+description: "Turn one or more spreadsheets, or the tools you already use, into an app"
 ---
 
-## Start from your data
+Your data is the best description of your app. Drop in the spreadsheets your team works from, or connect the tools you already use, and Gaia works out what the data is, how the pieces connect, and what app and workflow would help. You review its decisions and press Build.
 
-Already have data in Google Sheets, HubSpot, Stripe, or another tool? You don't need to describe an app from scratch. Connect your data and Gainable's DataAnalyzer agent will examine it, recommend features, and build a complete app around it.
+## Where your data can come from
 
-Your existing data becomes the specification. Instead of writing a prompt that describes your app from scratch, the AI reads your actual schema from your datasets, detects what domain you're in, and proposes an app tailored to your data.
+| Source | How |
+|--------|-----|
+| **Excel or CSV files** | Upload one or several at once. Each file can have several sheets. |
+| **Google Sheets** and **Excel Online** | Connect your account and pick the spreadsheets. They stay connected, so the app can sync from them later. |
+| **Connected apps** such as HubSpot, Airtable, Stripe or Supabase | Add a data connection, then put it in a [dataset](/build/datasets). |
+| **Anything else** | Have your AI tool collect it into a dataset. See [Bring any source](/mcp/datasets). |
 
-<Tip>
-This path is ideal when you already have data in external systems and want to build views, dashboards, and workflows on top of it.
-</Tip>
+You can start from [gainable.dev](https://www.gainable.dev) by dropping sheets into the box, or from [build.gainable.dev](https://build.gainable.dev) by choosing **Build from data** and picking a dataset, or **New dataset** to create one.
 
-## How it works
+## Several sheets, one app
 
-<Steps>
-  <Step title="Connect your data source">
-    Choose from 15+ supported sources including Google Sheets, HubSpot, Stripe, Airtable, and Supabase. Authenticate via OAuth or API key.
-  </Step>
-  <Step title="Create a dataset and sync">
-    Group your sources into a dataset and sync the data into Gainable. You can connect multiple sources to combine data from different systems.
-  </Step>
-  <Step title="Start a new project from your data">
-    On the new project page, choose **Build from data** and select one or more datasets.
-  </Step>
-  <Step title="AI analyzes your data">
-    The DataAnalyzer agent examines your schema, sample rows, and field types. It identifies the domain (CRM, project management, finance, etc.) and recommends features matched to your data patterns.
-  </Step>
-  <Step title="Refine through conversation">
-    The agent asks 2-3 clarifying questions through interactive multiple-choice options. You shape the app through a short Q&A conversation.
-  </Step>
-  <Step title="Your app is built">
-    The Build Agent generates a complete application with views, dashboards, and collaboration features, pre-populated with your synced data.
-  </Step>
-</Steps>
+You don't have to merge your sheets first. Drop in everything that belongs to the same work (customers, orders, invoices, the notes sheet someone keeps on the side) and Gaia reads them together:
 
-## What AI analyzes
+- It recognizes the same kind of record across files and links them. A deals sheet that names a company by its name or email gets a real link to that company.
+- Two files that hold the same things under different ids become one table.
+- A kind of record you have no rows for yet still gets its own table, ready to fill.
 
-When you connect data, the DataAnalyzer agent examines:
+See [How Gaia reads your spreadsheets](/build/spreadsheets) for how it handles currencies, color-coded cells, hidden columns and text dates.
 
-| Signal | What it tells the AI |
-|--------|---------------------|
-| **Field names** | Domain context (e.g., "deal_amount" signals sales, "due_date" signals project management) |
-| **Field types** | What UI to generate (currency fields get KPI cards, dates get timeline views) |
-| **Enum values** | Pipeline stages, statuses, and categories that map to kanban columns or chart segments |
-| **Sample rows** | Real data patterns that inform layout and feature recommendations |
-| **Cross-model relationships** | How datasets connect (contacts to companies, tasks to projects) |
+## Watch it take shape
 
-### Domain detection
+After you start, the left side of the builder shows two stages:
 
-The agent recognizes common business domains and tailors its recommendations:
+**Importing your data**: reading your data, understanding it, designing the data model, importing your rows, and connecting it to your app.
 
-- **CRM / Sales** — Pipeline boards, deal value dashboards, contact card grids
-- **Project management** — Kanban boards, timeline views, progress tracking
-- **Finance / Payments** — Revenue dashboards, transaction tables, KPI cards
-- **HR / People** — Employee directories, org charts, onboarding trackers
-- **Inventory / Operations** — Stock level dashboards, order tables, status tracking
+**Designing your app**: data models, calculations, the interface (pages and navigation), lists used in dropdowns and labels, and the Assistant with its scheduled work.
 
-## Interactive refinement
+The preview on the right fills in as the design progresses, first with placeholders and then with your real data. Use **App shell and colors** under the preview to choose a layout (top navigation, classic sidebar, mini rail or workspace) and a color theme. What you pick carries into the finished app.
 
-The DataAnalyzer doesn't just guess. It asks you to confirm and refine through interactive options:
+<Frame>
+  <img src="/images/app-shell-and-colors.png" alt="The App shell and colors panel with four layout thumbnails and a row of color themes" />
+</Frame>
 
-<Accordion title="Example: Refining a sales pipeline app">
-After analyzing a Google Sheet with deal data, the agent asks:
+## Review decisions
 
-**Question 1:** "I see a sales pipeline with 5 stages and deal values. What should be the primary view?"
-- Pipeline Board (kanban by stage)
-- Revenue Dashboard
-- Deal Table
+When the design is done, you have two choices:
 
-**Question 2:** "How should I handle the 'Owner' field?"
-- Show as a filter on the pipeline board
-- Create a separate view grouped by owner
-- Both
+- **Build with recommendations** builds the app as Gaia designed it.
+- **Review decisions** walks you through the choices Gaia made, one at a time. Change any of them, and the preview updates as you go.
 
-**Question 3:** "I can add these collaboration features. Which ones?"
-- Comments on individual deals
-- Team activity feed on the dashboard
+The decisions depend on your data. Typically:
 
-Each answer updates the app specification before building begins.
-</Accordion>
+<AccordionGroup>
+  <Accordion title="Your data: anything to add?">
+    Tell Gaia what the sheets don't say: what a column really means, which values matter, what colors stand for, what people need to change. Select **Update the app** and it's applied before the app is built.
 
-The conversation typically takes 2-3 turns before the spec is finalized. You're always in control of what gets built.
+    <Frame>
+      <img src="/images/review-decisions-your-data.png" alt="The first review step, Anything to add about your data, with a text box for notes and an Update the app button" />
+    </Frame>
+  </Accordion>
+  <Accordion title="People: should they be able to sign in?">
+    When a sheet lists people, such as deal owners, Gaia asks whether they should become users of the app. **Yes, invite them** gives each one a free account that only sees this app. **No, keep them as a list** keeps them as an ordinary list you edit in Settings. Nobody is invited unless you choose it.
 
-## What gets built
+    <Frame>
+      <img src="/images/review-decisions-people.png" alt="The review step asking whether the people in the Deal Owners list should be able to sign in, with the options Yes, invite them and No, keep them as a list" />
+    </Frame>
+  </Accordion>
+  <Accordion title="Pages: which view is the home page?">
+    Pick the page people land on. Gaia marks the one it recommends.
+  </Accordion>
+  <Accordion title="Assistant: what should it do on a schedule?">
+    Gaia suggests recurring jobs for the app's Assistant, such as an overdue check or a weekly summary. Switch each one on or off. You can change them later. See [Scheduled tasks](/own/assistant#scheduled-tasks).
 
-The output is a complete, working application with features matched to your data:
+    <Frame>
+      <img src="/images/review-decisions-schedule.png" alt="The review step listing three suggested scheduled tasks, Overdue deal check, Expiring quotes alert and Stale deals summary, each switched on" />
+    </Frame>
+  </Accordion>
+</AccordionGroup>
 
-<CardGroup cols={2}>
-  <Card title="Views matched to data" icon="table-layout">
-    Kanban boards for pipeline enums, dashboards for numeric fields, card grids for people data, tables for transactional data
-  </Card>
-  <Card title="Charts and KPIs" icon="chart-line">
-    Automatic visualization of key metrics based on currency, count, and date fields in your data
-  </Card>
-  <Card title="Collaboration" icon="comments">
-    Comments, chat, and activity feeds placed in context based on the domain
-  </Card>
-  <Card title="The Assistant" icon="robot" href="/use/assistant">
-    An AI teammate that knows your app's data, answers questions and does work in it
-  </Card>
-</CardGroup>
+When you're done, select **Keep and close**, then **Build the app**.
 
-## Supported data sources
+## Build and go
 
-<Note>
-More connectors are added regularly. If you need a source that isn't listed, reach out via the live chat in the bottom-left corner of the builder or email [support@gainable.dev](mailto:support@gainable.dev).
-</Note>
+Building takes a few minutes. The builder shows each step, and when it's done, **Your app is ready**. Select **Go to app** to open it in the builder, where you can change it by chatting with Gaia, publish it, and invite your team.
 
-### CRM
+If you started without an account, you sign up when you select **Build the app**. Your design is kept and the build starts by itself.
 
-| Source | Auth | Capabilities |
-|--------|------|-------------|
-| **HubSpot** | OAuth | Read & write contacts, companies, deals |
-| **Attio** | OAuth | Read & write CRM data |
-| **Folk CRM** | API key | Read & write CRM data |
-| **Salesforce** | OAuth | Read & write CRM data |
+## Start from an idea instead
 
-### Databases and spreadsheets
-
-| Source | Auth | Capabilities |
-|--------|------|-------------|
-| **Google Sheets** | OAuth | Read & write rows |
-| **Airtable** | OAuth | Read & write bases |
-| **Supabase** | API key + URL | Read & write tables |
-
-### Analytics and product
-
-| Source | Auth | Capabilities |
-|--------|------|-------------|
-| **Google Analytics** | OAuth | Read analytics data |
-| **PostHog** | API key | Read event and user data |
-| **Mixpanel** | OAuth | Read analytics data |
-| **Typeform** | OAuth | Read form responses |
-| **Linear** | OAuth | Read & write issues |
-| **Jira** | OAuth | Read & write issues |
-
-### Payments and data warehouses
-
-| Source | Auth | Capabilities |
-|--------|------|-------------|
-| **Stripe** | API key | Read customers, invoices, subscriptions |
-| **Databricks** | Client credentials | Read catalogs, schemas, tables, run SQL |
-
-## Build from data vs. describe your app
-
-Not sure which path to choose? Here's how they compare:
-
-| | Describe your app | Build from data |
-|---|---|---|
-| **Best when** | Starting from scratch with an idea | You have existing data in external systems |
-| **Data** | Data models created from your description | Derived from your datasets and connected sources |
-| **Configuration** | Write a prompt | Interactive Q&A with AI |
-| **Agent pipeline** | Planner → Build → Validation | DataAnalyzer → Build → Validation |
-| **Data** | Starts empty, you add data later | Pre-populated from connected sources |
-
-<Info>
-You can combine both approaches. Connect data sources first, then describe additional features you want on top of them in the prompt.
-</Info>
+No data yet? On [build.gainable.dev](https://build.gainable.dev), choose **Describe your app** and describe what you need. Gaia creates the data models for you, and you can add data sources later. See the [Prompt guide](/prompting/overview) for how to describe an app well.
 
 ## Next steps
 
 <CardGroup cols={2}>
-  <Card title="Set up datasets" icon="plug" href="/building/data-connectors">
-    Detailed guide to creating datasets and connecting data sources
+  <Card title="Datasets" icon="layer-group" href="/build/datasets">
+    Connect sources and keep your data in sync
   </Card>
-  <Card title="Quickstart" icon="play" href="/quickstart">
-    Try the prompt-based path instead
+  <Card title="How Gaia reads your spreadsheets" icon="table" href="/build/spreadsheets">
+    Currencies, colors, hidden columns and dates
   </Card>
-  <Card title="How it works" icon="gears" href="/concepts/how-it-works">
-    Understand the full agent pipeline
+  <Card title="Changing a built app" icon="pen" href="/prompting/refining">
+    Ask for changes once your app is running
   </Card>
-  <Card title="Data models" icon="database" href="/building/data-models">
-    Learn how your data is organized
+  <Card title="Own an app" icon="shield-halved" href="/own/overview">
+    Decide who gets in and what they see
   </Card>
 </CardGroup>
