@@ -63,6 +63,7 @@ docs/
 │   ├── codex.mdx             # Setup in OpenAI Codex
 │   ├── other-clients.mdx     # ChatGPT, Cursor, Gemini, Goose and others
 │   ├── plugins.mdx           # Plugins for Claude Code, Cowork, Codex
+│   ├── api-keys.mdx          # Account API keys for scripts, CI and headless clients
 │   ├── tools.mdx             # Every tool and parameter
 │   └── datasets.mdx          # Bring any source: your AI tool as the connector
 │

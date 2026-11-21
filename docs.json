@@ -126,7 +126,8 @@
               "mcp/claude",
               "mcp/codex",
               "mcp/other-clients",
-              "mcp/plugins"
+              "mcp/plugins",
+              "mcp/api-keys"
             ]
           },
           {
