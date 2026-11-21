@@ -1,6 +1,6 @@
 # Docs restructure plan — November 2026
 
-Status: draft for review. Nothing here is built yet.
+Status (2026-11-21): all seven phases built locally as stacked branches, docs/naming-and-ia (PR #4), then docs/assistant, docs/build-datasets, docs/access-control, docs/apps-grid-and-mobile, docs/developer and docs/fin-refresh. None of the later branches are pushed. See "Product findings" at the end.
 
 ## Why
 
@@ -114,3 +114,11 @@ Phases 2 and 3 include the post-Nov 9 features (Data manager, two-way sync, Data
 - **Data manager is verified** (demo account, builder → Users → select a user → Edit User). It is a checkbox next to **Administrator**: "Can sync this app's data from its files and sheets, and approve those syncs. That covers all of the app's data, whatever access rules say. Administrators can do this already." It is a per-user permission, not a Role. (Roles and Groups are labels that "decide what people see, never what they are allowed to administer".) User badges include External, Linked, Admin and Builder.
 - **Screenshots come from the demo account** ("Docs" org, demo users Sara Larson and Clark Clarksson). The account is no longer on a trial (changed 2026-11-21), so there is no trial badge in the header shots.
 - Still to check: the two-way toggle, @mentioning the Assistant on a record, and phone install plus push (needs a phone).
+
+## Product findings while documenting (2026-11-21)
+
+- **Assigning a role from the builder chat fails.** "Create a Field Staff role and give it to Sara Larson" created the role and the rule, then reported: "I could not set Sara Larson's role to it. Her user record is managed by the platform" (update_records: "User is a platform model"). The release notes say chat assigns roles. The docs tell people to assign roles on the Users tab, which works.
+- **The activity log is noisy.** It lists raw requests such as `POST /api/agent-tools/read-dataset` and "Someone using a preview link, acting as …". The release notes say background noise is left out. The docs describe the filters and don't use a screenshot.
+- **Apps grid Add menu.** Clicking **Add** a second time sometimes leaves the menu closed, and new account tabs need a click into the name box before typing sticks.
+- **Not verified on a device:** the Android steps (Chrome menu labels) and push notifications on a real phone. The iPhone wording comes from the app's own prompt.
+- **Not verified in a client:** the ChatGPT, Cursor, Gemini and Goose setup on mcp/other-clients is written generically from the connector's requirements.
