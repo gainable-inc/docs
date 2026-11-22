@@ -3,7 +3,7 @@ title: "Overview"
 description: "Build and change Gainable apps from Claude, ChatGPT, Codex, Cursor and any other MCP client"
 ---
 
-Gainable isn't only a web app. The **Gaia harness** is accessible via a remote [MCP](https://modelcontextprotocol.io) server, so the AI tool you already work in can build, change, publish and share your apps: Claude Code, Claude, Cowork, ChatGPT, Codex, Cursor, Gemini, Goose or any other MCP client.
+Gainable isn't only a web app. The **Gaia harness** is accessible via a remote [MCP](https://modelcontextprotocol.io) server, so the AI tool you already work in can build, change, publish and share your apps: Claude Code, Codex, Claude, ChatGPT, Cursor, Gemini, Goose or any other MCP client.
 
 There is one endpoint and nothing to install:
 
@@ -18,7 +18,7 @@ https://build.gainable.dev/mcp
     No package to install and nothing to keep on your `PATH`. Add a URL, sign in through your browser, and you're building.
   </Card>
   <Card title="Every client, one server" icon="grid-2">
-    Claude Code, Claude, Cowork, ChatGPT, Codex, Cursor and any other MCP client connect to the same endpoint and get the same tools.
+    Claude Code, Codex, Claude, ChatGPT, Cursor and any other MCP client connect to the same endpoint and get the same tools.
   </Card>
   <Card title="Same harness, same quality" icon="shield-check">
     The connector drives the exact same contract agent, planner, Build Agent, and validators as the web app. Nothing is downgraded.
@@ -30,28 +30,32 @@ https://build.gainable.dev/mcp
 
 ## Pick your client
 
+In **Claude Code and Codex**, install the Gainable plugin. It brings the connector and the Gainable skill, the guidance that keeps the agent on the right tool.
+
 <CardGroup cols={2}>
   <Card title="Claude Code" icon="terminal" href="/mcp/claude-code">
-    One `claude mcp add`, then `/mcp` to sign in.
-  </Card>
-  <Card title="Claude and Cowork" icon="comments" href="/mcp/claude">
-    Add it once as a custom connector — it shows up in chat, Cowork, Desktop, and mobile.
+    Install the plugin, then `/mcp` to sign in.
   </Card>
   <Card title="Codex" icon="terminal" href="/mcp/codex">
-    `codex mcp add`, then `codex mcp login`.
+    Install the plugin and sign in on first use.
+  </Card>
+</CardGroup>
+
+In **Claude, ChatGPT and other AI tools**, add the connector. You build in the same chat you already work in, with no terminal.
+
+<CardGroup cols={2}>
+  <Card title="Claude" icon="comments" href="/mcp/claude">
+    Add it once as a custom connector. It shows up on the web, desktop and mobile.
   </Card>
   <Card title="ChatGPT, Cursor and others" icon="plug" href="/mcp/other-clients">
     Any MCP client that speaks streamable HTTP and OAuth 2.1 can connect to the same URL.
-  </Card>
-  <Card title="Plugins" icon="puzzle-piece" href="/mcp/plugins">
-    In Claude Code, Cowork and Codex, one install brings the connector and the Gainable skill.
   </Card>
 </CardGroup>
 
 ## How it fits together
 
 ```
-You ──▶ Claude Code / Claude / Cowork / Codex ──▶ build.gainable.dev/mcp ──▶ your app
+You ──▶ Claude Code / Codex / Claude / ChatGPT ──▶ build.gainable.dev/mcp ──▶ your app
               (the MCP client)                      (the Gaia harness)
 ```
 
@@ -173,17 +177,17 @@ Ten tools by default, and up to eighteen depending on which scopes you granted. 
 See the [tool reference](/mcp/tools) for every parameter.
 
 <Tip>
-The connector ships its own operating instructions to every client on connect, so adding the URL is all the setup you need. In Claude Code, Cowork and Codex, the [plugin](/mcp/plugins) adds guidance the agent reads before its first turn.
+The connector ships its own operating instructions to every client on connect, so adding the URL is all the setup you need. In Claude Code and Codex, the [plugin](/mcp/plugins) adds guidance the agent reads before its first turn.
 </Tip>
 
 ## Next steps
 
 <CardGroup cols={2}>
   <Card title="Claude Code" icon="terminal" href="/mcp/claude-code">
-    Add the connector to your terminal.
+    Install the plugin in your terminal.
   </Card>
-  <Card title="Claude and Cowork" icon="comments" href="/mcp/claude">
-    Add it to chat, Cowork, and Desktop.
+  <Card title="Claude" icon="comments" href="/mcp/claude">
+    Add the connector on the web, desktop and mobile.
   </Card>
   <Card title="Tool reference" icon="wrench" href="/mcp/tools">
     Every tool, action, and parameter.

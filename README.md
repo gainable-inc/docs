@@ -60,10 +60,10 @@ docs/
 ├── mcp/                      # The Gaia MCP connector
 │   ├── overview.mdx          # What it is, clients, scopes
 │   ├── claude-code.mdx       # Setup in Claude Code
-│   ├── claude.mdx            # Setup in Claude chat, Cowork, Desktop
+│   ├── claude.mdx            # Setup in Claude on the web, desktop and mobile
 │   ├── codex.mdx             # Setup in OpenAI Codex
 │   ├── other-clients.mdx     # ChatGPT, Cursor, Gemini, Goose and others
-│   ├── plugins.mdx           # Plugins for Claude Code, Cowork, Codex
+│   ├── plugins.mdx           # The plugin for Claude Code and Codex
 │   ├── api-keys.mdx          # Account API keys for scripts, CI and headless clients
 │   ├── tools.mdx             # Every tool and parameter
 │   └── datasets.mdx          # Bring any source: your AI tool as the connector

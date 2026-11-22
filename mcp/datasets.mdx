@@ -113,8 +113,8 @@ If a key value does legitimately change — you fix a typo in the column the ana
 The sync goes through the connector, so a scheduled sync is a scheduled **agent** run. Two ways to get one, depending on where the connector lives.
 
 <Tabs>
-  <Tab title="Cowork">
-    Set the sync up as recurring work in Cowork. Once the connector is [added and enabled](/mcp/claude), schedule a task that says what to collect and where to put it:
+  <Tab title="Claude">
+    Set the sync up as a scheduled task in Claude. Once the connector is [added and enabled](/mcp/claude), schedule a task that says what to collect and where to put it:
 
     ```
     Every weekday at 07:00, run the ops metrics collector and have Gaia
@@ -122,7 +122,7 @@ The sync goes through the connector, so a scheduled sync is a scheduled **agent*
     If the collector fails, don't sync — tell me instead.
     ```
 
-    Best when the data comes from somewhere Cowork can already reach, and when you want the failures to land in front of a person rather than in a log file.
+    Best when the data comes from somewhere Claude can already reach, and when you want the failures to land in front of a person rather than in a log file.
   </Tab>
   <Tab title="Claude Code on a cron">
     Run Claude Code non-interactively from your own scheduler, on a machine where the connector is [already signed in](/mcp/claude-code):

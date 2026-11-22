@@ -1,45 +1,47 @@
 ---
 title: "Codex"
-description: "Add the Gaia connector to OpenAI Codex and build apps from your terminal"
+description: "Install the Gainable plugin in OpenAI Codex and build apps from your terminal"
 ---
 
-[OpenAI Codex](https://developers.openai.com/codex) speaks MCP, so the Gaia connector works there the same way it does in Claude Code — two commands, then you're building.
+[OpenAI Codex](https://developers.openai.com/codex) speaks MCP, so the Gaia connector works there the same way it does in Claude Code. Install the Gainable plugin and you're building.
 
-## Add the connector
+## Install the plugin
 
-<Tip>
-Prefer one step? The [Gainable plugin](/mcp/plugins) registers the connector and adds the Gainable skill: `/plugin marketplace add https://github.com/gainable-inc/plugins`, then `/plugin install gainable`.
-</Tip>
+The [Gainable plugin](/mcp/plugins) is the way to use Gaia from Codex. It registers the connector and adds the Gainable skill, which tells Codex which tool fits which request and to pass Gaia's questions to you instead of answering them itself.
 
 <Steps>
-  <Step title="Register the server">
-    ```bash
-    codex mcp add gainable --url https://build.gainable.dev/mcp
+  <Step title="Install it">
     ```
-  </Step>
-  <Step title="Sign in">
-    ```bash
-    codex mcp login gainable
+    /plugin marketplace add https://github.com/gainable-inc/plugins
+    /plugin install gainable
     ```
 
-    Your browser opens, you sign in, and you pick which account to connect. The token is stored in your OS keyring.
+    Codex asks you to trust the plugin's session hook before it runs.
+  </Step>
+  <Step title="Sign in">
+    You sign in on first use: your browser opens, you sign in, and you pick which account to connect. The token is stored in your OS keyring.
 
     <Tip>
     The consent screen has up to three checkboxes — for your **datasets**, for **managing people** on the account, and for [author mode](/mcp/tools#author-mode). Building, changing, publishing and sharing apps works without any of them. Tick what you need now or later, from [Account → Connections](https://build.gainable.dev/account/connections), without reconnecting. See [what you're granting](/mcp/overview#what-youre-granting).
     </Tip>
   </Step>
   <Step title="Check it's wired up">
-    ```bash
-    codex mcp list
-    ```
-
-    Then, in a session:
+    In a session:
 
     ```
     > List my Gainable apps
     ```
   </Step>
 </Steps>
+
+<Accordion title="Add the connector without the plugin">
+  If you can't install plugins, register the connector on its own. You get the same tools, without the skill's guidance.
+
+  ```bash
+  codex mcp add gainable --url https://build.gainable.dev/mcp
+  codex mcp login gainable
+  ```
+</Accordion>
 
 ## Build something
 
@@ -78,6 +80,8 @@ Never ask Codex to run the build again to check on it. The first build is still 
 
 ## Manage the connection
 
+The plugin is managed from `/plugin`. For a connector you added yourself:
+
 ```bash
 codex mcp list               # what's registered
 codex mcp logout gainable    # drop the stored token
@@ -92,8 +96,8 @@ Same connector, same tools, same harness — only the client's interface differs
 
 | | Claude Code | Codex |
 |---|---|---|
-| Add the server | `claude mcp add --transport http` | `codex mcp add --url` |
-| Sign in | `/mcp` → Authenticate | `codex mcp login gainable` |
+| Install | `/plugin install gainable@gainable` | `/plugin install gainable` |
+| Sign in | `/mcp` → Authenticate | On first use |
 | Forwarding harness questions | `AskUserQuestion` picker | Numbered list in chat |
 | Build progress | Live task list | Plain-text stage updates |
 

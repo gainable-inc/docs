@@ -1,33 +1,29 @@
 ---
 title: "Claude Code"
-description: "Add the Gaia connector to Claude Code and build apps from your terminal"
+description: "Install the Gainable plugin in Claude Code and build apps from your terminal"
 ---
 
-Two commands and you're building. [Claude Code](https://claude.com/claude-code) talks to the Gaia connector over MCP, so describing a change is enough — Claude picks the right tool, relays the harness's questions back to you, and pastes the resulting URL into your session.
+Install the Gainable plugin and you're building. [Claude Code](https://claude.com/claude-code) talks to the Gaia connector over MCP, so describing a change is enough — Claude picks the right tool, relays the harness's questions back to you, and pastes the resulting URL into your session.
 
-## Add the connector
+## Install the plugin
 
-<Tip>
-Prefer one step? The [Gainable plugin](/mcp/plugins) registers the connector and adds the Gainable skill: `/plugin marketplace add gainable-inc/plugins`, then `/plugin install gainable@gainable`.
-</Tip>
+The [Gainable plugin](/mcp/plugins) is the way to use Gaia from Claude Code. It registers the connector and adds the Gainable skill, which tells Claude which tool fits which request and to pass Gaia's questions to you instead of answering them itself.
 
 <Steps>
-  <Step title="Register the server">
-    ```bash
-    claude mcp add --transport http gainable https://build.gainable.dev/mcp
+  <Step title="Install it">
+    ```
+    /plugin marketplace add gainable-inc/plugins
+    /plugin install gainable@gainable
     ```
 
-    Add `--scope user` to make it available in every project instead of just this one.
+    Then restart Claude Code.
   </Step>
   <Step title="Sign in">
-    ```bash
-    claude
-    ```
     ```
     > /mcp
     ```
 
-    Pick **gainable**, choose **Authenticate**, and finish in the browser. Your token is stored in your OS keyring.
+    Pick the Gainable server, choose **Authenticate**, and finish in the browser. Your token is stored in your OS keyring.
 
     <Tip>
     The consent screen has up to three checkboxes — for your **datasets**, for **managing people** on the account, and for [author mode](/mcp/tools#author-mode). Building, changing, publishing and sharing apps works without any of them. Tick what you need now or later, from [Account → Connections](https://build.gainable.dev/account/connections), without reconnecting. See [what you're granting](/mcp/overview#what-youre-granting).
@@ -41,6 +37,16 @@ Prefer one step? The [Gainable plugin](/mcp/plugins) registers the connector and
     Your apps listed back means everything is connected.
   </Step>
 </Steps>
+
+<Accordion title="Add the connector without the plugin">
+  If you can't install plugins, register the connector on its own. You get the same tools, without the skill's guidance.
+
+  ```bash
+  claude mcp add --transport http gainable https://build.gainable.dev/mcp
+  ```
+
+  Add `--scope user` to make it available in every project instead of just this one. Then run `/mcp`, pick **gainable** and choose **Authenticate**.
+</Accordion>
 
 ## Build something
 
@@ -93,7 +99,7 @@ Claude Code has a working directory, and the connector uses it.
 
 ## Multiple accounts
 
-If you connect more than one Gainable account — a personal one and a work one, say — give them distinct names:
+To connect a second Gainable account alongside the plugin's — a personal one and a work one, say — add it under its own name:
 
 ```bash
 claude mcp add --transport http gainable-work https://build.gainable.dev/mcp
@@ -102,6 +108,8 @@ claude mcp add --transport http gainable-work https://build.gainable.dev/mcp
 Claude will ask which one to use before creating anything, because that choice decides where the app lands.
 
 ## Manage the connection
+
+Run `/plugin` to see, disable or remove the plugin. For a connector you added yourself:
 
 ```bash
 claude mcp list              # what's registered, and whether it's connected
@@ -134,7 +142,7 @@ To sign out without removing the server, revoke the connection at [Account → C
   <Card title="Tool reference" icon="wrench" href="/mcp/tools">
     Every tool the connector exposes.
   </Card>
-  <Card title="Claude and Cowork" icon="comments" href="/mcp/claude">
+  <Card title="Claude" icon="comments" href="/mcp/claude">
     The same connector, away from the terminal.
   </Card>
 </CardGroup>

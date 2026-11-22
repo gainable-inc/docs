@@ -1,9 +1,9 @@
 ---
 title: "Plugins"
-description: "Install the Gainable plugin for Claude Code, Cowork or Codex: the connector plus the guidance that steers it"
+description: "The Gainable plugin for Claude Code and Codex: the connector plus the guidance that steers it"
 ---
 
-The connector works on its own, but in Claude Code, Cowork and Codex you can install the **Gainable plugin** instead. One install brings two things:
+In Claude Code and Codex, install the **Gainable plugin** rather than adding the connector on its own. One install brings two things:
 
 - **The connector**, already registered at `https://build.gainable.dev/mcp`. You sign in on first use.
 - **The Gainable skill**, guidance your agent reads before its first turn: which tool fits which request, how to relay Gaia's questions to you instead of answering them itself, and how to keep track of which app a folder belongs to.
@@ -17,9 +17,6 @@ The connector works on its own, but in Claude Code, Cowork and Codex you can ins
 
     Restart Claude Code, then run `/mcp` to sign in.
   </Tab>
-  <Tab title="Cowork">
-    Select **Customize** in the sidebar, then **Plugins** → **Add marketplace**, enter `gainable-inc/plugins`, and select **Install**. You're asked to sign in to Gainable, because the plugin brings the connector.
-  </Tab>
   <Tab title="Codex">
     ```
     /plugin marketplace add https://github.com/gainable-inc/plugins
@@ -28,10 +25,10 @@ The connector works on its own, but in Claude Code, Cowork and Codex you can ins
 
     You sign in on first use. Codex asks you to trust the plugin's session hook before it runs.
   </Tab>
-  <Tab title="Claude chat">
-    Plugins aren't used in Claude chat, so the guidance comes as a skill instead. Download `skill/gainable-skill.zip` from the [gainable-inc/plugins](https://github.com/gainable-inc/plugins) repository, then at [claude.ai/customize/skills](https://claude.ai/customize/skills) select **+** → **Create skill** → **Upload a skill**, and check that its toggle is on.
+  <Tab title="Claude">
+    In Claude on the web, desktop and mobile, add [the connector](/mcp/claude) and, for the same guidance, the Gainable skill. Download `skill/gainable-skill.zip` from the [gainable-inc/plugins](https://github.com/gainable-inc/plugins) repository, then at [claude.ai/customize/skills](https://claude.ai/customize/skills) select **+** → **Create skill** → **Upload a skill**, and check that its toggle is on.
 
-    The skill carries the guidance only. Add the connector separately. See [Claude and Cowork](/mcp/claude).
+    The skill carries the guidance only. Add the connector separately. See [Claude](/mcp/claude).
   </Tab>
 </Tabs>
 
@@ -49,4 +46,4 @@ Change them later at [Account → Connections](https://build.gainable.dev/accoun
 
 ## If the tools appear twice
 
-If you also added Gainable as a connector on your claude.ai account, Claude Code and Cowork show both: the plugin's connection and the account's. The tools then appear twice under different names, and the skill can't tell them apart from a real pair of accounts, so it asks which one to use before every build. Turn one of them off.
+If you also added Gainable as a connector on your claude.ai account, Claude Code shows both: the plugin's connection and the account's. The tools then appear twice under different names, and the skill can't tell them apart from a real pair of accounts, so it asks which one to use before every build. Turn one of them off.

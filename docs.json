@@ -122,13 +122,22 @@
           {
             "group": "Gaia connector",
             "pages": [
-              "mcp/overview",
+              "mcp/overview"
+            ]
+          },
+          {
+            "group": "Claude Code and Codex",
+            "pages": [
               "mcp/claude-code",
-              "mcp/claude",
               "mcp/codex",
-              "mcp/other-clients",
-              "mcp/plugins",
-              "mcp/api-keys"
+              "mcp/plugins"
+            ]
+          },
+          {
+            "group": "Claude, ChatGPT and others",
+            "pages": [
+              "mcp/claude",
+              "mcp/other-clients"
             ]
           },
           {
@@ -136,6 +145,7 @@
             "pages": [
               "mcp/tools",
               "mcp/datasets",
+              "mcp/api-keys",
               "reference/api"
             ]
           }

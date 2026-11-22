@@ -44,7 +44,7 @@ Most tools take an optional `projectId`. Where it comes from, in order of author
 2. **The tool that created or selected the app**, earlier in the same conversation.
 3. **`apps_list`**, when you have neither.
 
-The "currently active" app is remembered **per account, not per conversation**. On a client the connector can't isolate — one that reconnects before every call, like Cowork — it refuses to guess and asks you to name the app instead. An active app also goes stale after 30 minutes of no use.
+The "currently active" app is remembered **per account, not per conversation**. On a client the connector can't isolate, such as one that reconnects before every call, it refuses to guess and asks you to name the app instead. An active app also goes stale after 30 minutes of no use.
 
 ---
 
@@ -177,7 +177,7 @@ If the planner needs a decision it can't make, the result is `outcome:"needs_cla
 
 Work done through the connector lands in the same conversation unit the builder screen shows, so you can open the app in Gainable and see it. Calls continue the current chat; `newChat:true` starts a separate one when you move to an unrelated topic.
 
-The `chatId` comes back in **every** result. A client that reconnects between calls — Cowork does — loses its in-memory sense of which conversation it was in, so passing the `chatId` back is how a turn rejoins the right thread rather than starting a new one each time.
+The `chatId` comes back in **every** result. A client that reconnects between calls loses its in-memory sense of which conversation it was in, so passing the `chatId` back is how a turn rejoins the right thread rather than starting a new one each time.
 
 <Warning>
 **Never re-send the same `chat` message.** The turn keeps running server-side whatever happens to the connection, so a second call isn't a retry: it runs the planner again and stacks a duplicate plan card someone has to clear by hand.
