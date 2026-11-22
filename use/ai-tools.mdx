@@ -31,20 +31,38 @@ If there's no **Copy link to Assistant** button, sharing is off for that app. As
 <Steps>
   <Step title="Add a custom connector">
     In Claude, open **Plugins**, select **Add**, then **Add custom connector**. In some versions of Claude it's under **Settings → Connectors**.
+
+    <Frame>
+      <img src="/images/claude-add-custom-connector-menu.png" alt="Claude's Your plugins page with the Add menu open, showing Add custom connector" />
+    </Frame>
   </Step>
   <Step title="Name it and paste the link">
-    Give it the app's name, so you can tell your apps apart, and paste the link into **MCP server URL**. Select **Continue**.
+    Give it the app's name, so you can tell your apps apart, and paste the link into the server URL field. Select **Continue**, leave the sign-in options Claude detects as they are, and select **Add**.
+
+    <Frame>
+      <img src="/images/claude-add-custom-connector.png" alt="Claude's Add custom connector dialog with the name Property Manager and the Assistant's link as the server URL" />
+    </Frame>
   </Step>
   <Step title="Sign in">
     Sign in with your Gainable account. Gainable shows what you're connecting: the Assistant can read data and do work with your permissions in the app, and nothing else. Select **Connect Assistant**.
+
+    <Frame>
+      <img src="/images/assistant-connect-consent.png" alt="Gainable's Connect to Property Lettings Desk page, saying Claude wants to send messages to this Assistant, with a Connect Assistant button" />
+    </Frame>
   </Step>
 </Steps>
 
-Then ask Claude about the app by name:
+Then ask Claude, naming the connector:
 
 ```text
-Ask the Property Lettings Desk Assistant which tenants still owe November rent
+Ask Property Manager which tenants still owe rent, and how much
 ```
+
+Claude passes the question to the Assistant and answers from the app's live data. The first answer can take up to a minute.
+
+<Frame>
+  <img src="/images/claude-asks-assistant.png" alt="A Claude chat that used Property Manager: Ask assistant and answers with a table of eleven tenants, their units, the amount owed and the period" />
+</Frame>
 
 ## Add it to ChatGPT
 
@@ -62,29 +80,27 @@ Connected once, the Assistant is there whenever you need the app's data. A few w
   <Accordion title="Give a Claude project the app">
     Put the work around an app in its own project, and tell Claude in the project's **Instructions** when to use it:
 
-    ```text
-    For anything about tenants, rent or maintenance, ask the Property Lettings Desk Assistant.
-    It has the live data. Don't guess figures.
-    ```
+    <Frame>
+      <img src="/images/claude-project-instructions.png" alt="Claude's Set project instructions dialog telling Claude to ask the Property Manager connector about tenants, rent, leases and maintenance" />
+    </Frame>
 
     Every chat in the project then starts from the app's real data.
   </Accordion>
   <Accordion title="Schedule recurring work">
-    A Claude project can run tasks on a schedule, under **Scheduled**. For example, every Monday morning:
+    A Claude project can run tasks on a schedule: select **Add** next to **Scheduled**. For example, a weekly rent check:
 
-    ```text
-    Ask the Property Lettings Desk Assistant for every unpaid rent over 14 days old,
-    then draft a short reminder for each tenant.
-    ```
+    <Frame>
+      <img src="/images/claude-scheduled-task.png" alt="Claude's New scheduled task dialog for a Monday rent check that asks Property Manager for unpaid rent older than 14 days, set to run weekly on Mondays" />
+    </Frame>
 
-    Scheduled tasks run as you, with your access in the app.
+    Scheduled tasks run as you, with your access in the app, and Claude uses connectors in them without pausing for your approval. Say in the task whether it may change records.
   </Accordion>
   <Accordion title="Combine it with your other tools">
     The Assistant works alongside the AI tool's other connectors. Have Claude read an email and log it in the app:
 
     ```text
     Read the latest email from Comfort Heating and add it as a comment
-    on the matching maintenance request in Property Lettings Desk
+    on the matching maintenance request in Property Manager
     ```
   </Accordion>
   <Accordion title="Work across several apps">
