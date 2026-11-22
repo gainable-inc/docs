@@ -30,6 +30,7 @@ docs/
 │   ├── apps-grid.mdx         # The Apps grid: tabs, account views, groups, widgets
 │   ├── working-in-an-app.mdx # Pages, records, comments, live updates
 │   ├── assistant.mdx         # Work with the Assistant
+│   ├── ai-tools.mdx          # An app's Assistant in Claude, ChatGPT and other AI tools
 │   ├── notifications.mdx     # Notifications, Messenger, team updates
 │   └── mobile.mdx            # Home screen and push notifications
 │
