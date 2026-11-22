@@ -50,17 +50,3 @@ Change them later at [Account → Connections](https://build.gainable.dev/accoun
 ## If the tools appear twice
 
 If you also added Gainable as a connector on your claude.ai account, Claude Code and Cowork show both: the plugin's connection and the account's. The tools then appear twice under different names, and the skill can't tell them apart from a real pair of accounts, so it asks which one to use before every build. Turn one of them off.
-
-## Connecting to another instance
-
-The plugin points at `https://build.gainable.dev/mcp`. In Claude Code and Cowork, set `GAINABLE_MCP_URL` before starting a session to point it somewhere else:
-
-```bash
-GAINABLE_MCP_URL=https://staging-build.gainable.dev/mcp claude
-```
-
-To keep production connected alongside, add the other instance as a second server instead. The skill applies to it too:
-
-```bash
-claude mcp add --transport http gainable-staging https://staging-build.gainable.dev/mcp
-```
