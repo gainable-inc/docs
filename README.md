@@ -10,6 +10,7 @@ The site has four tabs, one per reader: **Build**, **Manage**, **Use** and **Dev
 docs/
 ├── introduction.mdx          # Platform overview and the four paths
 ├── quickstart.mdx            # First app in 5 minutes
+├── build-in-ai-tools.mdx     # Build from Claude, ChatGPT, Claude Code, Codex
 ├── build-from-data.mdx       # Build from spreadsheets and other data
 │
 ├── build/
