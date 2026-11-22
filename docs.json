@@ -156,7 +156,7 @@
       "anchors": [
         {
           "anchor": "Get started",
-          "href": "https://build.gainable.dev",
+          "href": "https://www.gainable.dev/get-started",
           "icon": "rocket"
         }
       ]
@@ -176,7 +176,7 @@
     "primary": {
       "type": "button",
       "label": "Start building",
-      "href": "https://build.gainable.dev"
+      "href": "https://www.gainable.dev/get-started"
     }
   },
   "footer": {
