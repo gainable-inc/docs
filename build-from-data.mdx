@@ -5,6 +5,39 @@ description: "Turn one or more spreadsheets, or the tools you already use, into 
 
 Your data is the best description of your app. Drop in the spreadsheets your team works from, or connect the tools you already use, and Gaia works out what the data is, how the pieces connect, and what app and workflow would help. You review its decisions and press Build.
 
+## Where you build
+
+You build the same way wherever you work. Gaia reads the same data, asks you the same questions and builds the same app, whether you're in the Gainable builder or in the AI tool you already use.
+
+<CardGroup cols={2}>
+  <Card title="The Gainable builder" icon="hammer" href="https://build.gainable.dev">
+    Drop sheets into the box on gainable.dev, or on build.gainable.dev choose **Build from data** and pick a dataset, or **New dataset** to create one.
+  </Card>
+  <Card title="Claude" icon="comments" href="/mcp/claude">
+    Add Gaia as a custom connector once. It's there on the web, in the desktop app and on mobile.
+  </Card>
+  <Card title="ChatGPT" icon="message" href="/mcp/other-clients">
+    Add Gaia as a connector, then pick it in a chat with **@ Gaia**.
+  </Card>
+  <Card title="Claude Code and Codex" icon="terminal" href="/mcp/claude-code">
+    Install the Gainable plugin and build from the files in your folder.
+  </Card>
+</CardGroup>
+
+Cursor, Gemini, Goose and any other tool that connects to remote MCP servers work too. See [other AI tools](/mcp/other-clients).
+
+In an AI tool, attach a spreadsheet and name Gaia in your first message:
+
+```text
+Have Gaia build me an app from this planning sheet
+```
+
+Gaia asks its questions in the chat, and you answer them there. After that you just keep talking, without naming Gaia again. An app built from an AI tool opens in the builder like any other, so anyone can carry on from there.
+
+<Tip>
+Say **Gaia** in the first message. Without it, your AI tool may answer the request itself instead of handing it to Gaia. See [Say "Gaia" in your first message](/mcp/overview#say-gaia-in-your-first-message).
+</Tip>
+
 ## Where your data can come from
 
 | Source | How |
@@ -13,8 +46,6 @@ Your data is the best description of your app. Drop in the spreadsheets your tea
 | **Google Sheets** and **Excel Online** | Connect your account and pick the spreadsheets. They stay connected, so the app can sync from them later. |
 | **Connected apps** such as HubSpot, Airtable, Stripe or Supabase | Add a data connection, then put it in a [dataset](/build/datasets). |
 | **Anything else** | Have your AI tool collect it into a dataset. See [Bring any source](/mcp/datasets). |
-
-You can start from [gainable.dev](https://www.gainable.dev) by dropping sheets into the box, or from [build.gainable.dev](https://build.gainable.dev) by choosing **Build from data** and picking a dataset, or **New dataset** to create one.
 
 ## Several sheets, one app
 
@@ -27,6 +58,8 @@ You don't have to merge your sheets first. Drop in everything that belongs to th
 See [How Gaia reads your spreadsheets](/build/spreadsheets) for how it handles currencies, color-coded cells, hidden columns and text dates.
 
 ## Watch it take shape
+
+The rest of this page follows the builder. In an AI tool, the same stages and decisions come to you as messages and questions in the chat.
 
 After you start, the left side of the builder shows two stages:
 
