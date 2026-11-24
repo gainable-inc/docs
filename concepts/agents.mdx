@@ -52,7 +52,7 @@ This plan is then handed to the Build Agent.
 
 ## DataAnalyzer Agent
 
-The DataAnalyzer is used when you [build from data](/build-from-data) instead of describing an app. It reads all of your sources together and designs an app around them.
+The DataAnalyzer is used when you add data to the prompt. It reads all of your sources together and designs an app around them.
 
 <Card title="What the DataAnalyzer does" icon="magnifying-glass-chart">
 - Analyzes schema, field types, and sample data from connected sources
@@ -175,7 +175,7 @@ The agents work in sequence, each building on the previous work:
 </Steps>
 
 <Tip>
-When you use the [Build from data](/build-from-data) path, the DataAnalyzer Agent replaces the Planner Agent in this sequence. Instead of analyzing a text prompt, it reads your sources together and designs the app, with decisions you can review before building. The Build Agent and Validation Agent work the same way in both paths.
+When you add data to the prompt, the DataAnalyzer Agent takes the Planner Agent's place in this sequence. Besides your prompt, it reads your sources together and designs the app, with decisions you can review before building. The Build Agent and Validation Agent work the same way either way.
 </Tip>
 
 ## Context preservation

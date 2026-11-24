@@ -3,60 +3,37 @@ title: "How it works"
 description: "Understand how Gainable turns your ideas into working apps"
 ---
 
-## Two paths to your app
+## One prompt to start
 
-Gainable uses specialized build agents that work together to create your application. The agents involved depend on how you start:
+Every app starts in the same place: the prompt on [build.gainable.dev](https://build.gainable.dev). Describe the app, add the data to build it from, or both.
 
-<CardGroup cols={2}>
-  <Card title="Describe your app" icon="pen-line">
-    Write what you want in plain English. The Planner Agent creates a build plan, the Build Agent generates code, and the Validation Agent ensures quality.
-  </Card>
-  <Card title="Build from data" icon="database">
-    Drop in spreadsheets or connect your tools. Gaia reads them together, designs a data model and an app, and lets you review its decisions before building.
-  </Card>
-</CardGroup>
+<Frame>
+  <img src="/images/start-prompt-from-data.png" alt="The builder's start prompt holding a line Gaia wrote from an attached dataset, with Written by Gaia from your data. Edit it freely. under it and the dataset shown below" />
+</Frame>
 
-Both paths converge at the Build Agent, which generates your complete application.
+- **Add data** brings in what the app is built from: one of **Your datasets**, an **Excel or CSV file**, **Google Sheets** or **Excel Online**. You can add several, and Gaia reads them together.
+- **Gaia writes the prompt from your data.** Once it has read the data, it writes a line describing the app the data points to. Edit it freely, or replace it with your own words.
+- **Gaia suggests what's missing.** When you write the prompt yourself, Gaia suggests anything your data holds that the prompt leaves out, or, without data, what the app should track. Select **Add** to take the suggestion.
+- **A brief** is a PDF or Markdown file, such as a spec or a process description. Gaia reads it as background for the design, not as data. Add one from the same **Add data** menu.
 
-### Path 1: Describe your app
+Then send it. From there, every app goes the same way:
 
 <Steps>
-  <Step title="You describe your app">
-    Write what you want in plain English. Be as specific or general as you like.
-  </Step>
-  <Step title="Planner Agent analyzes your request">
-    The Planner understands your intent, identifies what data you need, and creates a structured build plan.
-  </Step>
-  <Step title="Build Agent generates code">
-    The Build Agent creates your complete application: database models, user interface, and all the logic.
-  </Step>
-  <Step title="Validation ensures quality">
-    Before delivering your app, validation checks catch common issues and ensure everything works.
-  </Step>
-  <Step title="Your app is ready">
-    A fully functional application is ready to use immediately.
-  </Step>
-</Steps>
-
-### Path 2: Build from data
-
-<Steps>
-  <Step title="Bring your data">
-    Drop in one or more spreadsheets, or pick a dataset with Google Sheets, Excel Online or connected tools such as HubSpot.
-  </Step>
-  <Step title="Gaia imports and designs">
-    Gaia reads every source together, designs one data model that links them, imports your rows, and designs the app: pages, calculations, lists and the Assistant's scheduled work. The preview fills in as it goes.
+  <Step title="Gaia designs the app">
+    If you uploaded files, Gaia imports them first. Then it designs the data models, calculations, pages, lists, and the Assistant's scheduled work. The preview fills in as it goes, and you can pick a layout and colors under **App shell and colors**.
   </Step>
   <Step title="You review its decisions">
-    Keep Gaia's recommendations, or walk through **Review decisions** to change the home page, who can sign in, and what the Assistant does on a schedule.
+    Select **Build with recommendations**, or walk through **Review decisions** to change the home page, who can sign in, and what the Assistant does on a schedule.
   </Step>
   <Step title="Build and validation">
     The Build Agent generates the app from the design, and validation checks catch common issues before delivery.
   </Step>
   <Step title="Your app is ready">
-    A working app, already filled with your data, with its Assistant ready to answer questions.
+    A working app, filled with your data if you added any, with its Assistant ready to answer questions.
   </Step>
 </Steps>
+
+See [Build from data](/build-from-data) for the whole walkthrough, and [Where you build](/build-from-data#where-you-build) to do the same from Claude, ChatGPT or Claude Code.
 
 ## What makes this different?
 
@@ -81,7 +58,7 @@ Gainable uses multiple build agents, each specialized for a specific task:
     Generates the code for your application. Creates database models, routes, and user interfaces.
   </Card>
   <Card title="DataAnalyzer Agent" icon="magnifying-glass-chart">
-    Examines synced data schemas and sample data. Identifies the domain, recommends features, and produces a build specification through interactive conversation. Used in the "Build from data" path.
+    Examines the data you add: its schemas and sample rows. Identifies the domain, recommends features, and produces the design you review before building.
   </Card>
   <Card title="Validation Agent" icon="shield-check">
     Checks generated code for common issues and ensures it follows best practices.
