@@ -44,7 +44,7 @@ Most tools take an optional `projectId`. Where it comes from, in order of author
 2. **The tool that created or selected the app**, earlier in the same conversation.
 3. **`apps_list`**, when you have neither.
 
-The "currently active" app is remembered **per account, not per conversation**. On a client the connector can't isolate — one that reconnects before every call, like Cowork — it refuses to guess and asks you to name the app instead. An active app also goes stale after 30 minutes of no use.
+The "currently active" app is remembered **per account, not per conversation**. On a client the connector can't isolate, such as one that reconnects before every call, it refuses to guess and asks you to name the app instead. An active app also goes stale after 30 minutes of no use.
 
 ---
 
@@ -177,7 +177,7 @@ If the planner needs a decision it can't make, the result is `outcome:"needs_cla
 
 Work done through the connector lands in the same conversation unit the builder screen shows, so you can open the app in Gainable and see it. Calls continue the current chat; `newChat:true` starts a separate one when you move to an unrelated topic.
 
-The `chatId` comes back in **every** result. A client that reconnects between calls — Cowork does — loses its in-memory sense of which conversation it was in, so passing the `chatId` back is how a turn rejoins the right thread rather than starting a new one each time.
+The `chatId` comes back in **every** result. A client that reconnects between calls loses its in-memory sense of which conversation it was in, so passing the `chatId` back is how a turn rejoins the right thread rather than starting a new one each time.
 
 <Warning>
 **Never re-send the same `chat` message.** The turn keeps running server-side whatever happens to the connection, so a second call isn't a retry: it runs the planner again and stacks a duplicate plan card someone has to clear by hand.
@@ -307,7 +307,7 @@ Separately from the type, a person can hold account **capabilities**: `manage_us
 
 <Info>All five need the `datasets` scope. `import` does not — that's the spreadsheet-to-app path, and scoping it would mean a connection without the box ticked couldn't build an app from a file at all.</Info>
 
-`import` bootstraps an app from a spreadsheet. These five work with **standalone** datasets that a script keeps fresh — create once, sync forever. See [Recurring data pipelines](/mcp/datasets) for the full workflow.
+`import` bootstraps an app from a spreadsheet. These five work with **standalone** datasets that a script keeps fresh — create once, sync forever. See [Bring any source](/data/any-source) for the full workflow.
 
 ### `dataset_list`
 
@@ -360,7 +360,7 @@ Only adapter-backed sources store rows in Gainable. A source whose data stays at
 
 ### `dataset_sync`
 
-Gets data **into** a dataset — creating one when there isn't one yet. This was two tools; which applied depended on whether the dataset already existed, which is a fact about the account rather than about what you meant.
+Gets data **into** a dataset, or creates one when there isn't one yet. A sync is planned first and written once approved: either by the dataset's approval setting, or by a person through `runId` and `approve`. Edits people made in the app are kept.
 
 | Parameter | Type | Description |
 |---|---|---|
@@ -374,8 +374,10 @@ Gets data **into** a dataset — creating one when there isn't one yet. This was
 | `uploadToken` | string | The token from `action:"upload_url"`, once the file has been POSTed. Preferred over `fileBase64`. |
 | `fileName` | string | The filename, with extension, when sending a file. |
 | `sourceIndex` | integer | Which source to write to, when the dataset has several. |
-| `minOverlap` | number | Minimum share of existing primary keys the payload must still contain. Default `0.5`. JSON rows only. |
-| `force` | boolean | Proceed despite low overlap. **This is the flag that destroys comment threads.** |
+| `runId` | string | A run returned earlier that is waiting for approval. With `approve: true` it's applied; alone, its current state is returned. |
+| `approve` | boolean | The **person** approved the summary you showed them. Never set this on your own. |
+| `decisions` | object | The person's answers for a run that isn't clean: `conflicts` (`sheet` or `app`), `editedMissing` (`remove` or `keep`), `deletedChanged` (`restore` or `keep-deleted`), `acknowledged`, and `keepMissing` (sources that add to what's there instead of replacing it). |
+| `force` | boolean | The person confirmed a guarded sync (few matching keys, many rows removed) is intentional. **This is the flag that removes rows and what is attached to them.** |
 | `sessionId` | string | Thread this through every follow-up call during a `create`. |
 | `answers` | object | For `answer` — your reply to the analyzer's pending question. |
 
@@ -388,7 +390,7 @@ Gets data **into** a dataset — creating one when there isn't one yet. This was
 | Nothing | Gainable re-fetches from upstream — the Google Sheets / Excel Online / Airtable path |
 
 <Warning>
-**Every sync replaces everything.** Rows absent from the payload are deleted. Send the complete set every time — if a collector failed halfway, abort rather than syncing what it managed to collect.
+**The payload is the whole source.** Rows absent from it are removed. Send the complete set every time. If a collector failed halfway, abort rather than syncing what it managed to collect.
 </Warning>
 
 <Note>
@@ -471,7 +473,7 @@ Step two: check your work, then commit it.
 | `outcome: "running"` | Still working. Call `status` — don't start it again. |
 | `outcome: "needs_clarification"` | The planner needs a decision. Answer as a new `chat` call. |
 | `ok: false, reason: "drift"` | The payload no longer matches the dataset's frozen shape. Nothing was written. Fix the collector. |
-| `ok: false, reason: "low_primary_key_overlap"` | The payload barely matches what's stored — the signature of a truncated run or a regenerated key. Nothing was written. |
+| A `summary` and `runId` from `dataset_sync` | The sync is planned and waiting for approval. Show the summary to a person, then call again with `runId` and `approve: true`. A payload that barely matches what's stored, the signature of a truncated run or a regenerated key, always waits. |
 | `ok: false, reason: "not_found"` (dataset) | Nothing matched the name. **Nothing was created either** — the nearest existing datasets come back with it. Fix the typo, or ask for `action:"create"`. |
 | `reason: "stale"` (author mode) | The file changed server-side since you read it. Re-read and re-apply. |
 | A tool your client can't find | Its [scope](#scopes) wasn't granted. Tick the box at [Account → Connections](https://build.gainable.dev/account/connections). |
@@ -486,8 +488,8 @@ Step two: check your work, then commit it.
 ## Next steps
 
 <CardGroup cols={2}>
-  <Card title="Recurring data pipelines" icon="rotate" href="/mcp/datasets">
-    The full dataset workflow, end to end.
+  <Card title="Bring any source" icon="rotate" href="/data/any-source">
+    Your AI tool as the connector, end to end.
   </Card>
   <Card title="Overview" icon="plug" href="/mcp/overview">
     How the connector fits together.

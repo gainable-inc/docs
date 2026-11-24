@@ -7,7 +7,7 @@ description: "How Gainable organizes and stores your application data"
 
 When you describe data in your prompts, Gainable creates **data models** — structured definitions of what information your app stores. Think of a data model as a template for each type of thing you're tracking.
 
-Data models are also used to **merge and normalize** external data from multiple sources into a single unified output. When you need to combine contacts from HubSpot and Google Sheets by email, or normalize field names across systems, you create a data model with merge keys and field mappings, then include it in a [dataset](/building/data-connectors).
+Data models are also used to **merge and normalize** external data from multiple sources into a single unified output. When you need to combine contacts from HubSpot and Google Sheets by email, or normalize field names across systems, you create a data model with merge keys and field mappings, then include it in a [dataset](/data/datasets).
 
 ## What is a data model?
 
@@ -45,7 +45,7 @@ Custom collections created when you describe data models. Fully editable and spe
 
 ### Data Collections
 
-External data synced via [datasets](/building/data-connectors) (HubSpot, Sheets, Stripe, etc.). They appear automatically when you attach a dataset to your app. Read-only from the app, managed through the datasets interface.
+External data synced via [datasets](/data/datasets) (HubSpot, Sheets, Stripe, etc.). They appear automatically when you attach a dataset to your app. Read-only from the app, managed through the datasets interface.
 
 ### Core Collections
 
@@ -181,7 +181,7 @@ When the same type of data lives in different systems — for example, contacts 
 3. **Set source priority** — choose which source takes precedence when the same field has different values
 4. **Map fields** — select which columns to include, rename fields, and set types
 
-The merged output can then be included in a [dataset](/building/data-connectors) alongside your raw source data.
+The merged output can then be included in a [dataset](/data/datasets) alongside your raw source data.
 
 <Accordion title="Example: Merging contacts from HubSpot and Google Sheets">
   You have contacts in HubSpot (with deal history) and a Google Sheet (with custom scoring). Both share an email column.
@@ -279,7 +279,7 @@ You don't need to worry about "saving" - data is stored as soon as you submit a 
 ## Learn more
 
 <CardGroup cols={2}>
-  <Card title="Datasets" icon="plug" href="/building/data-connectors">
+  <Card title="Datasets" icon="plug" href="/data/datasets">
     Group external data sources and attach them to your app
   </Card>
   <Card title="Views" icon="window" href="/building/views">

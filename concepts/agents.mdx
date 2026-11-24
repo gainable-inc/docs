@@ -8,7 +8,7 @@ description: "Meet the build agents that turn your prompt into a working applica
 Gainable uses multiple specialized build agents, each with a specific role in turning your prompt into a working app. Think of them as a team of experts working together.
 
 <Info>
-**Build agents vs Gaia.** This page is about the agents that *build* your app: Planner, DataAnalyzer, Build, Validation, Conversation. Once your app is live, two more pieces of Gaia run *inside* it: [Gaia Copilot](/copilots/overview) for conversation and [Gaia Autopilot](/autopilot/overview) for autonomous work.
+**Build agents vs the Assistant.** This page is about the agents that *build* your app: Planner, DataAnalyzer, Build, Validation, Conversation. Once your app is live, its [Assistant](/use/assistant) works *inside* it.
 </Info>
 
 ## Planner Agent
@@ -52,13 +52,14 @@ This plan is then handed to the Build Agent.
 
 ## DataAnalyzer Agent
 
-The DataAnalyzer is used when you [build from data](/build-from-data) instead of describing an app. It examines your synced data and designs an app spec through conversation.
+The DataAnalyzer is used when you add data to the prompt. It reads all of your sources together and designs an app around them.
 
 <Card title="What the DataAnalyzer does" icon="magnifying-glass-chart">
 - Analyzes schema, field types, and sample data from connected sources
 - Identifies the domain (CRM, project management, finance, etc.)
 - Detects patterns that map to features (pipeline enums → kanban, currency → dashboards)
-- Asks clarifying questions through interactive multiple-choice options
+- Links records across sheets and sources, by ID, name or email
+- Prepares the decisions you can review before building: home page, who can sign in, and scheduled work
 - Produces a multi-stage build specification
 - Decides where to place collaboration features based on domain context
 </Card>
@@ -80,7 +81,7 @@ Recommended views:
 - Deals table (searchable, sortable)
 ```
 
-It then asks 2-3 questions to refine the spec before handing off to the Build Agent.
+You can then [review its decisions](/build-from-data#review-decisions) before it hands off to the Build Agent.
 
 ## Build Agent
 
@@ -174,7 +175,7 @@ The agents work in sequence, each building on the previous work:
 </Steps>
 
 <Tip>
-When you use the [Build from data](/build-from-data) path, the DataAnalyzer Agent replaces the Planner Agent in this sequence. Instead of analyzing a text prompt, it analyzes your data schema and produces a build specification through interactive conversation. The Build Agent and Validation Agent work the same way in both paths.
+When you add data to the prompt, the DataAnalyzer Agent takes the Planner Agent's place in this sequence. Besides your prompt, it reads your sources together and designs the app, with decisions you can review before building. The Build Agent and Validation Agent work the same way either way.
 </Tip>
 
 ## Context preservation
@@ -200,21 +201,16 @@ To get the most from the agent system:
 3. **Use natural language** - Write like you're explaining to a colleague
 4. **Request by feature name** - "Add a pie chart" is clearer than "visualize this somehow"
 
-## Gaia inside your finished apps
+## The Assistant inside your finished apps
 
-The agents described above (Planner, Build, Validation, Conversation) are **build agents** that work behind the scenes to create your app. Once your app is live, two more pieces of Gaia run inside it:
-
-- **Gaia Copilot.** The conversational assistant. The user asks; the Copilot answers. It reads your app's live data and references uploaded knowledge.
-- **Gaia Autopilot.** The autonomous side. They watch data, draft work, and land it in Autopilot for approval. They run on their own.
-
-The two are designed to work side by side. Copilot is reactive. Agents are proactive.
+The agents described above (Planner, Build, Validation, Conversation) are **build agents** that work behind the scenes to create your app. Once your app is live, its **Assistant** works inside it: people ask it questions, have it update records and write documents, and give it [scheduled tasks](/manage/assistant#scheduled-tasks) that it runs on its own.
 
 <CardGroup cols={2}>
-  <Card title="Gaia Copilot" icon="comments" href="/copilots/overview">
-    Conversational assistant with data access, knowledge bases, and an embedded chat interface
+  <Card title="Set up the Assistant" icon="sliders" href="/manage/assistant">
+    Shape your app's Assistant, its scheduled tasks and its tools
   </Card>
-  <Card title="Gaia Autopilot" icon="robot" href="/autopilot/overview">
-    Autonomous agents that watch data and draft work for approval in Autopilot
+  <Card title="Work with the Assistant" icon="comments" href="/use/assistant">
+    Ask questions, update records and write documents with the Assistant
   </Card>
 </CardGroup>
 
@@ -227,10 +223,10 @@ The two are designed to work side by side. Copilot is reactive. Agents are proac
   <Card title="Prompting guide" icon="message" href="/prompting/overview">
     Write better prompts for better results
   </Card>
-  <Card title="Gaia Copilot" icon="comments" href="/copilots/overview">
-    The conversational layer of every app
+  <Card title="Set up the Assistant" icon="sliders" href="/manage/assistant">
+    Shape your app's Assistant, its scheduled tasks and its tools
   </Card>
-  <Card title="Gaia Autopilot" icon="robot" href="/autopilot/overview">
-    The proactive, autonomous layer
+  <Card title="Work with the Assistant" icon="comments" href="/use/assistant">
+    Ask questions, update records and write documents with the Assistant
   </Card>
 </CardGroup>

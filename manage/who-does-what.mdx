@@ -1,0 +1,44 @@
+---
+title: "Who does what"
+description: "Every kind of Gainable user, and what each one can do"
+---
+
+Gainable has a few kinds of users. Some are set for your whole Gainable account, and some are set per app.
+
+| Who | Set where | What they can do |
+|-----|-----------|------------------|
+| **Account member** | Your Gainable account | Signs in once and finds every app they can open on the [Apps grid](/use/apps-grid). Gets into apps set to **Open** without an invitation. |
+| **Builder** | Per app, in the builder's **Users** panel | Opens and changes the app in the builder: chats with Gaia, publishes, and manages who can get in. |
+| **Administrator** | Per app | Sees and manages all of the app's scheduled tasks and its Assistant's memory, and can sync and approve the app's data. |
+| **Data manager** | Per app | Syncs the app's data from its files and sheets and approves those syncs, across all of the app's data. See [Keep the app's data current](/manage/data). |
+| **Member** | Per app | Works in the app and with its Assistant. Sees only what the app's [access rules](/manage/access#what-each-person-sees) allow, and manages their own scheduled tasks. |
+| **External user** | Per app | Someone outside your Gainable account, who signs in with a password. Can only see this app. |
+
+## Account permissions
+
+On top of being a member, people in your Gainable account can hold account-wide permissions:
+
+| Permission | What it allows |
+|------------|----------------|
+| **Add and manage users** | Invite people to the account and manage them |
+| **Mint API keys** | Create and revoke [API keys](/mcp/api-keys) |
+| **Manage connected apps** | See and revoke the AI tools connected to the account, under **Account → Connections** |
+| **Create account views** | Create and edit tabs on the [Apps grid](/use/apps-grid) that everyone in the account sees |
+
+## Roles and groups
+
+**Roles** and **groups** are labels on top of these. They decide what people see in the app, never what they can administer. See [Access, roles and rules](/manage/access).
+
+## Common setups
+
+<AccordionGroup>
+  <Accordion title="A team app with a few people who keep the data current">
+    Set **Who can access** to **Open**, so the whole team gets in. Tick **Data manager** for the people who upload new versions of the sheets or approve syncs.
+  </Accordion>
+  <Accordion title="A field team that only sees its own work">
+    Create a role such as Field Staff and add a rule in the builder chat: "Field Staff only see the requests assigned to them." Make sure the assignee column holds app users.
+  </Accordion>
+  <Accordion title="A portal for customers or partners">
+    Set **External users** to **Invited externals only** and add each person, or **Anyone can sign up** with **Allowed domains**. Add a rule so they only see their own records.
+  </Accordion>
+</AccordionGroup>

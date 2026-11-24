@@ -1,0 +1,58 @@
+---
+title: "API keys"
+description: "Connect scripts, CI jobs and headless MCP clients to Gainable with an account API key"
+---
+
+Signing in through your browser is the right way to connect an AI tool you use yourself. For things that run without a person, such as a nightly data collector, a CI job or a server, use an **account API key** instead.
+
+A key is a Bearer token that acts on behalf of your Gainable account. It works with the Gaia connector at `https://build.gainable.dev/mcp` and with the builder's HTTP API.
+
+## Create a key
+
+<Steps>
+  <Step title="Open API keys">
+    In the builder, open your account menu and select **API keys**, or go to [build.gainable.dev/account/api-keys](https://build.gainable.dev/account/api-keys).
+  </Step>
+  <Step title="Create it">
+    Enter a **Label** so you can tell keys apart later, such as the machine or job that uses it, and select **Create key**.
+  </Step>
+  <Step title="Copy it now">
+    Select **Copy** and store the key somewhere safe, such as your password manager or your CI system's secrets. It's shown once. Gainable keeps only a hash, so a lost key can't be recovered, only replaced.
+  </Step>
+</Steps>
+
+Keys start with `gak_`. The list shows each key's **Key ID**, **Label**, when it was **Created** and when it was **Last used**. The Key ID is safe to share. The key itself isn't.
+
+Creating keys needs the **Mint API keys** permission on your Gainable account. If you can't open **API keys**, ask an account owner to give you that permission.
+
+## Use it with the Gaia connector
+
+Send the key as a Bearer token in the `Authorization` header. For example, in Claude Code:
+
+```bash
+claude mcp add --transport http gainable https://build.gainable.dev/mcp \
+  --header "Authorization: Bearer $GAINABLE_API_KEY"
+```
+
+Other clients that support custom headers for a remote MCP server work the same way. There's no browser sign-in.
+
+How a key differs from signing in:
+
+| | Browser sign-in (OAuth) | API key |
+|---|---|---|
+| Acts as | You, with your permissions in the account | The account. There's no person behind it. |
+| Tools | The basic tools, plus the [optional groups](/mcp/overview#what-youre-granting) you ticked | Every tool, including datasets, people and author mode |
+| Expires | Yes, and your client refreshes it | No. It works until you revoke it. |
+| Best for | Your own AI tool | Scheduled jobs, CI, servers |
+
+Because a key reaches every tool, give each job its own key, keep it in a secret store, and revoke it when the job goes away.
+
+## Revoke a key
+
+Select **Revoke** next to the key. Anything still using it gets refused (`401`) straight away. Revoking is permanent. Create a new key to replace it.
+
+## Common uses
+
+- **A [data collector](/data/any-source) on a schedule** that sends rows to a dataset every night.
+- **CI** that builds or changes an app, or keeps a demo app's data fresh.
+- **Scripts** that list your apps and datasets, or read a dataset's rows.

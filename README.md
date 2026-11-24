@@ -4,10 +4,39 @@ This repository contains the documentation for [Gainable](https://build.gainable
 
 ## Documentation Structure
 
+The site has five tabs: **Build**, **Data**, **Manage**, **Use** and **Develop**. `docs.json` maps each page to its tab.
+
 ```
 docs/
-├── introduction.mdx          # Platform overview
+├── introduction.mdx          # Platform overview and the five paths
 ├── quickstart.mdx            # First app in 5 minutes
+├── build-from-data.mdx       # Build from data, in the builder or from Claude, ChatGPT and others
+│
+├── data/
+│   ├── overview.mdx          # Data in Gainable: datasets, connections, MCP servers
+│   ├── datasets.mdx          # Datasets, sync and two-way sync
+│   ├── spreadsheets.mdx      # How Gaia reads spreadsheets
+│   ├── connections.mdx       # Data connections: connectors, adding and managing them
+│   ├── any-source.mdx        # Bring any source: your AI tool as the connector
+│   └── mcp-servers.mdx       # MCP servers: tools outside Gainable for the Assistant
+│
+├── manage/
+│   ├── overview.mdx          # Owning an app: where everything is
+│   ├── who-does-what.mdx     # Every kind of user side by side
+│   ├── access.mdx            # Access, roles, groups and rules
+│   ├── data.mdx              # The app's Data page: sync, approval, two-way, schedule
+│   ├── activity.mdx          # Activity log
+│   ├── assistant.mdx         # Set up the Assistant: scheduled tasks, memory, tools
+│   └── share-assistant.mdx   # Share the Assistant over MCP
+│
+├── use/
+│   ├── overview.mdx          # Using Gainable: where to start
+│   ├── apps-grid.mdx         # The Apps grid: tabs, account views, groups, widgets
+│   ├── working-in-an-app.mdx # Pages, records, comments, live updates
+│   ├── assistant.mdx         # Work with the Assistant
+│   ├── ai-tools.mdx          # An app's Assistant in Claude, ChatGPT and other AI tools
+│   ├── notifications.mdx     # Notifications, Messenger, team updates
+│   └── mobile.mdx            # Home screen and push notifications
 │
 ├── concepts/
 │   ├── how-it-works.mdx      # How Gainable builds apps
@@ -21,31 +50,10 @@ docs/
 │   └── common-patterns.mdx   # Templates for common apps
 │
 ├── building/
-│   ├── data-connectors.mdx   # Datasets and external sources
 │   ├── data-models.mdx       # Data and schemas
 │   ├── views.mdx             # UI and pages
 │   ├── real-time.mdx         # Live updates
 │   └── collaboration.mdx     # Chat, files, comments
-│
-├── copilots/                 # Gaia Copilot: conversational AI in apps
-│   ├── overview.mdx
-│   ├── configuring.mdx
-│   ├── data-access.mdx
-│   ├── knowledge.mdx
-│   └── embedding.mdx
-│
-├── autopilot/                # Gaia Autopilot: autonomous, draft-and-approve
-│   ├── overview.mdx
-│   ├── objectives.mdx
-│   ├── playbooks.mdx
-│   ├── triggers.mdx
-│   ├── tools.mdx
-│   ├── risk-tiers.mdx
-│   ├── inbox.mdx
-│   ├── scopes.mdx
-│   ├── agent-action-log.mdx
-│   ├── connect-outbound.mdx
-│   └── recipes.mdx
 │
 ├── skills/
 │   ├── chartjs.mdx           # Data visualization
@@ -54,14 +62,14 @@ docs/
 │   └── design.mdx            # Themes and styling
 │
 ├── mcp/                      # The Gaia MCP connector
-│   ├── overview.mdx          # What it is, and coming from the CLI
+│   ├── overview.mdx          # What it is, clients, scopes
 │   ├── claude-code.mdx       # Setup in Claude Code
-│   ├── claude.mdx            # Setup in Claude chat, Cowork, Desktop
+│   ├── claude.mdx            # Setup in Claude on the web, desktop and mobile
 │   ├── codex.mdx             # Setup in OpenAI Codex
-│   ├── tools.mdx             # Every tool and parameter
-│   └── datasets.mdx          # Recurring data pipelines
-│
-├── compare/                  # vs Retool, Appsmith, Lovable, Replit, Structify
+│   ├── other-clients.mdx     # ChatGPT, Cursor, Gemini, Goose and others
+│   ├── plugins.mdx           # The plugin for Claude Code and Codex
+│   ├── api-keys.mdx          # Account API keys for scripts, CI and headless clients
+│   └── tools.mdx             # Every tool and parameter
 │
 └── reference/
     ├── api.mdx               # Generated app APIs

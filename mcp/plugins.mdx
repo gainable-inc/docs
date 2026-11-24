@@ -1,0 +1,49 @@
+---
+title: "Plugins"
+description: "The Gainable plugin for Claude Code and Codex: the connector plus the guidance that steers it"
+---
+
+In Claude Code and Codex, install the **Gainable plugin** rather than adding the connector on its own. One install brings two things:
+
+- **The connector**, already registered at `https://build.gainable.dev/mcp`. You sign in on first use.
+- **The Gainable skill**, guidance your agent reads before its first turn: which tool fits which request, how to relay Gaia's questions to you instead of answering them itself, and how to keep track of which app a folder belongs to.
+
+<Tabs>
+  <Tab title="Claude Code">
+    ```
+    /plugin marketplace add gainable-inc/plugins
+    /plugin install gainable@gainable
+    ```
+
+    Restart Claude Code, then run `/mcp` to sign in.
+  </Tab>
+  <Tab title="Codex">
+    ```
+    /plugin marketplace add https://github.com/gainable-inc/plugins
+    /plugin install gainable
+    ```
+
+    You sign in on first use. Codex asks you to trust the plugin's session hook before it runs.
+  </Tab>
+  <Tab title="Claude">
+    In Claude on the web, desktop and mobile, add [the connector](/mcp/claude) and, for the same guidance, the Gainable skill. Download `skill/gainable-skill.zip` from the [gainable-inc/plugins](https://github.com/gainable-inc/plugins) repository, then at [claude.ai/customize/skills](https://claude.ai/customize/skills) select **+** → **Create skill** → **Upload a skill**, and check that its toggle is on.
+
+    The skill carries the guidance only. Add the connector separately. See [Claude](/mcp/claude).
+  </Tab>
+</Tabs>
+
+## Choosing what it can do
+
+When you sign in, the consent screen has three optional checkboxes. All three are off by default, and building, changing, publishing and sharing apps, including building from a spreadsheet, work without any of them:
+
+| Checkbox | Adds |
+|----------|------|
+| *Also let it write code in your apps* | [Author mode](/mcp/tools#author-mode): `code_context` and `code_push` |
+| *Also let it work with your datasets* | `dataset_list`, `dataset_records`, `dataset_schema`, `dataset_sync`, `dataset_delete` |
+| *Also let it add and manage people on the account* | `account_users`. Offered only to someone who can already manage users. |
+
+Change them later at [Account → Connections](https://build.gainable.dev/account/connections), without reconnecting. A tool that's missing is almost always a box that isn't ticked.
+
+## If the tools appear twice
+
+If you also added Gainable as a connector on your claude.ai account, Claude Code shows both: the plugin's connection and the account's. The tools then appear twice under different names, and the skill can't tell them apart from a real pair of accounts, so it asks which one to use before every build. Turn one of them off.

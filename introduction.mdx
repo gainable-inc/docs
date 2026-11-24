@@ -1,148 +1,44 @@
 ---
 title: "Introduction"
-description: "Turn your ideas into working apps with AI-powered development"
+description: "Turn your spreadsheets and data into working apps, each with its own AI Assistant"
 ---
 
 ## What is Gainable?
 
-Gainable is a no-code platform that lets non-technical teams build custom internal tools, dashboards, and workflows in minutes. Start from an idea and describe what you need, or connect your existing data sources and let AI build an app around them. Either way, you get a complete, working application in minutes.
+Gainable turns the spreadsheets, data and tools your team already uses into working apps. Drop in one sheet or several, and **Gaia**, Gainable's AI, works out how the data fits together, suggests an app and a workflow around it, and builds it. You don't write code or map fields.
 
-You don't need to write code, wait on an engineering backlog, or sign a $50K contract. Just pick a path and start building.
+Every app comes with its own **Assistant**: an AI teammate that knows the app's data, does work in it, and follows the same access rules as everyone else.
 
-<CardGroup cols={2}>
-  <Card
-    title="Start from an idea"
-    icon="pen-line"
-    href="/quickstart"
-  >
-    Describe what you want in plain English and AI creates everything for you.
-  </Card>
-  <Card
-    title="Start from your data"
-    icon="database"
-    href="/build-from-data"
-  >
-    Connect Google Sheets, HubSpot, Stripe, or other sources and build on top of your data.
-  </Card>
-</CardGroup>
+## Pick your path
 
-Either path works in the browser or from the AI agent you already use — Claude Code, Claude, Cowork, or Codex. See [Use your favorite agent](#use-your-favorite-agent).
-
-## Who is Gainable for?
-
-Gainable is built for teams who need custom tools but don't have the time, budget, or engineering resources to build them from scratch:
+Gainable has a page for each way you work with it. Start with the one that fits you.
 
 <CardGroup cols={2}>
-  <Card title="Founders & startups" icon="rocket">
-    Build custom CRMs, client portals, and operations hubs tailored to your workflow instead of paying for 10 SaaS tools that don't fit.
+  <Card title="Build apps" icon="hammer" href="/quickstart">
+    Turn spreadsheets and datasets into an app, then change it by chatting with Gaia.
   </Card>
-  <Card title="Marketing teams" icon="bullhorn">
-    Connect campaign spend to revenue outcomes. Build live dashboards for attribution, lead scoring, and audience segmentation.
+  <Card title="Connect your data" icon="database" href="/data/overview">
+    Create datasets, connect your tools, and give the Assistant tools outside Gainable.
   </Card>
-  <Card title="Operations & RevOps" icon="gears">
-    Unify data scattered across 5 or more systems into a single view. Build pipeline dashboards, coordination tools, and executive reports.
+  <Card title="Manage an app" icon="shield-halved" href="/manage/overview">
+    Decide who gets in and what they see, run the app's data, and set up its Assistant.
   </Card>
-  <Card title="Product managers" icon="compass">
-    Consolidate roadmaps, feedback, and OKR tracking into one place, connected to your backlog and support channels.
+  <Card title="Use Gainable" icon="table-cells-large" href="/use/overview">
+    Find your apps, work with the Assistant, and keep up from your phone.
   </Card>
-  <Card title="Sales teams" icon="chart-line">
-    Build the pipeline view your CRM won't give you. Personal deal boards, forecast trackers, and account-specific tools with live data sync.
-  </Card>
-  <Card title="Anyone blocked on engineering" icon="lightbulb">
-    If you've ever waited weeks for a custom dashboard or report, Gainable lets you build it yourself in minutes.
-  </Card>
-</CardGroup>
-
-## What can you build?
-
-Gainable excels at building data-driven business applications:
-
-<CardGroup cols={2}>
-  <Card title="CRM & sales tools" icon="handshake">
-    Track deals, manage contacts, and monitor your sales pipeline
-  </Card>
-  <Card title="Project trackers" icon="list-check">
-    Manage tasks, milestones, and team assignments
-  </Card>
-  <Card title="Dashboards" icon="chart-line">
-    Visualize your data with charts, KPIs, and real-time updates
-  </Card>
-  <Card title="Workflow apps" icon="diagram-project">
-    Build kanban boards, approval flows, and process trackers
-  </Card>
-  <Card title="AI-powered apps" icon="robot">
-    Add intelligent AI assistants that can answer questions, analyze data, and guide users
+  <Card title="Develop" icon="code" href="/mcp/overview">
+    Build and update apps from Claude, ChatGPT, Codex, Cursor and other AI tools.
   </Card>
 </CardGroup>
 
 ## How it works
 
-Gainable gives you two ways to create an app:
+1. **Bring your data.** Upload one or more spreadsheets, or connect Google Sheets, Excel Online, HubSpot and other sources. Gaia reads them together as one dataset.
+2. **Gaia designs the app.** It suggests pages, views and a workflow, and you can review its decisions before anything is built.
+3. **Build and share.** Press Build, invite your team, and change the app any time by describing what you want.
+4. **Work with the Assistant.** Everyone in the app can ask its Assistant questions, have it update records, and give it recurring tasks.
 
-**Start from an idea** — Describe what you want in plain English. The Planner Agent breaks down your request, the Build Agent generates your app, and validation ensures quality.
-
-**Start from your data** — Connect an external data source like Google Sheets or HubSpot. The DataAnalyzer agent examines your schema, recommends features through interactive Q&A, and produces a build specification.
-
-Both paths lead to the same result: a complete, working app with a database, modern UI, and real-time updates.
-
-<Info>
-You can also combine both approaches: connect data sources and describe additional features you want on top of them.
-</Info>
-
-## Use your favorite agent
-
-You don't have to build in the browser. The **Gaia harness** is accessible via a remote [MCP](https://modelcontextprotocol.io) server, so the AI agent you already work in can drive it for you — describe what you want and it builds, refines, and publishes the app on your behalf.
-
-There's one URL and nothing to install:
-
-```
-https://build.gainable.dev/mcp
-```
-
-Add it, sign in through your browser, and start asking:
-
-```
-Build me an app from this planning spreadsheet
-Add KPI cards to the top of the sponsors view
-Publish it
-```
-
-<CardGroup cols={2}>
-  <Card title="Claude Code" icon="terminal" href="/mcp/claude-code">
-    Build from your terminal, in the folder you're already working in.
-  </Card>
-  <Card title="Claude and Cowork" icon="comments" href="/mcp/claude">
-    Add it once and it's there in chat, Cowork, Desktop, and mobile.
-  </Card>
-  <Card title="Codex" icon="terminal" href="/mcp/codex">
-    The same connector in OpenAI Codex.
-  </Card>
-  <Card title="Anything else" icon="plug" href="/mcp/overview">
-    Any MCP client can connect to the same URL.
-  </Card>
-</CardGroup>
-
-It's the same harness either way — the same contract conversation, Build Agent, and validators as the web app, with nothing downgraded. So an operator can iterate in Cowork while an engineer works from the terminal, and both are editing the same app.
-
-<Tip>
-Prefer to keep the code in your own hands? Grant **author mode** at sign-in and your agent writes the views, routes, and models itself, checked by the same validators the Build Agent uses. See [the connector overview](/mcp/overview).
-</Tip>
-
-## What's included in every app?
-
-Every Gainable app comes with:
-
-| Feature | Description |
-|---------|-------------|
-| **Database** | Automatic data storage that grows with your needs |
-| **Modern UI** | Responsive design that works on any device |
-| **Real-time updates** | See changes instantly as data is added or modified |
-| **Charts & visualization** | Built-in support for data visualization |
-| **Team collaboration** | Chat, file sharing, and comments (via Weavy integration) |
-| **User management** | Built-in authentication and user accounts |
-| **Gaia Copilot** | A conversational assistant in every app that reads live data and references your knowledge |
-| **Gaia Autopilot** | Autonomous agents that watch data, draft work, and land it in your inbox for approval |
-| **Datasets** | Connect and group external data sources like HubSpot, Google Sheets, and Stripe |
+You can do all of this in the Gainable builder, or from the AI tool you already work in: Claude, ChatGPT, Claude Code, Codex and others. See [Where you build](/build-from-data#where-you-build).
 
 ## Next steps
 
@@ -151,24 +47,12 @@ Every Gainable app comes with:
     Build your first app in 5 minutes
   </Card>
   <Card title="Build from data" icon="database" href="/build-from-data">
-    Connect your existing data and let AI design the app
-  </Card>
-  <Card title="Use your favorite agent" icon="plug" href="/mcp/overview">
-    Build from Claude Code, Claude, Cowork, or Codex
-  </Card>
-  <Card title="How it works" icon="gears" href="/concepts/how-it-works">
-    Learn how Gainable builds your app
+    Turn your data into an app, in the builder or from your AI tool
   </Card>
   <Card title="Prompt guide" icon="message" href="/prompting/overview">
     Write better prompts for better apps
   </Card>
-  <Card title="Examples" icon="lightbulb" href="/prompting/examples">
-    See real prompts you can copy
-  </Card>
-  <Card title="Gaia Copilot" icon="comments" href="/copilots/overview">
-    Add a conversational assistant to your app
-  </Card>
-  <Card title="Gaia Autopilot" icon="robot" href="/autopilot/overview">
-    Add autonomous agents that draft work in the background
+  <Card title="Connect your AI tool" icon="plug" href="/mcp/overview">
+    Set up Gaia in Claude, ChatGPT, Claude Code or Codex
   </Card>
 </CardGroup>

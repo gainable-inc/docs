@@ -1,9 +1,9 @@
 ---
-title: "Claude and Cowork"
-description: "Add the Gaia connector to Claude chat, Cowork, and Claude Desktop"
+title: "Claude"
+description: "Add the Gaia connector to Claude on the web, desktop and mobile"
 ---
 
-The Gaia harness is accessible via a **remote MCP server**, which is what Claude calls a *custom connector*. Add it once and it appears everywhere you use Claude — chat on the web, Cowork, Desktop, and mobile.
+Gainable is in [Claude's directory](https://claude.ai/directory/gainable), so adding Gaia to Claude takes a couple of clicks. Add it once and it appears everywhere you use Claude: on the web, in the desktop app and on mobile.
 
 This is the surface that needs no terminal at all. An operator with a spreadsheet can build the app themselves, in the same chat where they'd have asked someone else to do it.
 
@@ -16,26 +16,21 @@ Claude connects to the connector from Anthropic's cloud, not from your device �
 <Tabs>
   <Tab title="Free, Pro, and Max">
     <Steps>
-      <Step title="Open your connector settings">
-        In Claude, go to **Settings → Connectors** (some versions label this **Customize → Connectors**).
+      <Step title="Find Gainable in the directory">
+        Open [Gainable in Claude's directory](https://claude.ai/directory/gainable), or in Claude open **Plugins** and search for **Gainable**.
       </Step>
-      <Step title="Add a custom connector">
-        Click **Add custom connector** (on some versions: **+** → *Add custom connector*), then enter:
-
-        ```
-        https://build.gainable.dev/mcp
-        ```
-
-        Leave **Advanced settings** alone — the connector registers itself, so you don't need to supply an OAuth client ID or secret.
-      </Step>
-      <Step title="Connect and sign in">
-        Click **Add**, then **Connect**. Your browser opens the Gainable sign-in, you pick which account to connect, and you're done.
+      <Step title="Add it and sign in">
+        Select **Add**. Your browser opens the Gainable sign-in, you pick which account to connect, and you're done.
 
         <Tip>
         The consent screen has up to three checkboxes — for your **datasets**, for **managing people** on the account, and for [author mode](/mcp/tools#author-mode). Building, changing, publishing and sharing apps works without any of them. See [what you're granting](/mcp/overview#what-youre-granting).
         </Tip>
       </Step>
     </Steps>
+
+    <Accordion title="Add it as a custom connector instead">
+      If you'd rather add the server yourself, open **Plugins**, select **Add**, then **Add custom connector**, and enter `https://build.gainable.dev/mcp`. Leave the sign-in options Claude detects as they are, and select **Add**.
+    </Accordion>
   </Tab>
   <Tab title="Team and Enterprise">
     An Owner or Admin adds it once for the whole organization; members then connect their own Gainable account to it.
@@ -63,7 +58,7 @@ Claude connects to the connector from Anthropic's cloud, not from your device �
 
 ## Turn it on in a conversation
 
-Adding a connector doesn't switch it on everywhere. In any chat or Cowork session, use the **+** button in the message box → **Connectors**, and toggle **Gainable (Gaia)** on.
+Adding a connector doesn't switch it on everywhere. In any chat, use the **+** button in the message box → **Connectors**, and toggle **Gainable** on.
 
 Then check it:
 
@@ -99,13 +94,11 @@ Make the sponsors view the home page
 Publish it
 ```
 
-## Cowork specifics
-
-Cowork uses the same account-level connector list as Claude chat, so if you added it above there is nothing more to add. Two things behave differently, and both are worth knowing.
+## Working in Claude
 
 ### Name the app you mean
 
-Cowork re-establishes its connection before each tool call, so the connector can't tell one Cowork conversation from another on the same account. Rather than guess — and risk editing a different app you have open elsewhere — **it refuses to assume and asks which app you mean.**
+Claude can re-establish its connection between tool calls, so the connector can't always tell one Claude conversation from another on the same account. Rather than guess — and risk editing a different app you have open elsewhere — **it refuses to assume and asks which app you mean.**
 
 In practice that means the first request in a session should name the app:
 
@@ -125,14 +118,14 @@ A Gainable app is shaped by things the connector cannot know: what you call thin
 
 Ask Claude to **set up the project** and it returns a starter you can use either way:
 
-- **A Cowork project with a folder** — it writes a `README.md`, a `CLAUDE.md` for your domain context, and `data/` and `apps/` folders.
+- **A project with a folder** in the Claude desktop app — it writes a `README.md`, a `CLAUDE.md` for your domain context, and `data/` and `apps/` folders.
 - **A chat-only project** — there is nowhere to write files, so it shows you a block to paste into the project's **Instructions** (or the *"What are you trying to achieve?"* box when you create one). That box is the only place project-level context survives without a folder.
 
 Either way the template is placeholders in angle brackets — fill them in, or it does nothing.
 
 ### If a file upload fails
 
-Cowork sandboxes can have network egress switched off, which blocks the direct upload path for spreadsheets. Claude will fall back to sending the file in slices, which works but costs context. To use the fast path, an admin can enable **Settings → Capabilities → Code execution → Allow network egress**.
+Claude's code sandbox can have network egress switched off, which blocks the direct upload path for spreadsheets. Claude will fall back to sending the file in slices, which works but costs context. To use the fast path, an admin can enable **Settings → Capabilities → Code execution → Allow network egress**.
 
 <Warning>
 If Claude offers to trim, split, or convert a spreadsheet "so it fits" — say no. The analyzer reads the real workbook, including section-divider rows, banded sheets, and reference tabs, to decide the schema. A slimmed file doesn't import a smaller app; it imports a different and wrong one.
@@ -142,9 +135,9 @@ If Claude offers to trim, split, or convert a spreadsheet "so it fits" — say n
 
 Same connector, same tools, same harness. What differs is what the client can see:
 
-| | Claude / Cowork | Claude Code |
+| | Claude | Claude Code |
 |---|---|---|
-| Setup | Add a URL in Settings | `claude mcp add` |
+| Setup | Add Gainable from Claude's directory | Install the plugin |
 | Which app you're working on | Name it in the conversation | `.gaia/project.json` in the folder |
 | Project context | Project Instructions | `CLAUDE.md` |
 | Spreadsheets | Attach to the message | Read from the working folder |
@@ -152,7 +145,7 @@ Same connector, same tools, same harness. What differs is what the client can se
 | Optional scopes | Available if granted | Available if granted |
 
 <Tip>
-Both surfaces edit the same app. An operator can iterate in Cowork while an engineer works from the terminal, so handing off no longer means handing over.
+Both surfaces edit the same app. An operator can iterate in Claude while an engineer works from the terminal, and neither has to hand the app over.
 </Tip>
 
 ## Manage the connection

@@ -3,63 +3,37 @@ title: "How it works"
 description: "Understand how Gainable turns your ideas into working apps"
 ---
 
-## Two paths to your app
+## One prompt to start
 
-Gainable uses specialized build agents that work together to create your application. The agents involved depend on how you start:
+Every app starts in the same place: the prompt on [build.gainable.dev](https://build.gainable.dev). Describe the app, add the data to build it from, or both.
 
-<CardGroup cols={2}>
-  <Card title="Describe your app" icon="pen-line">
-    Write what you want in plain English. The Planner Agent creates a build plan, the Build Agent generates code, and the Validation Agent ensures quality.
-  </Card>
-  <Card title="Build from data" icon="database">
-    Connect external data sources. The DataAnalyzer Agent examines your schema, recommends features through interactive Q&A, and produces a build specification.
-  </Card>
-</CardGroup>
+<Frame>
+  <img src="/images/start-prompt-from-data.png" alt="The builder's start prompt holding a line Gaia wrote from an attached dataset, with Written by Gaia from your data. Edit it freely. under it and the dataset shown below" />
+</Frame>
 
-Both paths converge at the Build Agent, which generates your complete application.
+- **Add data** brings in what the app is built from: one of **Your datasets**, an **Excel or CSV file**, **Google Sheets** or **Excel Online**. You can add several, and Gaia reads them together.
+- **Gaia writes the prompt from your data.** Once it has read the data, it writes a line describing the app the data points to. Edit it freely, or replace it with your own words.
+- **Gaia suggests what's missing.** When you write the prompt yourself, Gaia suggests anything your data holds that the prompt leaves out, or, without data, what the app should track. Select **Add** to take the suggestion.
+- **A brief** is a PDF or Markdown file, such as a spec or a process description. Gaia reads it as background for the design, not as data. Add one from the same **Add data** menu.
 
-### Path 1: Describe your app
+Then send it. From there, every app goes the same way:
 
 <Steps>
-  <Step title="You describe your app">
-    Write what you want in plain English. Be as specific or general as you like.
+  <Step title="Gaia designs the app">
+    If you uploaded files, Gaia imports them first. Then it designs the data models, calculations, pages, lists, and the Assistant's scheduled work. The preview fills in as it goes, and you can pick a layout and colors under **App shell and colors**.
   </Step>
-  <Step title="Planner Agent analyzes your request">
-    The Planner understands your intent, identifies what data you need, and creates a structured build plan.
+  <Step title="You review its decisions">
+    Select **Build with recommendations**, or walk through **Review decisions** to change the home page, who can sign in, and what the Assistant does on a schedule.
   </Step>
-  <Step title="Build Agent generates code">
-    The Build Agent creates your complete application: database models, user interface, and all the logic.
-  </Step>
-  <Step title="Validation ensures quality">
-    Before delivering your app, validation checks catch common issues and ensure everything works.
+  <Step title="Build and validation">
+    The Build Agent generates the app from the design, and validation checks catch common issues before delivery.
   </Step>
   <Step title="Your app is ready">
-    A fully functional application is ready to use immediately.
+    A working app, filled with your data if you added any, with its Assistant ready to answer questions.
   </Step>
 </Steps>
 
-### Path 2: Build from data
-
-<Steps>
-  <Step title="Connect and sync your data">
-    Choose a data source (Google Sheets, HubSpot, Stripe, etc.), authenticate, and sync your data into Gainable.
-  </Step>
-  <Step title="DataAnalyzer Agent examines your schema">
-    The agent analyzes your field names, types, sample rows, and enum values. It identifies the domain (CRM, project management, finance, etc.) and detects patterns like pipeline stages, currency fields, or contact records.
-  </Step>
-  <Step title="Interactive refinement">
-    The agent asks 2-3 clarifying questions through multiple-choice options. You shape the app spec through conversation.
-  </Step>
-  <Step title="Build Agent generates code">
-    The same Build Agent used in the prompt path executes the spec, creating views, dashboards, and collaboration features matched to your data.
-  </Step>
-  <Step title="Validation ensures quality">
-    Validation checks run to catch common issues before delivery.
-  </Step>
-  <Step title="Your app is ready">
-    A fully functional application appears, pre-populated with your synced data.
-  </Step>
-</Steps>
+See [Build from data](/build-from-data) for the whole walkthrough, and [Where you build](/build-from-data#where-you-build) to do the same from Claude, ChatGPT or Claude Code.
 
 ## What makes this different?
 
@@ -84,7 +58,7 @@ Gainable uses multiple build agents, each specialized for a specific task:
     Generates the code for your application. Creates database models, routes, and user interfaces.
   </Card>
   <Card title="DataAnalyzer Agent" icon="magnifying-glass-chart">
-    Examines synced data schemas and sample data. Identifies the domain, recommends features, and produces a build specification through interactive conversation. Used in the "Build from data" path.
+    Examines the data you add: its schemas and sample rows. Identifies the domain, recommends features, and produces the design you review before building.
   </Card>
   <Card title="Validation Agent" icon="shield-check">
     Checks generated code for common issues and ensures it follows best practices.
@@ -94,21 +68,16 @@ Gainable uses multiple build agents, each specialized for a specific task:
   </Card>
 </CardGroup>
 
-## Beyond building: Gaia inside your apps
+## Beyond building: the Assistant inside your apps
 
-The agents above (Planner, Build, Validation, Conversation) work behind the scenes to *build* your app. Once it's live, two more pieces of Gaia run inside it:
-
-- **Gaia Copilot.** The conversational layer. The user asks; the Copilot answers. It reads live app data and references uploaded knowledge.
-- **Gaia Autopilot.** The autonomous layer. They watch data against inferred objectives, draft work, and land it in [Autopilot](/autopilot/inbox) for approval.
-
-The two are designed to live side by side. Copilot is reactive. Agents are proactive.
+The agents above (Planner, Build, Validation, Conversation) work behind the scenes to *build* your app. Once it's live, its **Assistant** works inside it. It answers from the app's live data, updates records, writes documents, and runs scheduled tasks, always with the access of the person asking.
 
 <CardGroup cols={2}>
-  <Card title="Gaia Copilot" icon="comments" href="/copilots/overview">
-    The conversational layer for "the user asks, the Copilot answers"
+  <Card title="Set up the Assistant" icon="sliders" href="/manage/assistant">
+    Shape your app's Assistant, its scheduled tasks and its tools
   </Card>
-  <Card title="Gaia Autopilot" icon="robot" href="/autopilot/overview">
-    The proactive layer for "work shows up before anyone asks"
+  <Card title="Work with the Assistant" icon="comments" href="/use/assistant">
+    Ask questions, update records and write documents with the Assistant
   </Card>
 </CardGroup>
 
@@ -161,11 +130,11 @@ You now have a working task tracker you can use immediately.
 </Accordion>
 
 <Accordion title="Example: Building from a Google Sheet of sales deals">
-**1. You connect and sync your Google Sheet**
+**1. You connect your Google Sheet**
 
 The sheet has columns: Deal Name, Company, Amount, Stage (New, Qualified, Proposal, Won, Lost), Close Date, Owner.
 
-**2. DataAnalyzer Agent analyzes the schema**
+**2. Gaia reads the sheet and designs the app**
 
 The agent identifies:
 - Domain: CRM / Sales (deal + amount + stage enum)
@@ -173,15 +142,13 @@ The agent identifies:
 - Currency field: Amount → KPI cards and charts
 - Date field: Close Date → timeline filtering
 
-**3. Agent asks clarifying questions**
+**3. You review its decisions**
 
-"I see a sales pipeline with 5 stages and deal values. What should be the primary view?"
+Gaia recommends the pipeline overview as the home page, keeps the owners as a list, and suggests an overdue-deal check for the Assistant. You open **Review decisions**, make the Owner column into app users, and keep the rest.
 
-Options: Pipeline Board / Revenue Dashboard / Deal Table
+**4. You choose a layout and colors**
 
-**4. You refine through Q&A**
-
-You pick "Pipeline Board" as the primary view. The agent asks one more question about how to handle the Owner field.
+You pick the classic sidebar layout and a theme under **App shell and colors**, then select **Build the app**.
 
 **5. Build Agent generates the app**
 
@@ -190,7 +157,7 @@ The Build Agent creates:
 - A dashboard with pipeline value KPIs and charts by stage
 - A searchable deal table
 - Comments on individual deals
-- An AI copilot configured for sales questions
+- An Assistant that knows the deals data
 
 **6. Your app is ready**
 
@@ -207,36 +174,24 @@ Gainable remembers everything about your project. When you ask for changes:
 4. **Every change is versioned** - Each successful build creates a snapshot you can revert to
 
 <Tip>
-This means you can build incrementally and experiment freely. Start with something simple, add features one at a time, and undo anything that doesn't work out.
+This means you can build incrementally and experiment freely. Start with something simple, add features one at a time, and roll back anything that doesn't work out.
 
 For how to phrase those requests, see [Changing a built app](/prompting/refining).
 </Tip>
 
-### Undo this build
-
-Not happy with the latest change? Click the **undo button** (↩) on any build completion message to revert it instantly.
-
-<Frame>
-  <img src="/images/undo-build.png" alt="Undo this build button on a build completion message" />
-</Frame>
-
-When you undo a build:
-- **Everything from that step is reverted** — code, views, data models, routes
-- **You can only undo one step at a time** — this prevents cascading issues and keeps your app stable
-- **Your previous state is fully restored** — as if the build never happened
-
-<Note>
-You can only undo the most recent build. To go further back, use Commit history.
-</Note>
-
 ### Commit history
 
-Every build creates a versioned commit with a description of what changed. You can view and rollback to any point in your build history.
+Every build creates a commit with a description of what changed. To go back to any earlier version:
 
-1. Click the **three-dot menu** (⋮) at the top of the Pages panel
+1. In the builder, click the **three-dot menu** (⋮) at the top of the chat panel
 2. Select **Commit history**
+3. Select **Rollback** on the version you want
 
-The history shows all your builds with descriptions and timestamps. Click **Rollback** on any previous entry to restore your app to that point.
+<Frame>
+  <img src="/images/commit-history.png" alt="The Commit History dialog listing builds with their descriptions and ages, the newest marked Current and the rest with a Rollback button" />
+</Frame>
+
+Rolling back changes the app's code. Your chat history is kept as it is. Access rules created after the version you return to are set aside, and the result says which it kept.
 
 <Accordion title="How rollback safety works">
 When you rollback, Gainable automatically creates a safety snapshot of your current state before reverting. This means you can **undo a rollback** if you change your mind — just open Commit history again and click **Undo** to restore the state before the rollback.
@@ -271,10 +226,10 @@ You don't need to know any of these technologies to use Gainable. This is just w
   <Card title="Explore skills" icon="wand-magic-sparkles" href="/concepts/skills">
     Discover built-in features you can request
   </Card>
-  <Card title="Gaia Copilot" icon="comments" href="/copilots/overview">
-    Add a conversational assistant to your app
+  <Card title="Set up the Assistant" icon="sliders" href="/manage/assistant">
+    Shape your app's Assistant, its scheduled tasks and its tools
   </Card>
-  <Card title="Gaia Autopilot" icon="robot" href="/autopilot/overview">
-    Add autonomous agents that draft work in the background
+  <Card title="Work with the Assistant" icon="comments" href="/use/assistant">
+    Ask questions, update records and write documents with the Assistant
   </Card>
 </CardGroup>

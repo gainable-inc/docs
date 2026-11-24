@@ -11,7 +11,7 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Documentation",
+        "tab": "Build",
         "groups": [
           {
             "group": "Get started",
@@ -22,11 +22,16 @@
             ]
           },
           {
-            "group": "Concepts",
+            "group": "Designing the app",
             "pages": [
-              "concepts/how-it-works",
-              "concepts/agents",
-              "concepts/skills"
+              "building/data-models",
+              "building/views",
+              "building/real-time",
+              "building/collaboration",
+              "skills/chartjs",
+              "skills/kanban",
+              "skills/weavy",
+              "skills/design"
             ]
           },
           {
@@ -40,66 +45,126 @@
             ]
           },
           {
-            "group": "Building apps",
+            "group": "How it works",
             "pages": [
-              "building/data-connectors",
-              "building/data-models",
-              "building/views",
-              "building/real-time",
-              "building/collaboration"
+              "concepts/how-it-works",
+              "concepts/agents",
+              "concepts/skills"
             ]
           },
           {
-            "group": "Gaia Copilot",
+            "group": "Help",
             "pages": [
-              "copilots/overview",
-              "copilots/configuring",
-              "copilots/data-access",
-              "copilots/knowledge",
-              "copilots/embedding"
+              "reference/troubleshooting"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Data",
+        "groups": [
+          {
+            "group": "Your data",
+            "pages": [
+              "data/overview",
+              "data/datasets",
+              "data/spreadsheets"
             ]
           },
           {
-            "group": "Gaia Autopilot",
+            "group": "Connect sources",
             "pages": [
-              "autopilot/overview",
-              "autopilot/objectives",
-              "autopilot/playbooks",
-              "autopilot/triggers",
-              "autopilot/tools",
-              "autopilot/risk-tiers",
-              "autopilot/inbox",
-              "autopilot/scopes",
-              "autopilot/agent-action-log",
-              "autopilot/connect-outbound",
-              "autopilot/recipes"
+              "data/connections",
+              "data/any-source"
             ]
           },
           {
-            "group": "Skills reference",
+            "group": "Tools for the Assistant",
             "pages": [
-              "skills/chartjs",
-              "skills/kanban",
-              "skills/weavy",
-              "skills/design"
+              "data/mcp-servers"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Manage",
+        "groups": [
+          {
+            "group": "Manage an app",
+            "pages": [
+              "manage/overview",
+              "manage/who-does-what"
             ]
           },
           {
-            "group": "MCP connector",
+            "group": "Access",
             "pages": [
-              "mcp/overview",
+              "manage/access"
+            ]
+          },
+          {
+            "group": "Data",
+            "pages": [
+              "manage/data",
+              "manage/activity"
+            ]
+          },
+          {
+            "group": "The Assistant",
+            "pages": [
+              "manage/assistant",
+              "manage/share-assistant"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Use",
+        "groups": [
+          {
+            "group": "Use Gainable",
+            "pages": [
+              "use/overview",
+              "use/apps-grid",
+              "use/working-in-an-app",
+              "use/assistant",
+              "use/ai-tools",
+              "use/notifications",
+              "use/mobile"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Develop",
+        "groups": [
+          {
+            "group": "Gaia connector",
+            "pages": [
+              "mcp/overview"
+            ]
+          },
+          {
+            "group": "Claude Code and Codex",
+            "pages": [
               "mcp/claude-code",
-              "mcp/claude",
               "mcp/codex",
-              "mcp/tools",
-              "mcp/datasets"
+              "mcp/plugins"
+            ]
+          },
+          {
+            "group": "Claude, ChatGPT and others",
+            "pages": [
+              "mcp/claude",
+              "mcp/other-clients"
             ]
           },
           {
             "group": "Reference",
             "pages": [
-              "reference/api",
-              "reference/troubleshooting"
+              "mcp/tools",
+              "mcp/api-keys",
+              "reference/api"
             ]
           }
         ]
@@ -109,7 +174,7 @@
       "anchors": [
         {
           "anchor": "Get started",
-          "href": "https://build.gainable.dev",
+          "href": "https://www.gainable.dev/get-started",
           "icon": "rocket"
         }
       ]
@@ -129,7 +194,7 @@
     "primary": {
       "type": "button",
       "label": "Start building",
-      "href": "https://build.gainable.dev"
+      "href": "https://www.gainable.dev/get-started"
     }
   },
   "footer": {
@@ -139,34 +204,59 @@
     }
   },
   "redirects": [
-    { "source": "/agents/creating-agents", "destination": "/copilots/configuring" },
-    { "source": "/agents/functions", "destination": "/copilots/data-access" },
-    { "source": "/agents/knowledge", "destination": "/copilots/knowledge" },
-    { "source": "/agents/copilot", "destination": "/copilots/embedding" },
-    { "source": "/agents/overview", "destination": "/autopilot/overview" },
-    { "source": "/agents/objectives", "destination": "/autopilot/objectives" },
-    { "source": "/agents/playbooks", "destination": "/autopilot/playbooks" },
-    { "source": "/agents/triggers", "destination": "/autopilot/triggers" },
-    { "source": "/agents/tools", "destination": "/autopilot/tools" },
-    { "source": "/agents/risk-tiers", "destination": "/autopilot/risk-tiers" },
-    { "source": "/agents/autopilot", "destination": "/autopilot/inbox" },
-    { "source": "/agents/scopes", "destination": "/autopilot/scopes" },
-    { "source": "/agents/agent-action-log", "destination": "/autopilot/agent-action-log" },
-    { "source": "/agents/connect-outbound", "destination": "/autopilot/connect-outbound" },
-    { "source": "/agents/recipes", "destination": "/autopilot/recipes" },
-
+    { "source": "/build/datasets", "destination": "/data/datasets" },
+    { "source": "/build/spreadsheets", "destination": "/data/spreadsheets" },
+    { "source": "/mcp/datasets", "destination": "/data/any-source" },
+    { "source": "/agents/creating-agents", "destination": "/manage/assistant" },
+    { "source": "/agents/functions", "destination": "/manage/assistant" },
+    { "source": "/agents/knowledge", "destination": "/manage/assistant#memory" },
+    { "source": "/agents/copilot", "destination": "/use/assistant" },
+    { "source": "/agents/overview", "destination": "/manage/assistant#scheduled-tasks" },
+    { "source": "/agents/objectives", "destination": "/manage/assistant#scheduled-tasks" },
+    { "source": "/agents/playbooks", "destination": "/manage/assistant#scheduled-tasks" },
+    { "source": "/agents/triggers", "destination": "/manage/assistant#scheduled-tasks" },
+    { "source": "/agents/tools", "destination": "/manage/assistant#outside-tools" },
+    { "source": "/agents/risk-tiers", "destination": "/manage/assistant#scheduled-tasks" },
+    { "source": "/agents/autopilot", "destination": "/use/assistant" },
+    { "source": "/agents/scopes", "destination": "/manage/assistant#what-the-assistant-can-see" },
+    { "source": "/agents/agent-action-log", "destination": "/manage/assistant#scheduled-tasks" },
+    { "source": "/agents/connect-outbound", "destination": "/manage/assistant#outside-tools" },
+    { "source": "/agents/recipes", "destination": "/prompting/examples#the-assistant" },
     { "source": "/cli/overview", "destination": "/mcp/overview" },
     { "source": "/cli/installation", "destination": "/mcp/overview" },
     { "source": "/cli/claude-code", "destination": "/mcp/claude-code" },
     { "source": "/cli/codex", "destination": "/mcp/codex" },
     { "source": "/cli/commands", "destination": "/mcp/tools" },
-    { "source": "/cli/datasets", "destination": "/mcp/datasets" },
-
-    { "source": "/compare", "destination": "https://www.gainable.dev/compare", "permanent": true },
-    { "source": "/compare/retool", "destination": "https://www.gainable.dev/compare/retool", "permanent": true },
-    { "source": "/compare/appsmith", "destination": "https://www.gainable.dev/compare/appsmith", "permanent": true },
-    { "source": "/compare/lovable", "destination": "https://www.gainable.dev/compare/lovable", "permanent": true },
-    { "source": "/compare/replit", "destination": "https://www.gainable.dev/compare/replit", "permanent": true },
-    { "source": "/compare/structify", "destination": "https://www.gainable.dev/compare/structify", "permanent": true }
+    { "source": "/cli/datasets", "destination": "/data/any-source" },
+    { "source": "/compare", "destination": "https://www.gainable.dev/compare", "permanent": true},
+    { "source": "/compare/retool", "destination": "https://www.gainable.dev/compare/retool", "permanent": true},
+    { "source": "/compare/appsmith", "destination": "https://www.gainable.dev/compare/appsmith", "permanent": true},
+    { "source": "/compare/lovable", "destination": "https://www.gainable.dev/compare/lovable", "permanent": true},
+    { "source": "/compare/replit", "destination": "https://www.gainable.dev/compare/replit", "permanent": true},
+    { "source": "/compare/structify", "destination": "https://www.gainable.dev/compare/structify", "permanent": true},
+    { "source": "/copilots/overview", "destination": "/use/assistant" },
+    { "source": "/copilots/configuring", "destination": "/manage/assistant" },
+    { "source": "/copilots/data-access", "destination": "/manage/assistant" },
+    { "source": "/copilots/knowledge", "destination": "/manage/assistant#memory" },
+    { "source": "/copilots/embedding", "destination": "/use/assistant" },
+    { "source": "/autopilot/overview", "destination": "/manage/assistant#scheduled-tasks" },
+    { "source": "/autopilot/objectives", "destination": "/manage/assistant#scheduled-tasks" },
+    { "source": "/autopilot/playbooks", "destination": "/manage/assistant#scheduled-tasks" },
+    { "source": "/autopilot/triggers", "destination": "/manage/assistant#scheduled-tasks" },
+    { "source": "/autopilot/tools", "destination": "/manage/assistant#outside-tools" },
+    { "source": "/autopilot/risk-tiers", "destination": "/manage/assistant#scheduled-tasks" },
+    { "source": "/autopilot/inbox", "destination": "/use/assistant" },
+    { "source": "/autopilot/scopes", "destination": "/manage/assistant#what-the-assistant-can-see" },
+    { "source": "/autopilot/agent-action-log", "destination": "/manage/assistant#scheduled-tasks" },
+    { "source": "/autopilot/connect-outbound", "destination": "/manage/assistant#outside-tools" },
+    { "source": "/autopilot/recipes", "destination": "/prompting/examples#the-assistant" },
+    { "source": "/building/data-connectors", "destination": "/data/datasets" },
+    { "source": "/own/overview", "destination": "/manage/overview" },
+    { "source": "/own/who-does-what", "destination": "/manage/who-does-what" },
+    { "source": "/own/access", "destination": "/manage/access" },
+    { "source": "/own/data", "destination": "/manage/data" },
+    { "source": "/own/activity", "destination": "/manage/activity" },
+    { "source": "/own/assistant", "destination": "/manage/assistant" },
+    { "source": "/own/share-assistant", "destination": "/manage/share-assistant" }
   ]
 }

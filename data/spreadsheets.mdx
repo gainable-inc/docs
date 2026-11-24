@@ -1,0 +1,44 @@
+---
+title: "How Gaia reads your spreadsheets"
+description: "What happens to currencies, colors, hidden columns, dates and IDs when you build from a spreadsheet"
+---
+
+Real spreadsheets are messy. Gaia reads them the way a careful colleague would, and keeps what each column means rather than only what it says. This page lists what it does with the things that usually go wrong.
+
+If a sheet doesn't say something you know, tell Gaia in **Review decisions → Your data** before you build. See [Review decisions](/build-from-data#review-decisions).
+
+## Money and units
+
+- **The currency comes from the sheet.** Gaia takes it from how a cell is formatted (€), from the column heading ("Cost (SEK)"), or from a Currency column. Any currency works. The amount then shows in that currency everywhere: tables, forms, records and dashboards.
+- **Not every number is money.** A column like "Hours" stays a plain number.
+- **Mixed currencies or units stay apart.** If one sheet mixes SEK, EUR and USD, or kilograms and grams, the import warns you, and totals are kept separate per currency or unit. They are never added together.
+- **Ratios show as percentages.**
+
+## Colors
+
+If a status only shows as a cell color (green means hired, for example), it becomes a proper status field. If you explain what the colors mean in **Your data**, Gaia uses your explanation. If you don't, it asks once or keeps the color names. A colored cell is never left blank.
+
+## Hidden and sensitive columns
+
+Hidden columns and personal data, such as salary or bank account numbers, are imported with a clear warning. They're never dropped quietly, and never made mandatory to fill in. You decide later which [roles](/manage/access#sensitive-columns) can see them. Everyday columns such as "Account Executive" don't set off false alarms.
+
+## Dates and numbers written as text
+
+Dates like "12.01.2027" or "25/10/2026" and numbers like "1,234,000" or "12,5" are read correctly. A date without a year stays blank rather than becoming a wrong date.
+
+## IDs and names
+
+- Readable codes like "REQ-0042" stay visible. Long machine-generated IDs are hidden.
+- Technical or underscore-style column names are turned into readable labels.
+- One field names each record, such as a company's name. A Yes/No column never does.
+
+## Structure
+
+- **Small lists become settings.** A short list of priorities or statuses becomes a list you edit under the app's **Settings**, not a page of its own.
+- **Records that point to themselves work.** An employee's manager or a task's parent task becomes a real link within the same table.
+- **Text stays text.** A column of sentences stays text instead of turning into a dropdown.
+- **People can become users.** A column of people, such as owners or assignees, can become real users of the app, either when you build or later. Gaia matches each name or email to a person and lists any it couldn't match.
+
+## Files Gaia can't read
+
+Empty, damaged, cut-off or password-protected files are turned away when you drop them, with a message saying why.
