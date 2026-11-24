@@ -3,7 +3,7 @@ title: "Bring any source"
 description: "Your AI tool is the connector: collect data from anywhere and keep a Gainable dataset in sync with it"
 ---
 
-Gainable reads spreadsheets and a set of [connected tools](/build/datasets#connect-a-tool) directly. For everything else (an internal API, a database, a partner feed, something you assemble from several places), your AI tool is the connector. Claude Code, Codex, Cursor or any other MCP client collects the data, usually with a small script, and sends it to a dataset through the Gaia connector. From there it works like any other dataset: build an app on it, sync it on a schedule, and keep your team's edits.
+Gainable reads spreadsheets and a set of [connected tools](/data/connections) directly. For everything else (an internal API, a database, a partner feed, something you assemble from several places), your AI tool is the connector. Claude Code, Codex, Cursor or any other MCP client collects the data, usually with a small script, and sends it to a dataset through the Gaia connector. From there it works like any other dataset: build an app on it, sync it on a schedule, and keep your team's edits.
 
 The shape is **create once, sync forever**:
 
@@ -36,7 +36,7 @@ Everything else follows from these.
     Edits people made in the app are kept. A value changed both in your source and in the app is a question for a person, not something the sync decides.
   </Accordion>
   <Accordion title="Planned first, written once approved">
-    A sync is planned first. Whether it's written straight away depends on the dataset's [approval setting](/build/datasets#approval-and-two-way-sync): with **Approve automatically when clean**, a run with nothing to decide is written at once. Otherwise the result is a summary to show a person and a `runId` to approve with.
+    A sync is planned first. Whether it's written straight away depends on the dataset's [approval setting](/data/datasets#approval-and-two-way-sync): with **Approve automatically when clean**, a run with nothing to decide is written at once. Otherwise the result is a summary to show a person and a `runId` to approve with.
   </Accordion>
   <Accordion title="The shape is frozen at creation">
     The dataset remembers the exact keys from your seed data. A sync missing any of them is rejected wholesale and **nothing is written**.
@@ -207,7 +207,7 @@ Deleting one that is free drops its configuration and every row it holds, with n
   <Card title="Tool reference" icon="wrench" href="/mcp/tools#datasets">
     Every dataset tool and parameter.
   </Card>
-  <Card title="Datasets" icon="database" href="/build/datasets">
+  <Card title="Datasets" icon="database" href="/data/datasets">
     Connector-backed datasets and how they attach to apps.
   </Card>
 </CardGroup>

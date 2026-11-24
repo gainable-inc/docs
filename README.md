@@ -4,17 +4,21 @@ This repository contains the documentation for [Gainable](https://build.gainable
 
 ## Documentation Structure
 
-The site has four tabs, one per reader: **Build**, **Manage**, **Use** and **Develop**. `docs.json` maps each page to its tab.
+The site has five tabs: **Build**, **Data**, **Manage**, **Use** and **Develop**. `docs.json` maps each page to its tab.
 
 ```
 docs/
-├── introduction.mdx          # Platform overview and the four paths
+├── introduction.mdx          # Platform overview and the five paths
 ├── quickstart.mdx            # First app in 5 minutes
 ├── build-from-data.mdx       # Build from data, in the builder or from Claude, ChatGPT and others
 │
-├── build/
-│   ├── datasets.mdx          # Datasets, connections, sync and two-way sync
-│   └── spreadsheets.mdx      # How Gaia reads spreadsheets
+├── data/
+│   ├── overview.mdx          # Data in Gainable: datasets, connections, MCP servers
+│   ├── datasets.mdx          # Datasets, sync and two-way sync
+│   ├── spreadsheets.mdx      # How Gaia reads spreadsheets
+│   ├── connections.mdx       # Data connections: connectors, adding and managing them
+│   ├── any-source.mdx        # Bring any source: your AI tool as the connector
+│   └── mcp-servers.mdx       # MCP servers: tools outside Gainable for the Assistant
 │
 ├── manage/
 │   ├── overview.mdx          # Owning an app: where everything is
@@ -65,8 +69,7 @@ docs/
 │   ├── other-clients.mdx     # ChatGPT, Cursor, Gemini, Goose and others
 │   ├── plugins.mdx           # The plugin for Claude Code and Codex
 │   ├── api-keys.mdx          # Account API keys for scripts, CI and headless clients
-│   ├── tools.mdx             # Every tool and parameter
-│   └── datasets.mdx          # Bring any source: your AI tool as the connector
+│   └── tools.mdx             # Every tool and parameter
 │
 └── reference/
     ├── api.mdx               # Generated app APIs

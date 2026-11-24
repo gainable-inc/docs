@@ -31,7 +31,7 @@ Each card says which column rows are matched on, such as `tenant_id`. Keep that 
 - **It merges.** Rows that changed are updated, new rows are added, and edits people made in the app are kept. Unchanged rows aren't touched.
 - **It asks before removing.** If a new file doesn't include rows that are in the app, the sync asks whether to keep or remove them. A file that only holds new rows is treated as an addition.
 - **It follows renamed tabs and columns.** A renamed tab is followed and reported. If columns were renamed, rows are placed by their key values. If a layout changed in a way it can't settle, the sync says which tab or columns it couldn't find.
-- **It reads what's in the file.** Decimal commas, dates in any common order and text numbers are read the same way as when the app was built. See [How Gaia reads your spreadsheets](/build/spreadsheets).
+- **It reads what's in the file.** Decimal commas, dates in any common order and text numbers are read the same way as when the app was built. See [How Gaia reads your spreadsheets](/data/spreadsheets).
 - **It hands off what it can't decide.** Anything unclear goes to a chat with the app's Assistant, with the app's Data managers in it.
 
 ## Log

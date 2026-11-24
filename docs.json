@@ -22,16 +22,9 @@
             ]
           },
           {
-            "group": "Datasets",
-            "pages": [
-              "build/datasets",
-              "build/spreadsheets",
-              "building/data-models"
-            ]
-          },
-          {
             "group": "Designing the app",
             "pages": [
+              "building/data-models",
               "building/views",
               "building/real-time",
               "building/collaboration",
@@ -63,6 +56,32 @@
             "group": "Help",
             "pages": [
               "reference/troubleshooting"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Data",
+        "groups": [
+          {
+            "group": "Your data",
+            "pages": [
+              "data/overview",
+              "data/datasets",
+              "data/spreadsheets"
+            ]
+          },
+          {
+            "group": "Connect sources",
+            "pages": [
+              "data/connections",
+              "data/any-source"
+            ]
+          },
+          {
+            "group": "Tools for the Assistant",
+            "pages": [
+              "data/mcp-servers"
             ]
           }
         ]
@@ -144,7 +163,6 @@
             "group": "Reference",
             "pages": [
               "mcp/tools",
-              "mcp/datasets",
               "mcp/api-keys",
               "reference/api"
             ]
@@ -186,6 +204,9 @@
     }
   },
   "redirects": [
+    { "source": "/build/datasets", "destination": "/data/datasets" },
+    { "source": "/build/spreadsheets", "destination": "/data/spreadsheets" },
+    { "source": "/mcp/datasets", "destination": "/data/any-source" },
     { "source": "/agents/creating-agents", "destination": "/manage/assistant" },
     { "source": "/agents/functions", "destination": "/manage/assistant" },
     { "source": "/agents/knowledge", "destination": "/manage/assistant#memory" },
@@ -206,7 +227,7 @@
     { "source": "/cli/claude-code", "destination": "/mcp/claude-code" },
     { "source": "/cli/codex", "destination": "/mcp/codex" },
     { "source": "/cli/commands", "destination": "/mcp/tools" },
-    { "source": "/cli/datasets", "destination": "/mcp/datasets" },
+    { "source": "/cli/datasets", "destination": "/data/any-source" },
     { "source": "/compare", "destination": "https://www.gainable.dev/compare", "permanent": true},
     { "source": "/compare/retool", "destination": "https://www.gainable.dev/compare/retool", "permanent": true},
     { "source": "/compare/appsmith", "destination": "https://www.gainable.dev/compare/appsmith", "permanent": true},
@@ -229,7 +250,7 @@
     { "source": "/autopilot/agent-action-log", "destination": "/manage/assistant#scheduled-tasks" },
     { "source": "/autopilot/connect-outbound", "destination": "/manage/assistant#outside-tools" },
     { "source": "/autopilot/recipes", "destination": "/prompting/examples#the-assistant" },
-    { "source": "/building/data-connectors", "destination": "/build/datasets" },
+    { "source": "/building/data-connectors", "destination": "/data/datasets" },
     { "source": "/own/overview", "destination": "/manage/overview" },
     { "source": "/own/who-does-what", "destination": "/manage/who-does-what" },
     { "source": "/own/access", "destination": "/manage/access" },

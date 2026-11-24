@@ -29,8 +29,9 @@ This file lives in `.claude/` on purpose. Mintlify turns markdown files in the r
   - Data lives in **datasets** (not "data connectors"). **The MCP connector** replaced the retired CLI (`/cli/*` redirects to `/mcp/*`).
   - "Building your own data connector" means your AI tool (Claude Code and others) reads a source and pushes it into a dataset with `dataset_sync`. It is not a Gainable feature.
   - **Data manager** is a per-user permission next to Administrator, not a role. Roles and groups decide what people see, never what they administer.
-- The site has four tabs, one per reader. Put a page in the tab its reader works in:
-  - **Build**: building apps and working with datasets.
+- The site has five tabs. Put a page in the tab its reader works in:
+  - **Build**: building apps.
+  - **Data**: datasets, data connections, bringing any source, and MCP servers for the Assistant. New pages go in `data/`. It mirrors **Data** in the builder.
   - **Manage**: app owners and admins, everything around an app that isn't building it (access, the app's data, setting up the Assistant). New pages go in `manage/`.
   - **Use**: everyone in an app (Apps grid, notifications, messaging, the Assistant, mobile). New pages go in `use/`.
   - **Develop**: the MCP connector, plugins and code.
