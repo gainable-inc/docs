@@ -1,224 +1,62 @@
 ---
-title: "API reference"
-description: "Understanding the APIs in your generated apps"
+title: "API and programmatic access"
+sidebarTitle: "API reference"
+description: "Work with a Gainable app's data from code or AI tools through the app's own MCP. The Gaia MCP connector, with API keys, is for building apps and code."
 ---
 
-## Overview
+Gainable is reached from code and other tools through **MCP**, the open standard AI tools use to connect to other systems. There are two, for two different jobs:
 
-Every Gainable app includes automatically generated API endpoints. These APIs power your app's functionality and can be used by external integrations.
+- **The app's MCP** is how you work with one app's data: ask about it, add and update records, hand it recurring work. Every app has its own, reached through its [shared Assistant](/manage/share-assistant).
+- **The Gaia MCP connector** is for building: create, change, publish and share apps, manage datasets, and write an app's code.
 
-<Note>
-You don't need to know about APIs to use Gainable. This reference is for users who want to understand how their apps work internally or integrate with external systems.
-</Note>
+Each app's own REST API serves the app's pages and isn't open to outside callers.
 
-## API structure
+## Choose the right way in
 
-For each data model you create, Gainable generates RESTful endpoints:
+| You want to | Use |
+| --- | --- |
+| Ask about an app's data, add or update its records, or give it recurring work, from ChatGPT, Claude or another AI tool | **The app's MCP**: [share its Assistant](/manage/share-assistant), then [add it to your AI tool](/use/ai-tools) |
+| Build, change, publish or share apps from an AI tool | **The Gaia MCP connector**: [overview](/mcp/overview) |
+| Write an app's code yourself | **The Gaia MCP connector** in [author mode](/mcp/tools#author-mode) |
+| Build or sync from a script, a CI job or a server, with no person signing in | **The Gaia MCP connector** with an [account API key](/mcp/api-keys) |
+| Keep a dataset filled from a source Gainable has no connector for | **The Gaia MCP connector**: [Bring any source](/data/any-source), with the `dataset_sync` tool |
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/{model}` | GET | List all items |
-| `/api/{model}` | POST | Create new item |
-| `/api/{model}/:id` | GET | Get single item |
-| `/api/{model}/:id` | PUT | Update item |
-| `/api/{model}/:id` | DELETE | Delete item |
+Both follow the same access rules as the builder and the app: a person reaches only the records they're allowed to see, and an API key acts for your account, never past it.
 
-### Example
+## Run on a schedule
 
-If you create a Deal model, you get:
+Recurring work on an app's data doesn't need a server of your own. Pick the way that fits where the work happens:
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/deal` | GET | List all deals |
-| `/api/deal` | POST | Create new deal |
-| `/api/deal/:id` | GET | Get specific deal |
-| `/api/deal/:id` | PUT | Update deal |
-| `/api/deal/:id` | DELETE | Delete deal |
+| The work | Run it with |
+| --- | --- |
+| Uses the app's data and the tools its Assistant already has | The Assistant's own [scheduled tasks](/manage/assistant#scheduled-tasks), which run in Gainable |
+| Uses the app's data alongside your other connectors, such as email | A [scheduled task in a Claude project](/use/ai-tools#make-it-part-of-your-work) with the app's MCP connected |
+| Runs next to something private, such as a local database or a VPN | A local MCP client with the app's MCP added, started by cron or Task Scheduler |
+| Brings data in from another system, with no person involved | A collector that pushes to the app's dataset with `dataset_sync` and an [account API key](/mcp/api-keys). See [Bring any source](/data/any-source) |
 
-## Response format
+The app's MCP always acts as a person. Each client signs in once in the browser with that person's Gainable account, and keeps the connection alive on its own while it is used at least every 90 days. The connection ends when the app's owner turns sharing off or the person loses access to the app. A sign-in made in one AI tool can't be reused by another: each client signs in for itself.
 
-All API responses follow this structure:
+Account API keys don't open an app's MCP. They are for the Gaia MCP connector, which reaches the app's data only through its dataset.
 
-### Success response
+## The app's own API
 
-```json
-{
-  "success": true,
-  "data": {
-    "_id": "507f1f77bcf86cd799439011",
-    "name": "Enterprise License",
-    "amount": 50000,
-    "status": "won",
-    "createdAt": "2024-01-15T10:30:00.000Z",
-    "updatedAt": "2024-01-15T10:30:00.000Z"
-  }
-}
-```
+Every app has a REST API that its pages use to read and save records, and a real-time channel that keeps everyone's screen current. Both belong to the app itself. Requests from outside the app's own pages are refused, and there are no keys or tokens for calling them from elsewhere.
 
-### List response
-
-```json
-{
-  "success": true,
-  "data": [
-    { "_id": "...", "name": "Deal 1", ... },
-    { "_id": "...", "name": "Deal 2", ... }
-  ]
-}
-```
-
-### Error response
-
-```json
-{
-  "success": false,
-  "error": "Deal not found"
-}
-```
-
-## Common operations
-
-### Create an item
-
-```bash
-POST /api/deal
-Content-Type: application/json
-
-{
-  "name": "Enterprise License",
-  "amount": 50000,
-  "status": "new"
-}
-```
-
-### Update an item
-
-```bash
-PUT /api/deal/507f1f77bcf86cd799439011
-Content-Type: application/json
-
-{
-  "status": "won"
-}
-```
-
-### Delete an item
-
-```bash
-DELETE /api/deal/507f1f77bcf86cd799439011
-```
-
-## Filtering
-
-Most list endpoints support query parameters for filtering:
-
-```bash
-# Filter by status
-GET /api/deal?status=won
-
-# Filter by multiple fields
-GET /api/deal?status=won&amount[$gte]=10000
-
-# Sort results
-GET /api/deal?sort=-createdAt
-
-# Limit results
-GET /api/deal?limit=10
-```
-
-## Real-time events
-
-When data changes, the server broadcasts events via WebSocket:
-
-| Event | Payload | When |
-|-------|---------|------|
-| `{model}:created` | New item | Item is created |
-| `{model}:updated` | Updated item | Item is modified |
-| `{model}:deleted` | Deleted item ID | Item is deleted |
-
-### Example events
-
-```javascript
-// Listen for new deals
-socket.on('deal:created', (deal) => {
-  console.log('New deal:', deal);
-});
-
-// Listen for updates
-socket.on('deal:updated', (deal) => {
-  console.log('Deal updated:', deal);
-});
-
-// Listen for deletions
-socket.on('deal:deleted', (data) => {
-  console.log('Deal deleted:', data._id);
-});
-```
-
-## Authentication
-
-API requests require authentication. Your app handles this automatically through session cookies when accessed through the browser.
-
-To work with an app's data from another AI tool, [share its Assistant](/manage/share-assistant). To drive Gainable itself from a script or CI job (build apps, sync datasets), use an [account API key](/mcp/api-keys) with the Gaia connector. For direct access to an app's own API from an external system, reach out via the live chat in the builder or email [support@gainable.dev](mailto:support@gainable.dev).
-
-## Rate limits
-
-APIs have reasonable rate limits to ensure stability:
-
-- **Standard**: 100 requests per minute
-- **Bulk operations**: 10 requests per minute
-
-If you hit a rate limit, you'll receive a 429 response.
-
-## Data types
-
-### Automatic fields
-
-Every item includes:
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `_id` | ObjectId | Unique identifier |
-| `createdAt` | Date | Creation timestamp |
-| `updatedAt` | Date | Last update timestamp |
-
-### Reference fields
-
-When models reference each other, the API returns IDs:
-
-```json
-{
-  "_id": "507f1f77bcf86cd799439011",
-  "title": "Task 1",
-  "project": "507f1f77bcf86cd799439012"
-}
-```
-
-Use the project ID to fetch the related project.
-
-## Best practices
-
-<AccordionGroup>
-  <Accordion title="Use the UI when possible">
-    The app's UI is the easiest way to interact with your data. Use APIs only when you need external integration.
-  </Accordion>
-
-  <Accordion title="Handle errors gracefully">
-    Check for `success: false` responses and handle them appropriately.
-  </Accordion>
-
-  <Accordion title="Use real-time events">
-    Instead of polling, listen for WebSocket events to get instant updates.
-  </Accordion>
-</AccordionGroup>
+To work with an app's data from code or an AI tool, use **the app's MCP**. It works with the same data and follows the same access rules.
 
 ## Learn more
 
 <CardGroup cols={2}>
-  <Card title="Data models" icon="database" href="/building/data-models">
-    Understanding your data structure
+  <Card title="The app's MCP" icon="share-nodes" href="/manage/share-assistant">
+    Reach an app's data from ChatGPT, Claude and other AI tools
   </Card>
-  <Card title="Real-time updates" icon="bolt" href="/building/real-time">
-    How real-time sync works
+  <Card title="The Gaia MCP connector" icon="plug" href="/mcp/overview">
+    Build and change apps, and write their code, from your AI tool
+  </Card>
+  <Card title="API keys" icon="key" href="/mcp/api-keys">
+    Use the Gaia connector from scripts and servers
+  </Card>
+  <Card title="Bring any source" icon="arrows-rotate" href="/data/any-source">
+    Keep a dataset current from any system
   </Card>
 </CardGroup>
