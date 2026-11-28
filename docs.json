@@ -30,7 +30,6 @@
               "building/collaboration",
               "skills/chartjs",
               "skills/kanban",
-              "skills/weavy",
               "skills/design"
             ]
           },
@@ -204,6 +203,7 @@
     }
   },
   "redirects": [
+    { "source": "/skills/weavy", "destination": "/building/collaboration" },
     { "source": "/build/datasets", "destination": "/data/datasets" },
     { "source": "/build/spreadsheets", "destination": "/data/spreadsheets" },
     { "source": "/mcp/datasets", "destination": "/data/any-source" },

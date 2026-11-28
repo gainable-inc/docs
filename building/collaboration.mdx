@@ -1,11 +1,12 @@
 ---
-title: "Collaboration"
-description: "Add team chat, file sharing, and comments to your apps"
+title: "Collaboration: chat, files and comments in your apps"
+sidebarTitle: "Collaboration"
+description: "Add team chat, file sharing, comments and activity feeds to your Gainable apps, on a page or on every record, and how they work with the Messenger."
 ---
 
 ## Built-in collaboration
 
-Gainable apps can include collaboration features powered by Weavy. These are self-contained components that work out of the box.
+Gainable apps can include collaboration features that work out of the box. Ask for them in natural language, on a page or on every record.
 
 ## Available features
 
@@ -24,10 +25,19 @@ What you get:
 - Typing indicators
 - Read receipts
 - Emoji reactions
+- File sharing in chat
+
+Best for team discussions, and for a conversation that belongs to one project, deal or task.
 
 ### Direct messaging
 
-Every app has the Messenger built in, in the header, for private conversations between people. You don't need to ask for it. See [the Messenger](/use/notifications#messenger).
+Every app has the Messenger built in: the chat icon in the app's header opens direct and group conversations with the people in your Gainable account. There's nothing to prompt for. If you ask Gaia to add messaging, it tells you it's already there. See [the Messenger](/use/notifications#messenger).
+
+<Note>
+**Chat vs Messenger:**
+- Use **Chat** for a conversation that belongs to a page or a record (project chat, team chat). Gaia builds it where you ask.
+- The **Messenger** is for private conversations between people, like Slack DMs. It's always in the header.
+</Note>
 
 ### File sharing
 
@@ -42,6 +52,8 @@ What you get:
 - File upload (drag and drop)
 - File previews
 - Download options
+- File type icons
+- Version history
 - File organization
 
 ### Comments
@@ -58,6 +70,7 @@ What you get:
 - Mentions (@user)
 - Timestamps
 - Edit and delete
+- Reactions
 
 ### Activity feeds
 
@@ -72,6 +85,8 @@ What you get:
 - Post creation
 - Comments on posts
 - Reactions
+- Rich text formatting
+- File attachments
 - Chronological feed
 
 ### The Assistant
@@ -105,11 +120,6 @@ Simply describe what you want in natural language:
 "Include threaded comments"
 ```
 
-```text Messaging
-"Add direct messages"
-"Let users message each other"
-"Include private messaging"
-```
 </CodeGroup>
 
 ## Where to place collaboration
@@ -130,7 +140,20 @@ Everyone on that page sees the same chat.
 "Add a chat for each project"
 ```
 
-Each project has its own separate conversation.
+Each project has its own separate conversation. The same works for files and comments:
+
+```text
+"Add files to each deal"
+"Add comments to each task"
+```
+
+### Layout
+
+Say how a feature should appear on the page:
+
+- **Inline**: in the main content area. `"Show the chat in the main content area"`
+- **Drawer**: sliding out from the side. `"Show files in a right panel"`
+- **Tab**: one tab among several. `"Tabs: Overview, Chat, Files, Comments"`
 
 ## Notifications
 
@@ -139,6 +162,8 @@ Collaboration features include notifications:
 - **Toast notifications** - Pop-up alerts for new messages
 - **Badge counts** - Unread message indicators
 - **Sound alerts** - Optional audio notifications
+
+People are notified about new messages in their chats, @mentions in comments, replies to their posts, and files shared with them. Every app also has the notification bell built in, in the header next to the Messenger. See [Notifications](/use/notifications).
 
 <Note>
 Notifications are enabled by default. Users can manage their preferences.
@@ -223,8 +248,8 @@ Build a team dashboard with:
 ## Learn more
 
 <CardGroup cols={2}>
-  <Card title="Weavy components" icon="comments" href="/skills/weavy">
-    Detailed collaboration features
+  <Card title="The Messenger" icon="comments" href="/use/notifications#messenger">
+    Private conversations, built into every app
   </Card>
   <Card title="Real-time updates" icon="bolt" href="/building/real-time">
     How real-time sync works
