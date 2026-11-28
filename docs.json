@@ -187,6 +187,10 @@
   "navbar": {
     "links": [
       {
+        "label": "Website",
+        "href": "https://www.gainable.dev"
+      },
+      {
         "label": "Support",
         "href": "mailto:support@gainable.dev"
       }
@@ -201,7 +205,18 @@
     "socials": {
       "github": "https://github.com/gainable-inc",
       "linkedin": "https://linkedin.com/company/gainable"
-    }
+    },
+    "links": [
+      {
+        "header": "Gainable",
+        "items": [
+          { "label": "Website", "href": "https://www.gainable.dev" },
+          { "label": "Pricing", "href": "https://www.gainable.dev/pricing" },
+          { "label": "Compare", "href": "https://www.gainable.dev/compare" },
+          { "label": "Get started", "href": "https://www.gainable.dev/get-started" }
+        ]
+      }
+    ]
   },
   "redirects": [
     { "source": "/build/datasets", "destination": "/data/datasets" },
