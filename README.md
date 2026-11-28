@@ -58,7 +58,6 @@ docs/
 ├── skills/
 │   ├── chartjs.mdx           # Data visualization
 │   ├── kanban.mdx            # Drag-drop boards
-│   ├── weavy.mdx             # Collaboration features
 │   └── design.mdx            # Themes and styling
 │
 ├── mcp/                      # The Gaia MCP connector
