@@ -1,7 +1,7 @@
 ---
 title: "What is Gainable?"
 sidebarTitle: "Introduction"
-description: "Turn your spreadsheets and data into working apps, each with its own AI Assistant"
+description: "Gainable turns your spreadsheets, data and tools into working apps, each with its own AI Assistant. Start here for building, data, access, MCP and the API."
 ---
 
 ## What is Gainable?
@@ -40,6 +40,44 @@ Gainable has a page for each way you work with it. Start with the one that fits 
 4. **Work with the Assistant.** Everyone in the app can ask its Assistant questions, have it update records, and give it recurring tasks.
 
 You can do all of this in the Gainable builder, or from the AI tool you already work in: Claude, ChatGPT, Claude Code, Codex and others. See [Where you build](/build-from-data#where-you-build).
+
+## What the docs cover
+
+| To | Read |
+| --- | --- |
+| Build your first app from spreadsheets | [Quickstart](/quickstart) |
+| Understand how Gaia designs, builds and validates an app | [How it works](/concepts/how-it-works) |
+| Build from files, Google Sheets, Excel Online or a dataset | [Build from data](/build-from-data) |
+| See how spreadsheets are read: currencies, colours, hidden columns, dates | [How Gaia reads your spreadsheets](/data/spreadsheets) |
+| Keep data in datasets and connect HubSpot, Stripe and other tools | [Datasets](/data/datasets) and [Data connections](/data/connections) |
+| Sync an app's data, with approval, a schedule and two-way sync | [Keep the app's data current](/manage/data) |
+| Decide who gets in and which records each person sees | [Access, roles and rules](/manage/access) |
+| Set up and work with the Assistant | [Set up the Assistant](/manage/assistant) and [Work with the Assistant](/use/assistant) |
+| Work with an app's data from ChatGPT, Claude or another AI tool | The app's MCP: [Your apps in Claude and ChatGPT](/use/ai-tools) |
+| Build and change apps, and write their code, from Claude, ChatGPT, Claude Code or Codex | [The Gaia MCP connector](/mcp/overview) and its [tool reference](/mcp/tools) |
+| Work with Gainable from code, scripts and CI | [API and programmatic access](/reference/api) |
+
+## Common questions
+
+### Do I need to write code?
+
+No. You describe what you want, or drop in your data, and Gaia builds the app. You change it the same way, by describing the change. See [Changing a built app](/prompting/refining).
+
+### Can I build Gainable apps from Claude or ChatGPT?
+
+Yes. The Gaia MCP connector, for building and code, lets Claude, ChatGPT, Claude Code, Codex, Cursor and other MCP clients import data, build apps, change them and publish them, the same way the Gainable builder does. See [the Gaia MCP connector](/mcp/overview).
+
+### Can I work with an app's data from code or another tool?
+
+Yes, through the app's own MCP. Share the app's Assistant and add it to ChatGPT, Claude or any other MCP client to ask about the data, add and update records, and hand it recurring work, with the app's access rules applied. The app's REST API serves its own pages and isn't for outside callers. See [API and programmatic access](/reference/api).
+
+### Can an app stay in sync with Google Sheets?
+
+Yes. An app syncs from the files and sheets it was built from, with approval, Undo and a schedule. Two-way sync writes edits made in the app back to the Google Sheet or Excel Online workbook. See [Keep the app's data current](/manage/data).
+
+### Can I control who sees which records?
+
+Yes. Describe access rules in plain words, such as "Owners only see their own deals", and they apply everywhere in the app, the Assistant included. See [Access, roles and rules](/manage/access).
 
 ## Next steps
 
